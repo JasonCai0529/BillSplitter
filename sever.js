@@ -6,11 +6,11 @@ const bodyParser = require("body-parser");
 const path = require("path");
 
 const app = express();
-const PORTT = 3000;
+const PORT = 3000;
  
 app.use(cors());
 app.use(bodyParser.json());
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname,"public")));
 
 // Connect to SQLite database
 const db = new sqlite3.Database("users.db", (err) => {
@@ -23,7 +23,7 @@ const db = new sqlite3.Database("users.db", (err) => {
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 username TEXT UNIQUE,
                 password TEXT,
-                balance REAL 100.00
+                balance REAL DEFAULT 100.00
             )
         `);
     }
@@ -37,13 +37,10 @@ app.post("/signup", (req, res) => {
         if (err) return res.status(500).json({ success: false, message: "Server error." });
         if (row) return res.json({ success: false, message: "Username already taken!" });
 
-        db.run("INSERT INTO users (username, password) VALUES (?, ?)", 
-            [username, password],
-            function (err) {
-                if (err) return res.status(500).json({ success: false, message: "Error saving user." });
-                res.json({ success: true, message: "Signup successful!", userId: this.lastID });
-            }
-        );
+        db.run("INSERT INTO users (username, password) VALUES (?, ?)", [username, password], function (err) {
+            if (err) return res.status(500).json({ success: false, message: "Error saving user." });
+            res.json({ success: true, message: "Signup successful!", userId: this.lastID });
+        });
     });
 });
 
@@ -51,25 +48,32 @@ app.post("/signup", (req, res) => {
 app.post("/login", (req, res) => {
     const { username, password } = req.body;
 
-    db.get("SELECT * FROM users WHERE username = ?", [username], (err, row) => {
+    db.get("SELECT * FROM users WHERE username = ? AND password = ?", [username, password], (err, row) => {
         if (err) return res.status(500).json({ success: false, message: "Server error." });
         if (row) {
-            if (password === row.password) {
-                res.json({ success: true, message: "Login successful!", username, userId: row.id });
-            } else {
-                res.json({ success: false, message: "Invalid username or password." });
-            }
+            res.json({ success: true, message: "Login successful!", username, userId: row.id });
         } else {
             res.json({ success: false, message: "Invalid username or password." });
         }
     });
 });
+//save for later
+// // Get balance (for authenticated users)
+// app.get("/balance/:username", (req, res) => {
+//     const { username } = req.params;
 
+//     db.get("SELECT balance FROM users WHERE username = ?", [username], (err, user) => {
+//         if (err || !user) {
+//             return res.status(400).json({ message: "User not found." });
+//         }
+
+//         res.json({ balance: user.balance });
+//     });
+// });
 app.get("/", (req, res) => {
-    res.sendFile(path.join("public", "dashboard.html"));
-});
-
+    res.sendFile(path.join(__dirname, "public", "dashboard.html"));
+})
 // Start server
-app.listen(PORTT, () => {
-    console.log(`Server running on http://localhost:${PORTT}`);
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
 });
