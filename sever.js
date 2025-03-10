@@ -7,8 +7,21 @@ const path = require("path");
 
 const app = express();
 const PORT = 3000;
- 
-app.use(cors());
+
+
+
+
+
+app.use(cors({
+    origin: ["http://localhost:3000", "http://127.0.0.1:3000"], // Allows all origins (for testing only)
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type"]
+}));
+app.options('*', cors());
+
+
+
+// app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname,"public")));
 
