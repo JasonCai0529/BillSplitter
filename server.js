@@ -70,6 +70,7 @@ app.post("/login", (req, res) => {
         }
     });
 });
+
 //save for later
 // // Get balance (for authenticated users)
 // app.get("/balance/:username", (req, res) => {
