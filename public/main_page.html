@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Spending Dashboard</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    
+    body {
+      padding: 20px;
+      background-color: #f8f9fa;
+    }
+    
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      margin-bottom: 40px;
+    }
+    
+    .logo {
+      font-size: 32px;
+      font-weight: bold;
+      color: #333;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 30px;
+    }
+    
+    .nav-links a {
+      color: #333;
+      text-decoration: none;
+      font-size: 18px;
+    }
+    
+    .container {
+      display: flex;
+      gap: 30px;
+      justify-content: space-between;
+    }
+    
+    .left-panel {
+      flex: 1;
+      max-width: 400px;
+    }
+    
+    .right-panel {
+      flex: 2;
+    }
+    
+    .dashboard-title {
+      font-size: 32px;
+      color: #2d4b73;
+      margin-bottom: 30px;
+    }
+    
+    .profile-card {
+      background-color: white;
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+    
+    .profile-name {
+      font-size: 24px;
+      color: #3f88c5;
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .edit-button {
+      font-size: 16px;
+      color: #888;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    
+    .balance-item {
+      background-color: #e1e9f7;
+      padding: 12px 20px;
+      border-radius: 30px;
+      margin-bottom: 12px;
+      font-size: 16px;
+      color: #2d4b73;
+    }
+    
+    .section-card {
+      background-color: #f1e9f7;
+      padding: 20px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .section-card.request-card {
+      background-color: #dae2e5;
+    }
+    
+    .section-title {
+      font-size: 24px;
+      color: #2d4b73;
+    }
+    
+    .no-record {
+      color: #888;
+    }
+    
+    .create-bill-button {
+      background-color: #84c7d7;
+      color: white;
+      border: none;
+      padding: 15px 25px;
+      border-radius: 30px;
+      font-size: 18px;
+      cursor: pointer;
+      text-align: center;
+      display: block;
+      width: 80%;
+      margin: 0 auto;
+    }
+    
+    .chart-container {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      margin: 0 auto;
+    }
+    
+    .donut-chart {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: conic-gradient(
+        #0f2a4a 0% 15%,
+        #2d5486 15% 35%,
+        #9ebbde 35% 55%,
+        #b7d1ec 55% 75%,
+        #5b87c7 75% 100%
+      );
+      position: relative;
+    }
+    
+    .donut-hole {
+      position: absolute;
+      width: 60%;
+      height: 60%;
+      background-color: #f8f9fa;
+      border-radius: 50%;
+      top: 20%;
+      left: 20%;
+    }
+    
+    .spending-table {
+      width: 100%;
+      margin-top: 40px;
+      border-collapse: collapse;
+    }
+    
+    .spending-table th {
+      text-align: left;
+      padding: 15px;
+      color: #888;
+      font-weight: normal;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .spending-table td {
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .category-indicator {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+      margin-right: 10px;
+    }
+    
+    .restaurant {
+      background-color: #623b94;
+    }
+    
+    .grocery {
+      background-color: #8e6db6;
+    }
+    
+    .personal {
+      background-color: #c8b3e0;
+    }
+    
+    .gas {
+      background-color: #3b4994;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="logo">ADJC</div>
+    <div class="nav-links">
+      <a href="#">Services</a>
+      <a href="about.html">About</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+  
+  <div class="container">
+    <div class="left-panel">
+      <div class="profile-card">
+        <div class="profile-name">
+          Aimee. Z
+          <button class="edit-button">Edit</button>
+        </div>
+        <div class="balance-item">Your Balance: 0</div>
+        <div class="balance-item">Owed: 0</div>
+        <div class="balance-item">Owed you: 0</div>
+      </div>
+      
+      <div class="section-card">
+        <div class="section-title">Your bills</div>
+        <div class="no-record">No record yet</div>
+      </div>
+      
+      <div class="section-card request-card">
+        <div class="section-title">Request</div>
+        <div class="no-record">No record yet</div>
+      </div>
+      
+      <button class="create-bill-button">Create A Bill</button>
+    </div>
+    
+    <div class="right-panel">
+      <h1 class="dashboard-title">Your spending</h1>
+      
+      <div class="chart-container">
+        <div class="donut-chart">
+          <div class="donut-hole"></div>
+        </div>
+      </div>
+      
+      <table class="spending-table">
+        <thead>
+          <tr>
+            <th>Division</th>
+            <th>%</th>
+            <th>Change</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="category-indicator restaurant"></span>Restaurant</td>
+            <td>None</td>
+            <td>None</td>
+          </tr>
+          <tr>
+            <td><span class="category-indicator grocery"></span>Grocery</td>
+            <td>None</td>
+            <td>None</td>
+          </tr>
+          <tr>
+            <td><span class="category-indicator personal"></span>Personal</td>
+            <td>None</td>
+            <td>None</td>
+          </tr>
+          <tr>
+            <td><span class="category-indicator gas"></span>Gas</td>
+            <td>None</td>
+            <td>None</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>
