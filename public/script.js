@@ -53,17 +53,22 @@ async function login(event) {
         });
 
         const result = await response.json();
-        console.log("Login result:", result);
+        console.log("Login result:", result.success);
+        console.log("RESPONSE status IS: ", response.status);
 
-        if (response.ok) {
+        if (result.success == false) {
+            message.style.color = "red";
+            message.innerText = result.message;
+        } else if (response.ok) {
             sessionStorage.setItem("username", username); 
-            //save for later
             // alert(`Login successful! Your balance: $${result.balance}`);
             window.location.href = "main_page.html"; 
         } else {
             message.style.color = "red";
             message.innerText = result.message;
         }
+        
+        
     } catch (error) {
         console.error("Error:", error);
         message.style.color = "red";
