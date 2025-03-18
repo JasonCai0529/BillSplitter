@@ -207,18 +207,20 @@
     .gas {
       background-color: #3b4994;
     }
+    .other {
+      background-color: #292e4b;
+    }
   </style>
 </head>
 <body>
   <div class="navbar">
     <div class="logo">ADJC</div>
     <div class="nav-links">
-      <a href="#">Services</a>
+      <a href="service.html">Services</a>
       <a href="about.html">About</a>
-      <a href="#">Contact</a>
+      <a href="contact.html">Contact</a>
     </div>
   </div>
-  
   
   <div class="container">
     <div class="left-panel">
@@ -242,7 +244,7 @@
         <div class="no-record">No record yet</div>
       </div>
       
-      <button class="create-bill-button">Create A Bill</button>
+      <button class="create-bill-button" onclick="location.href='create.html'">Create A Bill</button>
     </div>
     
     <div class="right-panel">
@@ -280,6 +282,11 @@
           </tr>
           <tr>
             <td><span class="category-indicator gas"></span>Gas</td>
+            <td>None</td>
+            <td>None</td>
+          </tr>
+          <tr>
+            <td><span class="category-indicator other"></span>Other</td>
             <td>None</td>
             <td>None</td>
           </tr>
