@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADJC Expense Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f6f0;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #333;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 30px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-size: 1.1rem;
+        }
+        
+        .expense-form {
+            margin-top: 50px;
+        }
+        
+        .form-field {
+            background-color: #3b7b9a;
+            color: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+        }
+        
+        .form-field label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .form-field input, .form-field select {
+            width: 100%;
+            padding: 8px;
+            border: none;
+            border-bottom: 2px solid white;
+            background: transparent;
+            color: white;
+            font-size: 1.1rem;
+        }
+        
+        .form-field select option {
+            background-color: #3b7b9a;
+            color: white;
+        }
+        
+        .add-button {
+            display: block;
+            width: 180px;
+            background-color: #3b7b9a;
+            color: white;
+            text-align: center;
+            padding: 15px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            cursor: pointer;
+            border: none;
+            margin-top: 20px;
+        }
+        
+        .expense-card {
+            background-color: #8ecae6;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            max-width: 250px;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .expenses-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .expense-details {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        
+        ::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">ADJC</div>
+            <nav>
+                <ul>
+                    <li><a href="service.html">Services</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </header>
+        
+        <main class="expense-form">
+            <div class="form-field">
+                <label for="total-amount">Total Amount :</label>
+                <input type="number" id="total-amount" placeholder="Enter amount" step="0.01" min="0">
+            </div>
+            
+            <div class="form-field">
+                <label for="category">Category :</label>
+                <select id="category">
+                    <option value="">Select a category</option>
+                    <option value="restaurant">Restaurant</option>
+                    <option value="grocery">Grocery</option>
+                    <option value="personal">Personal</option>
+                    <option value="gas">Gas</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-field">
+                <label for="person">Find person :</label> 
+                <select id="person" multiple>
+                    <option value="">Select People</option> 
+                </select>
+            </div>            
+            
+            <div class="expenses-container">
+                <div class="expense-card">
+                    <button id="add-expense" class="add-button">+ Add more</button>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script> 
+        document.getElementById('add-expense').addEventListener('click', function() {
+        const amount = document.getElementById('total-amount').value;
+        const category = document.getElementById('category').value;
+        const personSelect = document.getElementById('person');
+         
+        const selectedPeople = Array.from(personSelect.selectedOptions).map(option => option.value).filter(name => name !== "");
+
+        if (!amount || !category || selectedPeople.length === 0) {
+            alert('Please enter amount, select at least one person, and choose a category');
+            return;
+        }
+
+        const expensesContainer = document.querySelector('.expenses-container');
+ 
+        const newExpense = document.createElement('div');
+        newExpense.className = 'expense-card';
+
+        const expenseDetails = document.createElement('div');
+        expenseDetails.className = 'expense-details';
+        expenseDetails.innerHTML = `
+            <strong>People:</strong> ${selectedPeople.join(", ")}<br>
+            <strong>Amount:</strong> $${parseFloat(amount).toFixed(2)}<br>
+            <strong>Category:</strong> ${category.charAt(0).toUpperCase() + category.slice(1)}
+        `;
+
+        newExpense.appendChild(expenseDetails);
+ 
+        expensesContainer.insertBefore(newExpense, expensesContainer.firstChild);
+ 
+        document.getElementById('total-amount').value = '';
+        document.getElementById('category').selectedIndex = 0;
+        personSelect.selectedIndex = -1; 
+    }); 
+
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch("http://localhost:3000/get-users")  // Fetch from Node.js backend
+                .then(response => response.json())
+                .then(data => {
+                    let select = document.getElementById("person");
+                    data.forEach(name => {
+                        let option = document.createElement("option");
+                        option.value = name;
+                        option.textContent = name;
+                        select.appendChild(option);
+                    });
+                })
+                .catch(error => console.error("Error fetching users:", error));
+        });
+    </script>
+</body>
+</html>

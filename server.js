@@ -8,9 +8,7 @@ const path = require("path");
 const app = express();
 const PORT = 3000;
 
-
-
-
+ 
 
 app.use(cors({
     origin: ["http://localhost:3000", "http://127.0.0.1:3000"], // Allows all origins (for testing only)
@@ -68,6 +66,17 @@ app.post("/login", (req, res) => {
         } else {
             res.json({ success: false, message: "Invalid username or password." });
         }
+    });
+});
+
+app.get("/get-users", (req, res) => {
+    db.all("SELECT username FROM users", [], (err, rows) => {
+        if (err) {
+            res.status(500).json({ success: false, message: "Database error." });
+            return;
+        }
+        const users = rows.map(row => row.username);
+        res.json(users);
     });
 });
 
