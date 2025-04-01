@@ -222,12 +222,12 @@
                 <div class="profile-section">
                     <div class="profile-card">
                         <div class="profile-header">
-                            <h3 class="profile-name"></h3>
+                            <h3 class="profile-name"> </h3>
                             <button class="edit-btn">Edit</button>
                         </div>
                         
                         <div class="balance-info">
-                            <p>Your Balance: <strong>$0</strong></p>
+                            <p>Your Balance: <strong class="user-balance"></strong></p>
                         </div>
                         <div class="balance-info">
                             <p>Owed: <strong>$0</strong></p>
@@ -248,7 +248,7 @@
                     </div>
                     
                     <div style="margin-top: 20px;">
-                        <a href="create-bill.html" class="btn" style="display: block;">Create A Bill</a>
+                        <a href="create.html" class="btn" style="display: block;">Create A Bill</a>
                     </div>
                 </div>
                 
@@ -310,7 +310,47 @@
         </div>
 
     </main>
-    <script type="module" src="main_page.js"></script>
+    <script>
 
+        document.addEventListener('DOMContentLoaded', function() {
+            const paths = document.querySelectorAll('.chart-container path');
+            
+            paths.forEach((path, index) => {
+                // Delay animation for each segment
+                setTimeout(() => {
+                    path.style.transition = 'all 0.5s ease-out';
+                    path.style.transform = 'scale(1.05)';
+                    
+                    setTimeout(() => {
+                        path.style.transform = 'scale(1)';
+                    }, 300);
+                }, index * 200);
+            });
+        });
+
+        function fetchUserName() {
+            console.log("in fetchUserName");  
+            const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+            if (currentUser) {
+                console.log("User ID:", currentUser.id);
+                console.log("User Data:", currentUser.data); 
+                // Display the user name from the stored data
+                const userName = currentUser.data.Name;
+                const userBalance = currentUser.data.Balance;
+                console.log("userBalance:", currentUser.data.Balance); 
+                document.querySelector(".profile-name").innerText = `${userName}`; 
+                document.querySelector(".user-balance").innerHTML = `${userBalance}`;
+            } else {
+                console.log("No user is currently logged in.");
+                alert("Please log in first.");
+                window.location.href = "index.html"; // Redirect to login page if no user is found
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            fetchUserName();  
+        });
+    </script> 
 </body>
 </html>
