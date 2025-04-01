@@ -7,13 +7,7 @@
 const app = firebase.initializeApp(firebaseConfig);
 const analytics = firebase.analytics();
 const auth = firebase.auth();
-export const db = firebase.firestore();
-
-
-
-
-const API_URL = "http://localhost:3000";
-
+const db = firebase.firestore();
 
 
 // add a single user with ({"Balance": 1, "Name": "Jason", Password: "2006", Spendings: [1, 2, 3, 4]});
@@ -81,60 +75,18 @@ async function signup(event) {
 
         if (!snapshot.empty) {
             alert("User already exists");
+            window.href.location = "login.html";
             return;
         }
 
 
-
-        
-       
-  
         // Retrieve user details from Firestore
         addUser({"Balance": balance, "Name": username, "Password": password, Spendings: [0, 0, 0, 0]})
         alert("Sign-up Successful! You can login now");
-        // window.location.href = "index.html";
-
-        
-        
-        
-
-        
-  
-        
-        // window.location.href = "main_page.html"; 
-  
-        
-        
+        window.location.href = "login.html";
       } catch (error) {
         console.error("Sign up Failed:", error.message);
-        // alert("Login failed: " + error.message);
       }
-    
-    
-
-    // try {
-    //     const response = await fetch(`${API_URL}/signup`, {
-    //         method: "POST",
-    //         headers: { "Content-Type": "application/json" },
-    //         body: JSON.stringify({ username, password })
-    //     });
-
-    //     const result = await response.json();
-    //     console.log("Result:", result); 
-
-    //     if (response.ok) {
-    //         message.style.color = "green";
-    //         message.innerText = "Signup successful! Redirecting...";
-    //         setTimeout(() => window.location.href = "login.html", 1000);
-    //     } else {
-    //         message.style.color = "red";
-    //         message.innerText = result.message;
-    //     }
-    // } catch (error) {
-    //     console.error("Error:", error);
-    //     message.style.color = "red";
-    //     message.innerText = "Signup request failed!";
-    // }
 }
 
 // Login function
@@ -154,17 +106,23 @@ async function login(event) {
 
         if (querySnapshot.empty) {
             alert(`Cannot find your Username : ${username}, please Sign-up first! `);
-            
+            window.location.href = "signup.html";
             return;
         }
 
-        window.location.href = "main_page.html"; 
 
-
-
+        let userData;
         querySnapshot.forEach((doc) => {
-            console.log("User Found:", doc.id, doc.data());
+            userData = doc.data();
         });
+
+        // validate user with their password
+        if (userData.Password == password) {
+            window.location.href = "main_page.html";
+        } else {
+            alert("Password is incorrect! Please try again");
+
+        }
 
     } catch(error) {
         console.log("Error signing up");
