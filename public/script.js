@@ -113,7 +113,8 @@ async function login(event) {
 
         let userData;
         querySnapshot.forEach((doc) => {
-            console.log("User Found:", doc.id, doc.data());
+            userData = doc.data();
+            localStorage.setItem("currentUser", JSON.stringify({ id: doc.id, data: userData }));
         });
 
         // validate user with their password
