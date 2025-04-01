@@ -222,7 +222,7 @@
                 <div class="profile-section">
                     <div class="profile-card">
                         <div class="profile-header">
-                            <h3 class="profile-name">Aimee. Z</h3>
+                            <h3 class="profile-name"></h3>
                             <button class="edit-btn">Edit</button>
                         </div>
                         
@@ -310,24 +310,7 @@
         </div>
 
     </main>
+    <script type="module" src="main_page.js"></script>
 
-    <script>
-        // Simple animation for chart segments
-        document.addEventListener('DOMContentLoaded', function() {
-            const paths = document.querySelectorAll('.chart-container path');
-            
-            paths.forEach((path, index) => {
-                // Delay animation for each segment
-                setTimeout(() => {
-                    path.style.transition = 'all 0.5s ease-out';
-                    path.style.transform = 'scale(1.05)';
-                    
-                    setTimeout(() => {
-                        path.style.transform = 'scale(1)';
-                    }, 300);
-                }, index * 200);
-            });
-        });
-    </script>
 </body>
 </html>
