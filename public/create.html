@@ -3,227 +3,423 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ADJC Expense Tracker</title>
+    <title>Create Bill - ADJC</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f6f0;
+        /* Root Variables */
+        :root {
+            --primary: #2c4c8c;
+            --primary-dark: #1a3366;
+            --primary-light: #4b6cb7;
+            --secondary: #6e9de8;
+            --light: #e5eeff;
+            --white: #ffffff;
+            --gray: #f5f7fa;
+            --dark-gray: #555;
+            --border-radius: 8px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Base Styles */
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--gray);
+            color: #333;
+            line-height: 1.6;
         }
         
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 0 20px;
         }
         
+        /* Header Styling */
         header {
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 0;
-            border-bottom: 1px solid #e0e0e0;
         }
         
         .logo {
-            font-size: 2.5rem;
+            font-size: 24px;
             font-weight: 700;
-            color: #333;
-        }
-        
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-        
-        nav ul li {
-            margin-left: 30px;
-        }
-        
-        nav ul li a {
+            color: var(--primary);
             text-decoration: none;
-            color: #333;
-            font-size: 1.1rem;
         }
         
-        .expense-form {
-            margin-top: 50px;
+        .nav-links {
+            display: flex;
+            gap: 30px;
         }
         
-        .form-field {
-            background-color: #3b7b9a;
-            color: white;
-            padding: 20px 30px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
+        .nav-links a {
+            color: var(--dark-gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
         }
         
-        .form-field label {
-            display: block;
-            margin-bottom: 10px;
-            font-size: 1.2rem;
+        .nav-links a:hover {
+            color: var(--primary);
         }
         
-        .form-field input, .form-field select {
-            width: 100%;
-            padding: 8px;
-            border: none;
-            border-bottom: 2px solid white;
-            background: transparent;
-            color: white;
-            font-size: 1.1rem;
+        .nav-links a.active {
+            color: var(--primary);
+            font-weight: 600;
         }
         
-        .form-field select option {
-            background-color: #3b7b9a;
-            color: white;
+        /* Create Bill Section */
+        .create-bill-section {
+            padding: 40px 0;
         }
         
-        .add-button {
-            display: block;
-            width: 180px;
-            background-color: #3b7b9a;
-            color: white;
+        .bill-form {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .bill-form h2 {
+            color: var(--primary);
+            margin-bottom: 25px;
             text-align: center;
-            padding: 15px 20px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-size: 1.1rem;
-            cursor: pointer;
-            border: none;
-            margin-top: 20px;
+            font-size: 24px;
         }
         
-        .expense-card {
-            background-color: #8ecae6;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            max-width: 250px;
-            min-height: 250px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        .expenses-container {
-            display: flex;
-            flex-wrap: wrap;
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 20px;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+        }
+        
+        .form-section h3 {
+            margin-bottom: 15px;
+            color: var(--primary);
+            font-size: 18px;
+        }
+        
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block; 
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #e1e1e1;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+        
+        /* Participant List */
+        .participant-list {
             margin-top: 20px;
         }
         
-        .expense-details {
-            background-color: white;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 10px;
+        .participant {
+            display: flex;
+            align-items: center;
+            background-color: var(--light);
+            padding: 12px 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 10px;
         }
         
-        ::placeholder {
-            color: rgba(255, 255, 255, 0.7);
+        .participant-name {
+            flex: 1;
+        }
+        
+        .remove-btn {
+            background: none;
+            border: none;
+            color: var(--primary-dark);
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .add-participant {
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+        }
+        
+        .add-participant input {
+            flex: 1;
+            margin-right: 10px;
+        }
+        
+        .bill-total {
+            background-color: var(--light);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            font-weight: 500;
+        }
+        
+        /* Balance Styling */
+        .balance-container {
+            background-color: var(--light);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+        }
+        
+        .balance-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .balance-info:last-child {
+            margin-bottom: 0;
+            padding-top: 10px;
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .balance-label {
+            font-weight: 500;
+        }
+        
+        .balance-amount {
+            font-weight: 600;
+        }
+        
+        .positive-balance {
+            color: #27ae60;
+        }
+        
+        .negative-balance {
+            color: #e74c3c;
+        }
+        
+        /* Button Group */
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        /* Button Styles */
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .btn-secondary {
+            background-color: var(--white);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--light);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="logo">ADJC</div>
-            <nav>
-                <ul>
-                    <li><a href="service.html">Services</a></li>
-                    <li><a href="about.html">About</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                </ul>
-            </nav>
-        </header>
-        
-        <main class="expense-form">
-            <div class="form-field">
-                <label for="total-amount">Total Amount :</label>
-                <input type="number" id="total-amount" placeholder="Enter amount" step="0.01" min="0">
-            </div>
-            
-            <div class="form-field">
-                <label for="category">Category :</label>
-                <select id="category">
-                    <option value="">Select a category</option>
-                    <option value="restaurant">Restaurant</option>
-                    <option value="grocery">Grocery</option>
-                    <option value="personal">Personal</option>
-                    <option value="gas">Gas</option>
-                    <option value="other">Other</option>
-                </select>
-            </div>
-
-            <div class="form-field">
-                <label for="person">Find person :</label> 
-                <select id="person" multiple>
-                    <option value="">Select People</option> 
-                </select>
-            </div>            
-            
-            <div class="expenses-container">
-                <div class="expense-card">
-                    <button id="add-expense" class="add-button">+ Add more</button>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="navbar">
+                <a href="dashboard.html" class="logo">ADJC</a>
+                <div class="nav-links">
+                    <a href="main_page.html">Services</a>
+                    <a href="about.html">About</a>
+                    <a href="contact.html">Contact</a>
                 </div>
             </div>
-        </main>
-    </div>
+        </div>
+    </header>
     
-    <script> 
-        document.getElementById('add-expense').addEventListener('click', function() {
-        const amount = document.getElementById('total-amount').value;
-        const category = document.getElementById('category').value;
-        const personSelect = document.getElementById('person');
-         
-        const selectedPeople = Array.from(personSelect.selectedOptions).map(option => option.value).filter(name => name !== "");
+    <main class="create-bill-section">
+        <div class="container">
+            <div class="bill-form">
+                <h2>Create New Bill</h2>
+                
+                <div class="form-grid">
+                    <div>
+                        <div class="form-section">
+                            <h3>Bill Details</h3>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Bill Description</label>
+                                <input type="text" class="form-control" placeholder="e.g. Dinner at Italian Restaurant">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Your Amount</label>
+                                <input type="number" class="form-control" id="your-amount" placeholder="0.00">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Date</label>
+                                <input type="date" class="form-control">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Category</label>
+                                <select class="form-control">
+                                    <option value="" selected disabled>Select a category</option>
+                                    <option value="restaurant">Restaurant</option>
+                                    <option value="grocery">Grocery</option>
+                                    <option value="personal">Personal</option>
+                                    <option value="gas">Gas</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="form-section">
+                            <h3>Bill Participants</h3>
+                            <p style="margin-bottom: 15px; color: var(--dark-gray);">Start with your amount, then add others who will contribute to this bill.</p>
+                            
+                            <div class="participant-list">
+                                <div class="participant">
+                                    <div class="participant-name">You</div>
+                                    <button class="remove-btn" disabled>✓</button>
+                                </div>
+                                
+                                <div class="add-participant">
+                                    <input type="text" class="form-control" placeholder="Add participant by username">
+                                    <button class="btn" onclick="addParticipant()">Add</button>
+                                </div>
+                            </div>
+                            
+                                                            <div class="form-section">
+                                <h3>Your Balance</h3>
+                                <div class="balance-container">
+                                    <div class="balance-info">
+                                        <div class="balance-label">Current Balance: <strong class="user-balance"></strong> </div>
+                                        <div class="balance-amount" id="current-balance"></div>
+                                    </div>
+                                    <div class="balance-info">
+                                        <div class="balance-label">After This Bill:</div>
+                                        <div class="balance-amount" id="future-balance"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="button-group">
+                    <a href="main_page.html" class="btn btn-secondary">Cancel</a>
+                    <button class="btn" onclick="window.location.href='main_page.html'">Create Bill</button>
+                </div>
+            </div>
+        </div>
+    </main>
 
-        if (!amount || !category || selectedPeople.length === 0) {
-            alert('Please enter amount, select at least one person, and choose a category');
-            return;
-        }
-
-        const expensesContainer = document.querySelector('.expenses-container');
- 
-        const newExpense = document.createElement('div');
-        newExpense.className = 'expense-card';
-
-        const expenseDetails = document.createElement('div');
-        expenseDetails.className = 'expense-details';
-        expenseDetails.innerHTML = `
-            <strong>People:</strong> ${selectedPeople.join(", ")}<br>
-            <strong>Amount:</strong> $${parseFloat(amount).toFixed(2)}<br>
-            <strong>Category:</strong> ${category.charAt(0).toUpperCase() + category.slice(1)}
-        `;
-
-        newExpense.appendChild(expenseDetails);
- 
-        expensesContainer.insertBefore(newExpense, expensesContainer.firstChild);
- 
-        document.getElementById('total-amount').value = '';
-        document.getElementById('category').selectedIndex = 0;
-        personSelect.selectedIndex = -1; 
-    }); 
-
-        document.addEventListener("DOMContentLoaded", function () {
-            fetch("http://localhost:3000/get-users")  // Fetch from Node.js backend
-                .then(response => response.json())
-                .then(data => {
-                    let select = document.getElementById("person");
-                    data.forEach(name => {
-                        let option = document.createElement("option");
-                        option.value = name;
-                        option.textContent = name;
-                        select.appendChild(option);
-                    });
-                })
-                .catch(error => console.error("Error fetching users:", error));
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the your amount input
+            const yourAmount = document.getElementById('your-amount');
+            
+            // Update total when amount changes
+            yourAmount.addEventListener('input', function() {
+                updateTotal();
+            });
         });
+        
+        // Add participant function
+        function addParticipant() {
+            const input = document.querySelector('.add-participant input');
+            const name = input.value.trim();
+            
+            if (name) {
+                const participantList = document.querySelector('.participant-list');
+                
+                // Create new participant element
+                const newParticipant = document.createElement('div');
+                newParticipant.className = 'participant';
+                newParticipant.innerHTML = `
+                    <div class="participant-name">${name}</div>
+                    <button class="remove-btn" onclick="removeParticipant(this)">✕</button>
+                `;
+                
+                // Insert before the add participant control
+                const addParticipantDiv = document.querySelector('.add-participant');
+                participantList.insertBefore(newParticipant, addParticipantDiv);
+                
+                // Clear input
+                input.value = '';
+            }
+        }
+        
+        // Remove participant function
+        function removeParticipant(button) {
+            const participant = button.parentElement;
+            participant.remove();
+            updateTotal();
+        }
+        
+        // Update the bill total
+        function updateTotal() {
+            // Get the creator's amount
+            const creatorAmount = parseFloat(document.getElementById('your-amount').value) || 0;
+            
+            // In a real application, you'd also add any amounts that have been entered by other participants
+            // For now, we'll just show the creator's amount as the total
+            document.getElementById('bill-total').textContent = `${creatorAmount.toFixed(2)}`;
+        }
     </script>
 </body>
 </html>
