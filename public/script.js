@@ -12,6 +12,7 @@ const db = firebase.firestore();
 
 // add a single user with ({"Balance": 1, "Name": "Jason", Password: "2006", Spendings: [1, 2, 3, 4]});
 async function addUser(userData) {
+    console.log("in addUser");
     try {
         await db.collection("billsplitter_users").add(userData);
         console.log("User with userData added successfully!", userData);
@@ -21,7 +22,16 @@ async function addUser(userData) {
     
 }
 
-
+// bill = "name, description, category, time, amount, participants"
+async function addBill(bill) {
+    try {
+        await db.collection("Bills").add(bill);
+        console.log("Bill added successfully!", bill);
+    } catch (error) {
+        console.error("Error deleting user:", error);
+    }
+    
+}
 
 async function getAllUsers() {
     console.log("Inside");
@@ -47,9 +57,6 @@ document.addEventListener("DOMContentLoaded", ()=> {
     // console.log(db.collection("billsplitter_users"));
 })
 
-
-
-
 // Signup function
 async function signup(event) {
     event.preventDefault(); 
@@ -59,11 +66,6 @@ async function signup(event) {
     const balance = document.getElementById("newBalance").value;
 
     // console.log("Signing up with:", username, password);
-
-
-    
-    
-
 
     try {
         // Check if user already exist
@@ -75,13 +77,13 @@ async function signup(event) {
 
         if (!snapshot.empty) {
             alert("User already exists");
-            window.href.location = "login.html";
+            window.location.href = "login.html";
             return;
         }
 
 
         // Retrieve user details from Firestore
-        addUser({"Balance": balance, "Name": username, "Password": password, Spendings: [0, 0, 0, 0]})
+        await addUser({"Balance": balance, "Name": username, "Password": password})
         alert("Sign-up Successful! You can login now");
         window.location.href = "login.html";
       } catch (error) {
