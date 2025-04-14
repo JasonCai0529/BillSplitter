@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Bill - ADJC</title>
     <style>
@@ -170,10 +170,6 @@
             cursor: pointer;
             font-size: 16px;
         }
-        .participant-check {
-            color: var(--primary-dark);
-            font-size: 16px;
-        }
         
         .add-participant {
             display: flex;
@@ -194,6 +190,42 @@
             display: flex;
             justify-content: space-between;
             font-weight: 500;
+        }
+        
+        /* Balance Styling */
+        .balance-container {
+            background-color: var(--light);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+        }
+        
+        .balance-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .balance-info:last-child {
+            margin-bottom: 0;
+            padding-top: 10px;
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .balance-label {
+            font-weight: 500;
+        }
+        
+        .balance-amount {
+            font-weight: 600;
+        }
+        
+        .positive-balance {
+            color: #27ae60;
+        }
+        
+        .negative-balance {
+            color: #e74c3c;
         }
         
         /* Button Group */
@@ -301,15 +333,28 @@
                             
                             <div class="participant-list">
                                 <div class="participant">
-                                    <div class="participant-name">You</div> 
-                                        <button class="remove-btn" disabled></button>
-                                    <span class="participant-check">✓</span>
+                                    <div class="participant-name">You</div>
+                                    <button class="remove-btn" disabled>✓</button>
                                 </div>
+                                
                                 <div class="add-participant">
-                                    <input type="text" id="user-input" class="form-control" placeholder="Add participant by username">
+                                    <input type="text" class="form-control" placeholder="Add participant by username">
                                     <button class="btn" onclick="addParticipant()">Add</button>
                                 </div>
-                                 
+                            </div>
+                            
+                                                            <div class="form-section">
+                                <h3>Your Balance</h3>
+                                <div class="balance-container">
+                                    <div class="balance-info">
+                                        <div class="balance-label">Current Balance: <strong class="user-balance"></strong> </div>
+                                        <div class="balance-amount" id="current-balance"></div>
+                                    </div>
+                                    <div class="balance-info">
+                                        <div class="balance-label">After This Bill:</div>
+                                        <div class="balance-amount" id="future-balance"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -317,31 +362,64 @@
                 
                 <div class="button-group">
                     <a href="main_page.html" class="btn btn-secondary">Cancel</a>
-                    <button class="btn" onclick=addBill()>Create Bill</button>
+                    <button class="btn" onclick="window.location.href='main_page.html'">Create Bill</button>
                 </div>
             </div>
         </div>
-    </main> 
-    
-    
-    <script defer src="/__/firebase/11.4.0/firebase-app-compat.js"></script>
-    <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/11.4.0/firebase-auth-compat.js"></script>
-    <script defer src="/__/firebase/11.4.0/firebase-database-compat.js"></script>
-    <script defer src="/__/firebase/11.4.0/firebase-firestore-compat.js"></script>
-    <script defer src="/__/firebase/11.4.0/firebase-functions-compat.js"></script>
-    <script defer src="/__/firebase/11.4.0/firebase-messaging-compat.js"></script>
-    <script defer src="/__/firebase/11.4.0/firebase-storage-compat.js"></script>
-    <script defer src="/__/firebase/11.4.0/firebase-analytics-compat.js"></script>
-    <script defer src="/__/firebase/11.4.0/firebase-remote-config-compat.js"></script>
-    <script defer src="/__/firebase/11.4.0/firebase-performance-compat.js"></script>
-    <!-- 
-      initialize the SDK after all desired features are loaded, set useEmulator to false
-      to avoid connecting the SDK to running emulators.
-    -->
-    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
-    <script defer src="script.js"></script>
-    
-    
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the your amount input
+            const yourAmount = document.getElementById('your-amount');
+            
+            // Update total when amount changes
+            yourAmount.addEventListener('input', function() {
+                updateTotal();
+            });
+        });
+        
+        // Add participant function
+        function addParticipant() {
+            const input = document.querySelector('.add-participant input');
+            const name = input.value.trim();
+            
+            if (name) {
+                const participantList = document.querySelector('.participant-list');
+                
+                // Create new participant element
+                const newParticipant = document.createElement('div');
+                newParticipant.className = 'participant';
+                newParticipant.innerHTML = `
+                    <div class="participant-name">${name}</div>
+                    <button class="remove-btn" onclick="removeParticipant(this)">✕</button>
+                `;
+                
+                // Insert before the add participant control
+                const addParticipantDiv = document.querySelector('.add-participant');
+                participantList.insertBefore(newParticipant, addParticipantDiv);
+                
+                // Clear input
+                input.value = '';
+            }
+        }
+        
+        // Remove participant function
+        function removeParticipant(button) {
+            const participant = button.parentElement;
+            participant.remove();
+            updateTotal();
+        }
+        
+        // Update the bill total
+        function updateTotal() {
+            // Get the creator's amount
+            const creatorAmount = parseFloat(document.getElementById('your-amount').value) || 0;
+            
+            // In a real application, you'd also add any amounts that have been entered by other participants
+            // For now, we'll just show the creator's amount as the total
+            document.getElementById('bill-total').textContent = `${creatorAmount.toFixed(2)}`;
+        }
+    </script>
 </body>
 </html>
