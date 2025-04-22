@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>main_page_with_demo</title>
+    <style>
+        :root{
+            --primary:#2c4c8c;--primary-dark:#1a3366;--primary-light:#4b6cb7;--secondary:#6e9de8;--light:#e5eeff;--white:#ffffff;--gray:#f5f7fa;--dark-gray:#555;--border-radius:8px;--shadow:0 4px 12px rgba(0,0,0,.1)}
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+        body{background-color:var(--gray);color:#333;line-height:1.6}
+        .container{max-width:1200px;margin:0 auto;padding:0 20px}
+        header{background-color:var(--white);box-shadow:var(--shadow);padding:15px 0;position:sticky;top:0;z-index:100}
+        .navbar{display:flex;justify-content:space-between;align-items:center}
+        .logo{font-size:24px;font-weight:700;color:var(--primary);text-decoration:none}
+        .nav-links{display:flex;gap:30px}
+        .nav-links a{color:var(--dark-gray);text-decoration:none;font-weight:500;transition:color .3s}
+        .nav-links a:hover{color:var(--primary)}
+        .nav-links a.active{color:var(--primary);font-weight:600}
+        .dashboard{padding:40px 0}
+        .dashboard-grid{display:grid;grid-template-columns:1fr 3fr;gap:25px}
+        .profile-card,.section-card{background-color:var(--white);border-radius:var(--border-radius);padding:25px;box-shadow:var(--shadow)}
+        .profile-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+        .profile-name{font-size:22px;font-weight:600;color:var(--primary)}
+        .edit-btn{background:none;border:none;color:var(--secondary);cursor:pointer;font-size:14px;font-weight:500}
+        .balance-info{background-color:var(--light);padding:15px;border-radius:var(--border-radius);margin-bottom:15px}
+        .section-card h3{margin-bottom:20px;color:var(--primary)}
+        .spending-grid{display:grid;grid-template-columns:1fr 1fr;gap:25px}
+        .chart-container{position:relative;height:300px}
+        .spending-table{width:100%;border-collapse:collapse;margin-top:20px}
+        .spending-table th,.spending-table td{padding:12px;text-align:left;border-bottom:1px solid #eee}
+        .spending-table th{font-weight:600;color:var(--primary-dark)}
+        .bill-list{margin-top:10px}
+        .bill-item{display:flex;align-items:center;padding:15px;border-radius:var(--border-radius);background-color:var(--light);margin-bottom:10px;transition:transform .2s}
+        .bill-item:hover{transform:translateY(-2px);box-shadow:0 4px 8px rgba(0,0,0,.05)}
+        .bill-info{flex:1}
+        .bill-title{font-weight:600;color:var(--primary-dark);margin-bottom:5px}
+        .bill-meta{display:flex;color:var(--dark-gray);font-size:14px}
+        .bill-date{margin-right:15px}
+        .bill-category{background-color:var(--primary-light);color:#fff;font-size:12px;padding:3px 8px;border-radius:12px}
+        .bill-amount{font-weight:600;padding-left:15px;color:var(--primary-dark)}
+        .bill-status{width:100px;text-align:center}
+        .status-badge{display:inline-block;padding:4px 10px;border-radius:12px;font-size:12px;font-weight:500}
+        .status-pending{background-color:#ffeecc;color:#e67e22}
+        .status-complete{background-color:#e0f7e6;color:#27ae60}
+        .bill-actions{margin-left:15px}
+        .action-btn{background:none;border:none;color:var(--secondary);cursor:pointer;margin-left:10px;font-size:14px}
+        .action-btn:hover{color:var(--primary)}
+        .empty-state{text-align:center;padding:20px;color:var(--dark-gray)}
+        .btn{display:inline-block;padding:12px 24px;background-color:var(--primary);color:var(--white);border:none;border-radius:var(--border-radius);font-size:16px;font-weight:600;cursor:pointer;transition:background-color .3s;text-decoration:none;text-align:center}
+        .btn:hover{background-color:var(--primary-dark)}
+        @media(max-width:768px){.dashboard-grid,.spending-grid{grid-template-columns:1fr}}
+        
+    </style>
+</head>
+<body>
+<header>
+    <div class="container">
+        <div class="navbar">
+            <a href="main_page.html" class="logo">ADJC</a>
+            <div class="nav-links">
+                <a href="services.html">Services</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </div>
+    </div>
+</header>
+<main class="dashboard">
+    <div class="container">
+        <div class="dashboard-grid">
+            <!-- Sidebar -->
+            <div class="profile-section">
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <h3 class="profile-name">John Doe</h3>
+                        <button class="edit-btn">Edit</button>
+                    </div>
+                    <div class="balance-info"><p>Your Balance: <strong class="user-balance">$120.50</strong></p></div>
+                    <div class="balance-info"><p>Owed: <strong>$0</strong></p></div>
+                    <div class="balance-info"><p>Owed you: <strong>$0</strong></p></div>
+                </div>
+                <div class="section-card">
+                    <h3>Your Bills</h3>
+                    <div id="user-bills-list"><p class="empty-state" id="no-bills-message">No bills yet</p></div>
+                </div>
+                <div class="section-card"><h3>Request</h3><p>No record yet</p></div>
+                <div style="margin-top:20px"><a href="create.html" class="btn" style="display:block">Create A Bill</a></div>
+            </div>
+            <!-- Main Content -->
+            <div class="spending-section">
+                <div class="section-card">
+                    <h3>Bills</h3>
+                    <div class="bill-list" id="bills-list"></div>
+                </div>
+                <div class="section-card">
+                    <h3>Your spending</h3>
+                    <div class="spending-grid">
+                        <div class="chart-container">
+                            <svg width="100%" height="100%" viewBox="0 0 400 400"><g transform="translate(200,200)">
+                                <path d="M0,-150 A150,150 0 0,1 130,75 L0,0 Z" fill="#2c4c8c"/>
+                                <path d="M130,75 A150,150 0 0,1 -130,75 L0,0 Z" fill="#4b6cb7"/>
+                                <path d="M-130,75 A150,150 0 0,1 -75,-130 L0,0 Z" fill="#6e9de8"/>
+                                <path d="M-75,-130 A150,150 0 0,1 0,-150 L0,0 Z" fill="#e5eeff"/>
+                                <circle cx="0" cy="0" r="60" fill="#fff"/></g></svg>
+                        </div>
+                        <div>
+                            <table class="spending-table"><thead><tr><th>Division</th><th>%</th><th>Change</th></tr></thead><tbody>
+                                <tr><td><span style="display:inline-block;width:12px;height:12px;background-color:#2c4c8c;margin-right:8px;border-radius:2px"></span>Restaurant</td><td>None</td><td>None</td></tr>
+                                <tr><td><span style="display:inline-block;width:12px;height:12px;background-color:#4b6cb7;margin-right:8px;border-radius:2px"></span>Grocery</td><td>None</td><td>None</td></tr>
+                                <tr><td><span style="display:inline-block;width:12px;height:12px;background-color:#6e9de8;margin-right:8px;border-radius:2px"></span>Personal</td><td>None</td><td>None</td></tr>
+                                <tr><td><span style="display:inline-block;width:12px;height:12px;background-color:#e5eeff;margin-right:8px;border-radius:2px"></span>Gas</td><td>None</td><td>None</td></tr>
+                            </tbody></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script>
+    // ----- Storage helpers -----
+    function getStoredBills(){const s=localStorage.getItem('bills');return s?JSON.parse(s):[];}
+    function saveBills(b){localStorage.setItem('bills',JSON.stringify(b));}
+
+    // ----- Demo data -----
+    const demoBills=[
+        {description:'Dinner at Italian Restaurant',date:'April 21, 2025',amount:35.50,category:'Restaurant',participants:['John','Sarah']},
+        {description:'Groceries at Walmart',date:'April 19, 2025',amount:57.32,category:'Grocery',participants:['John','Alex']},
+        {description:'Gas Station Fill‑up',date:'April 18, 2025',amount:42.10,category:'Gas',participants:['John']},
+        {description:'Netflix Subscription',date:'April 1, 2025',amount:15.99,category:'Personal',participants:['John','Sarah']}
+    ];
+
+    // ----- Rendering -----
+    function renderBills(bills){const list=document.getElementById('bills-list');list.innerHTML='';if(bills.length===0){list.innerHTML='<p class="empty-state">No bills yet</p >';return;}bills.forEach(b=>{const item=document.createElement('div');item.className='bill-item';item.innerHTML=`<div class="bill-info"><div class="bill-title">${b.description||'Untitled Bill'}</div><div class="bill-meta"><div class="bill-date">${b.date||'Today'}</div><div class="bill-category">${b.category||'Other'}</div></div></div><div class="bill-amount">$${parseFloat(b.amount).toFixed(2)}</div><div class="bill-status"><span class="status-badge status-pending">In Progress</span></div><div class="bill-actions"><button class="action-btn">View</button><button class="action-btn">Edit</button></div>`;list.appendChild(item);});}
+    function renderUserBills(bills){const list=document.getElementById('user-bills-list');list.innerHTML='';if(bills.length===0){list.innerHTML='<p class="empty-state" id="no-bills-message">No bills yet</p >';return;}bills.forEach(b=>{const item=document.createElement('div');item.className='bill-item';item.innerHTML=`<div class="bill-info"><div class="bill-title">${b.description||'Untitled Bill'}</div><div class="bill-meta"><div class="bill-date">${b.date||'Today'}</div></div></div><div class="bill-amount">$${parseFloat(b.amount).toFixed(2)}</div>`;list.appendChild(item);});}
+
+    // ----- Init -----
+    document.addEventListener('DOMContentLoaded',()=>{
+        if(!localStorage.getItem('bills')){saveBills(demoBills);} // load demo data once
+        const bills=getStoredBills();
+        renderBills(bills);
+        renderUserBills(bills);
+    });
+
+    // ----- Utility to add a new dummy bill for testing -----
+    function simulateCreateBill(){const newBill={description:'Coffee at Café',date:'April 22, 2025',amount:6.25,category:'Personal',participants:['John']};const bills=getStoredBills();bills.unshift(newBill);saveBills(bills);window.location.reload();}
+
+</script>
+</body>
+</html>
