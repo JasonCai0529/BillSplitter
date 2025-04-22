@@ -210,4 +210,8 @@ async function addBill() {
         console.error("Error deleting user:", error);
     }
     
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 5a7ac1682e8ee69c1ea485384b6e08bfcb2b3e7a
