@@ -41,6 +41,9 @@ async function getAllUsers() {
 document.addEventListener("DOMContentLoaded", ()=> {
 
     // getAllUsers();
+
+
+    
     // addUser({"Balance": 1, "Name": "Jason", Password: "2006", Spendings: [1, 2, 3, 4]})
     // console.log(users);
     // console.log(db.collection("billsplitter_users"));
