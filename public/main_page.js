@@ -12,7 +12,8 @@ function fetchUserName() {
         // Display the user name from the stored data
         const userName = currentUser.data.Name;
         const userBalance = currentUser.data.Balance;
-        console.log("userBalance:", currentUser.data.Balance); 
+        console.log("userBalance:", userBalance); 
+        console.log("userName:", userName); 
         document.querySelector(".profile-name").innerText = `${userName}`; 
         document.querySelector(".user-balance").innerHTML = `${userBalance}`;
     } else {
