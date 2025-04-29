@@ -203,15 +203,62 @@ async function addBill() {
 
     console.log("thie bill is :", billData); 
     try {
-        await db.collection("Bills").add(billData);
-        console.log("Bill added successfully!", billData);
+        // 1. Add the bill to "Bills" collection and get its ID
+        const billRef = await db.collection("Bills").add(billData);
+        const billId = billRef.id;
+
+        console.log("Bill added:", billData);
+
+        const splitAmount = parseFloat((amount / selectedParticipants.length).toFixed(2));
+
+        // 2. Send a request to each participant
+        for (const participantName of selectedParticipants) {
+            if (participantName === name) continue;
+
+            const userSnapshot = await db.collection("billsplitter_users")
+                .where("Name", "==", participantName).get();
+
+            if (!userSnapshot.empty) {
+                const userDoc = userSnapshot.docs[0];
+                const userRef = userDoc.ref;
+
+                const pendingRef = userRef.collection("PendingRequests").doc(); // create new doc
+
+                const requestData = {
+                    billId,
+                    from: name,
+                    description,
+                    amount: splitAmount,
+                    date,
+                    category,
+                    status: "pending"
+                };
+
+                await pendingRef.set(requestData);
+                console.log(`Request sent to ${participantName}`);
+            } else {
+                console.warn(`User ${participantName} not found.`);
+            }
+        }
+
+        // 3. Add full amount to bill owner's balance immediately
+        const ownerSnapshot = await db.collection("billsplitter_users")
+            .where("Name", "==", name).get();
+
+        if (!ownerSnapshot.empty) {
+            const ownerDoc = ownerSnapshot.docs[0];
+            const ownerRef = ownerDoc.ref;
+            const ownerData = ownerDoc.data();
+            const currentBalance = parseFloat(ownerData.Balance || "0");
+
+            await ownerRef.update({
+                Balance: (currentBalance + amount).toFixed(2).toString()
+            });
+        }
+
         window.location.href = "main_page.html";
+
     } catch (error) {
-        console.error("Error deleting user:", error);
+        console.error("Error adding bill and sending requests:", error);
     }
-    
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 5a7ac1682e8ee69c1ea485384b6e08bfcb2b3e7a
