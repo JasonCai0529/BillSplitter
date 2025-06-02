@@ -86,14 +86,35 @@
             font-size: 14px;
         }
 
+        #toast {
+            right: 30px;
+            /* background-color: #4CAF50; */
+            font-weight: bold;
+            color: rgb(255, 17, 17);
+            padding: 15px 20px;
+            border-radius: 8px;
+        }
 
 
+        #toast.show {
+            opacity: 1;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .error-message {
+            color: red;
+        }
     </style>
 </head>
 <body>
     <div class="signup-container">
         <button class="back-button" onclick="goToDashboard()">&lt;</button>
         <h2>Sign Up</h2>
+
+        <div id="toast" class="hidden">Sign-up successful! You can log in now.</div>
         <form onsubmit="return signup(event)">
             <input type="text" id="newUsername" placeholder="Enter Username" autocomplete="off" required>
             <p id="username-error" class="error-message"></p>
@@ -105,6 +126,8 @@
             <button type="submit">Sign Up</button>
             <p id="message"></p>
         </form>
+
+
         <p>Already have an account? <a href="login.html">Login here</a></p>
     </div>
     <script defer src="signup.js"></script>
