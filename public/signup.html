@@ -85,24 +85,29 @@
             color: red;
             font-size: 14px;
         }
+
+
+
     </style>
 </head>
 <body>
     <div class="signup-container">
         <button class="back-button" onclick="goToDashboard()">&lt;</button>
         <h2>Sign Up</h2>
-        
         <form onsubmit="return signup(event)">
             <input type="text" id="newUsername" placeholder="Enter Username" autocomplete="off" required>
+            <p id="username-error" class="error-message"></p>
             <input type="password" id="newPassword" placeholder="Enter Password" autocomplete="off" required>
+            <p id="password-error" class="error-message"></p>
             <input type="number" id="newBalance" placeholder="Enter Your Starting Balance" autocomplete="off" required>
+            <p id="balance-error" class="error-message"></p>
 
             <button type="submit">Sign Up</button>
             <p id="message"></p>
         </form>
         <p>Already have an account? <a href="login.html">Login here</a></p>
     </div>
-    <script defer src="script.js"></script>
+    <script defer src="signup.js"></script>
     <!-- <script type="module" src="script.js"></script> -->
     <script>
         function goToDashboard() {

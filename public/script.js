@@ -11,16 +11,8 @@ const db = firebase.firestore();
 
 let currentUser;
 // add a single user with ({"Balance": 1, "Name": "Jason", Password: "2006", Spendings: [1, 2, 3, 4]});
-async function addUser(userData) {
-    console.log("in addUser");
-    try {
-        await db.collection("billsplitter_users").add(userData);
-        console.log("User with userData added successfully!", userData);
-    } catch (error) {
-        console.error("Error deleting user:", error);
-    }
-    
-}
+
+
 
 async function getAllUsers() {
     console.log("Inside");
@@ -38,44 +30,7 @@ async function getAllUsers() {
 }
 
 
-document.addEventListener("DOMContentLoaded", ()=> {
 
-    // when loaded
-})
-
-// Signup function
-async function signup(event) {
-    event.preventDefault(); 
-
-    const username = document.getElementById("newUsername").value;
-    const password = document.getElementById("newPassword").value;
-    const balance = document.getElementById("newBalance").value;
-
-    // console.log("Signing up with:", username, password);
-
-    try {
-        // Check if user already exist
-
-        const usersRef = db.collection("billsplitter_users"); // Reference the "users" collection
-
-        const snapshot = await usersRef.where("Name", "==", username).get()
-
-
-        if (!snapshot.empty) {
-            alert("User already exists");
-            window.location.href = "login.html";
-            return;
-        }
-
-
-        // Retrieve user details from Firestore
-        await addUser({"Balance": balance, "Name": username, "Password": password, "Owed" : 0, "Owed you":0})
-        alert("Sign-up Successful! You can login now");
-        window.location.href = "login.html";
-      } catch (error) {
-        console.error("Sign up Failed:", error.message);
-      }
-}
 
 // Login function
 async function login(event) {
