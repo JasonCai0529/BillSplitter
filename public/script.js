@@ -14,6 +14,8 @@ let currentUser;
 
 
 
+
+// dropdown list of avaliable users to choose
 document.getElementById("participant-input").addEventListener('input', async function () {
     const input = this.value.trim().toLowerCase();
     const list = document.getElementById('autocomplete-list');
