@@ -14,6 +14,45 @@ let currentUser;
 
 
 
+document.getElementById("participant-input").addEventListener('input', async function () {
+    const input = this.value.trim().toLowerCase();
+    const list = document.getElementById('autocomplete-list');
+    list.innerHTML = ''; // clear previous suggestions
+
+    if (!input) return;
+
+    try {
+        const snapshot = await db.collection("billsplitter_users").get();
+        const matches = [];
+
+        snapshot.forEach(doc => {
+            const userData = doc.data();
+            const userName = userData.Name?.toLowerCase();
+            if (userName && userName.includes(input)) {
+                matches.push(userData.Name);
+            }
+        });
+
+        matches.forEach(name => {
+            const item = document.createElement('div');
+            item.textContent = name;
+            item.onclick = function () {
+                document.getElementById('participant-input').value = name;
+                list.innerHTML = '';
+            };
+            list.appendChild(item);
+        });
+
+    } catch (err) {
+        console.error("Error fetching users:", err);
+    }
+});
+
+
+r
+
+
+
 async function getAllUsers() {
     console.log("Inside");
     try {
@@ -74,7 +113,7 @@ async function login(event) {
 const selectedParticipants = [];
 
 async function addParticipant() {
-    const input = document.getElementById('user-input');
+    const input = document.getElementById('participant-input');
     const name = input.value.trim();
 
     if (!name) return;
@@ -124,6 +163,9 @@ function removeParticipant(name, button) {
     button.parentElement.remove();
     console.log("Selected participants:", selectedParticipants);
 }
+
+
+
 
 // bill = "name, description, category, time, amount, participants"
 async function addBill() {
