@@ -106,7 +106,7 @@ async function login(event) {
         const querySnapshot = await db.collection("billsplitter_users").where("Name", "==", username).get();
 
         if (querySnapshot.empty) {
-            showToast(`Cannot find your Username : ${username}, please Sign-up first! `, "alert-toast");
+            showToast(`Cannot find your Username : ${username}, please Sign-up first! Redirecting... `, "alert-toast");
             
 
             setTimeout(() => {

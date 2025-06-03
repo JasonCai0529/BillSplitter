@@ -93,6 +93,34 @@
       .hidden {
         display: none;
       }
+
+      .toast {
+        padding: 4px 8px;
+        max-width: 100%;
+        font-size: 16px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        opacity: 0.95;
+      }
+
+
+
+
+      #top-toast {
+        border: 1px solid rgb(43, 206, 43);
+        background-color: rgb(232, 255, 198);
+        border-radius: 1px;
+        color: rgb(0, 180, 0);
+      }
+
+
+
+      #alert-toast {
+        border: 1px solid red;
+        background-color: rgb(255, 191, 191);
+        border-radius: 1px;
+        color: red;
+      }
   </style>
   </head>
   <body>
@@ -101,20 +129,15 @@
         <h2>Login</h2>
         
         <form onsubmit="return login(event)">
-            <div id="top-toast" class="hidden"></div>
+            <div id="top-toast" class="hidden toast"></div>
             <input type="text" id="newUsername" placeholder="Enter Username" autocomplete="off" required>
             <input type="password" id="newPassword" placeholder="Enter Password" autocomplete="off" required>
-            <div id="alert-toast" class="hidden"></div>
+            <div id="alert-toast" class="hidden toast"></div>
             <button type="submit">Login</button>
             <p id="message"></p>
         </form>
       </div>
 
-
-      <!-- <script src="auth_script.js"></script> -->
-      <!-- <script defer src="script.js"></script> -->
-
-      <!-- <script type="module" src="script.js"></script> -->
       <script>
           function goToDashboard() {
               window.location.href = "dashboard.html";
