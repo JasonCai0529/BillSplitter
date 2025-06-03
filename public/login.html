@@ -85,6 +85,14 @@
           color: red;
           font-size: 14px;
       }
+
+
+      .show {
+        opacity: 1;
+      }
+      .hidden {
+        display: none;
+      }
   </style>
   </head>
   <body>
@@ -93,8 +101,10 @@
         <h2>Login</h2>
         
         <form onsubmit="return login(event)">
+            <div id="top-toast" class="hidden"></div>
             <input type="text" id="newUsername" placeholder="Enter Username" autocomplete="off" required>
             <input type="password" id="newPassword" placeholder="Enter Password" autocomplete="off" required>
+            <div id="alert-toast" class="hidden"></div>
             <button type="submit">Login</button>
             <p id="message"></p>
         </form>

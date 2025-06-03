@@ -16,7 +16,7 @@ function showToast(message) {
   setTimeout(() => {
     toast.classList.remove("show");
     toast.classList.add("hidden");
-  }, 4000);
+  }, 3000);
 }
 
 
@@ -130,7 +130,7 @@ async function signup(event) {
         // showToast
         showToast("Sign-up Successful! You can login now");
 
-        setTimeout(()=> {window.location.href = "login.html"}, 3000);
+        setTimeout(()=> {window.location.href = "login.html"}, 2500);
       } catch (error) {
         console.error("Sign up Failed:", error.message);
       }

@@ -16,6 +16,34 @@ let currentUser;
 
 
 // dropdown list of avaliable users to choose
+
+
+
+
+
+async function getAllUsers() {
+    console.log("Inside");
+    try {
+        const usersRef = db.collection("billsplitter_users"); // Reference the "users" collection
+        const snapshot = await usersRef.get();  // Fetch all documents
+
+        snapshot.forEach((doc) => {
+            console.log("User ID:", doc.id, "Data:", doc.data());
+        });
+
+    } catch (error) {
+        console.error("Error retrieving users:", error);
+    }
+}
+
+
+
+
+
+
+
+
+
 document.getElementById("participant-input").addEventListener('input', async function () {
     const input = this.value.trim().toLowerCase();
     const list = document.getElementById('autocomplete-list');
@@ -52,31 +80,25 @@ document.getElementById("participant-input").addEventListener('input', async fun
 
 
 
+// Login function
 
-async function getAllUsers() {
-    console.log("Inside");
-    try {
-        const usersRef = db.collection("billsplitter_users"); // Reference the "users" collection
-        const snapshot = await usersRef.get();  // Fetch all documents
 
-        snapshot.forEach((doc) => {
-            console.log("User ID:", doc.id, "Data:", doc.data());
-        });
 
-    } catch (error) {
-        console.error("Error retrieving users:", error);
-    }
+function showToast(message, toastT) {
+  const toast = document.getElementById(toastT);
+  toast.textContent = message;
+  toast.classList.remove("hidden");
+  toast.classList.add("show");
+
+  // Hide it after 3 seconds
+  setTimeout(() => {
+    toast.classList.remove("show");
+    toast.classList.add("hidden");
+  }, 2500);
 }
 
-
-
-
-// Login function
 async function login(event) {
     event.preventDefault();
-
-    
-
     const username = document.getElementById("newUsername").value;
     const password = document.getElementById("newPassword").value;
 
@@ -84,11 +106,14 @@ async function login(event) {
         const querySnapshot = await db.collection("billsplitter_users").where("Name", "==", username).get();
 
         if (querySnapshot.empty) {
-            alert(`Cannot find your Username : ${username}, please Sign-up first! `);
-            window.location.href = "signup.html";
+            showToast(`Cannot find your Username : ${username}, please Sign-up first! `, "alert-toast");
+            
+
+            setTimeout(() => {
+                window.location.href = "signup.html";
+            }, 2500);
             return;
         }
-
 
         let userData;
         querySnapshot.forEach((doc) => {
@@ -98,9 +123,12 @@ async function login(event) {
 
         // validate user with their password
         if (userData.Password == password) {
-            window.location.href = "main_page.html";
+            showToast("Log in successful! Welcome back!", "top-toast");
+            setTimeout(() => {
+                window.location.href = "main_page.html";
+            }, 2500);
         } else {
-            alert("Password is incorrect! Please try again");
+            showToast(`Password is incorrect. Please try again! `, "alert-toast");
 
         }
 
