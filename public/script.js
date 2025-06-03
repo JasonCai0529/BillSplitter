@@ -51,8 +51,6 @@ document.getElementById("participant-input").addEventListener('input', async fun
 });
 
 
-r
-
 
 
 async function getAllUsers() {
