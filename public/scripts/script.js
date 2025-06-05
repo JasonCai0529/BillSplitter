@@ -1,5 +1,7 @@
 // import firebase from "firebase/compat/app";
 
+// const { startTransition } = require("react");
+
 // import { getDataConnect } from "firebase/data-connect";
 
 
@@ -97,6 +99,9 @@ function showToast(message, toastT) {
   }, 2500);
 }
 
+
+
+
 async function login(event) {
     event.preventDefault();
     const username = document.getElementById("newUsername").value;
@@ -137,12 +142,23 @@ async function login(event) {
     }
 }
 
+
+
 // Add participant function 
 const selectedParticipants = [];
 
 async function addParticipant() {
     const input = document.getElementById('participant-input');
     const name = input.value.trim();
+
+
+    const userInfo = JSON.parse(localStorage.getItem("currentUser"));
+    const username = userInfo?.data?.Name || "Unknown"; 
+    if (name === username) {
+        alert("This participant is already added.");
+        input.value = "";
+        return;
+    }
 
     if (!name) return;
 
@@ -175,8 +191,8 @@ async function addParticipant() {
         participantList.insertBefore(participant, addParticipantDiv);
 
         input.value = '';
-        console.log("Selected participants:", selectedParticipants);
-
+        
+        console.log("selectedParticipants array has been updated" + selectedParticipants);
     } catch (error) {
         console.error("Error checking user:", error);
         alert("Something went wrong when searching for the user.");
@@ -197,13 +213,16 @@ function removeParticipant(name, button) {
 
 // bill = "name, description, category, time, amount, participants"
 async function addBill() {
-    const userInfo = JSON.parse(localStorage.getItem("currentUser"));
-    const name = userInfo?.data?.Name || "Unknown"; 
     const description = document.querySelector('input[placeholder="e.g. Dinner at Italian Restaurant"]').value.trim();
     const amount = parseFloat(document.getElementById("your-amount").value);
     const category = document.querySelector('select').value;
-    const date = document.querySelector('input[type="date"]').value;    
-    console.log("name: ",name, " description: ", description, " amount: ",amount," category: ", category, " date: ", date," selectedParticipants: ", selectedParticipants);
+    const date = document.querySelector('input[type="date"]').value;
+
+
+
+    // get the current user's info
+    const userInfo = JSON.parse(localStorage.getItem("currentUser"));
+    const name = userInfo?.data?.Name || "Unknown"; 
     if (!description || !amount || !category || !date) {
         alert("Please fill out all bill details.");
         return;
@@ -213,25 +232,43 @@ async function addBill() {
         alert("Please add at least one participant.");
         return;
     }
-      
+
+    // add bill initiater to the list
+    selectedParticipants.push(name);
+
+    let status = {};
+
+    const splitAmount = parseFloat((amount / selectedParticipants.length).toFixed(2));
+
+    selectedParticipants.forEach(name => {
+        status[name] = [splitAmount, false];
+    });
+
+
+    
     const billData = {
         "name":name,
         "description":description,
         "category":category,
         "date":date,
         "amount":amount.toFixed(2),
-        "Participants":selectedParticipants.join(",")
+        "Participants":selectedParticipants,
+        "AmountStatus": status,
+        "State": 'open'
+
     };
 
     console.log("thie bill is :", billData); 
+
+
+    let billId = ""
     try {
         // 1. Add the bill to "Bills" collection and get its ID
         const billRef = await db.collection("Bills").add(billData);
-        const billId = billRef.id;
+        billId = billRef.id;
 
         console.log("Bill added:", billData);
 
-        const splitAmount = parseFloat((amount / selectedParticipants.length).toFixed(2));
 
         // 2. Send a request to each participant
         for (const participantName of selectedParticipants) {
@@ -244,19 +281,10 @@ async function addBill() {
                 const userDoc = userSnapshot.docs[0];
                 const userRef = userDoc.ref;
 
-                const pendingRef = userRef.collection("PendingRequests").doc(); // create new doc
+                // add the bill id to the users bills
+                userRef.collection("Bills").add({billId}); // create new doc
 
-                const requestData = {
-                    billId,
-                    from: name,
-                    description,
-                    amount: splitAmount,
-                    date,
-                    category,
-                    status: "pending"
-                };
-
-                await pendingRef.set(requestData);
+                
                 console.log(`Request sent to ${participantName}`);
             } else {
                 console.warn(`User ${participantName} not found.`);
@@ -266,16 +294,15 @@ async function addBill() {
         // 3. Add full amount to bill owner's balance immediately
         const ownerSnapshot = await db.collection("billsplitter_users")
             .where("Name", "==", name).get();
-
+        
+    
         if (!ownerSnapshot.empty) {
             const ownerDoc = ownerSnapshot.docs[0];
             const ownerRef = ownerDoc.ref;
-            const ownerData = ownerDoc.data();
-            const currentBalance = parseFloat(ownerData.Balance || "0");
 
-            await ownerRef.update({
-                Balance: (currentBalance + amount).toFixed(2).toString()
-            });
+            if (billId) {
+                ownerRef.collection("Request").add({billId});
+            }
         }
 
         window.location.href = "main_page.html";

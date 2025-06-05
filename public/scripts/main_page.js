@@ -2,9 +2,21 @@
 console.log("Script loaded and running.");  // Place this line at the top of your script
 
 
-function fetchUserName() {
+const app = firebase.initializeApp(firebaseConfig);
+const analytics = firebase.analytics();
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+
+
+
+async function fetchUserName() {
     console.log("in fetchUserName");  
+
+
+   
     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    // console.log(db);
 
     if (currentUser) {
         console.log("User ID:", currentUser.id);
@@ -16,6 +28,16 @@ function fetchUserName() {
         console.log("userName:", userName); 
         document.querySelector(".profile-name").innerText = `${userName}`; 
         document.querySelector(".user-balance").innerHTML = `${userBalance}`;
+
+
+
+        const userSnapshot = await db.collection("billsplitter_users").where("Name", "==", userName).get();
+
+
+        const billsSnapshot = await userSnapshot.docs[0].ref.collection("Request").get();
+
+        console.log(userSnapshot);
+        console.log(billsSnapshot.docs[0].id);
     } else {
         console.log("No user is currently logged in.");
         alert("Please log in first.");
