@@ -96,9 +96,11 @@
         }
         
         .profile-card {
+            position: relative;
             background-color: var(--white);
             border-radius: var(--border-radius);
             padding: 25px;
+            margin-bottom: 15px;
             box-shadow: var(--shadow);
         }
         
@@ -125,10 +127,11 @@
         }
         
         .balance-info {
+            
             background-color: var(--light);
-            padding: 15px;
+            padding: 8px;
             border-radius: var(--border-radius);
-            margin-bottom: 15px;
+            margin-bottom: 8px;
         }
         
         .section-card {
@@ -136,7 +139,7 @@
             border-radius: var(--border-radius);
             padding: 25px;
             box-shadow: var(--shadow);
-            margin-bottom: 25px;
+            margin-bottom: 15px;
         }
         
         .section-card h3 {
@@ -199,6 +202,34 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        .balance-row {
+            display: flex;
+            gap: 3px;
+        }
+
+
+        .balance-50 {
+            /* text-align: center; */
+            flex: 0 0 52%;
+        }
+
+        .balance-25 {
+            flex: 0 0 24%;
+        }
+
+
+
+        .bill-scroll-container {
+            height: 105px;
+        }
+
+
+        .request-scroll-container {
+            height: 105px;
+        }
+
+
     </style>
 </head>
 <body>
@@ -227,7 +258,7 @@
                             <button class="edit-btn">Edit</button>
                         </div>
                         
-                        <div class="balance-info">
+                        <!-- <div class="balance-info">
                             <p>Your Balance: <strong class="user-balance"></strong></p>
                         </div>
                         <div class="balance-info">
@@ -235,17 +266,37 @@
                         </div>
                         <div class="balance-info">
                             <p>Owed you: <strong>$0</strong></p>
+                        </div> -->
+
+
+                        <div class="balance-row">
+                        <div class="balance-info balance-50">
+                        <p>Balance:  <strong class="user-balance"></strong></p>
+                        </div>
+                        <div class="balance-info balance-25">
+                        <p>Owed: <strong>$0</strong></p>
+                        </div>
+                        <div class="balance-info balance-25">
+                        <p>Own: <strong>$0</strong></p>
+                            </div>
                         </div>
                     </div>
                     
                     <div class="section-card">
                         <h3>Your bills</h3>
-                        <p>No record yet</p>
+
+                        <div class = "bill-scroll-container"> No record yet
+                            
+                        </div>
+                        
+                        
                     </div>
                     
                     <div class="section-card">
                         <h3>Request</h3>
-                        <p>No record yet</p>
+                        <div class = "request-scroll-container"> No record yet
+
+                        </div>
                     </div>
                     
                     <div style="margin-top: 20px;">
