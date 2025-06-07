@@ -14,19 +14,11 @@ const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 async function fetchUserName() {
     console.log("in fetchUserName");  
 
-
-   
-    
-    // console.log(db);
-
     if (currentUser) {
-        console.log("User ID:", currentUser.id);
-        console.log("User Data:", currentUser.data); 
         // Display the user name from the stored data
         const userName = currentUser.data.Name;
         const userBalance = currentUser.data.Balance;
-        console.log("userBalance:", userBalance); 
-        console.log("userName:", userName); 
+        
         document.querySelector(".profile-name").innerText = `${userName}`; 
         document.querySelector(".user-balance").innerHTML = `${userBalance}`;
 
@@ -37,9 +29,7 @@ async function fetchUserName() {
 
         const billsSnapshot = await userSnapshot.docs[0].ref.collection("Request").get();
 
-        console.log(userSnapshot);
         const id = billsSnapshot.docs[0].data().billId;
-        console.log(id);
 
         const billRef = db.collection("Bills").doc(id);
         const billSnap = await billRef.get();
@@ -48,8 +38,6 @@ async function fetchUserName() {
         } else {
             console.log("None");
         }
-        console.log(billSnap);
-        console.log(billSnap.data());
 
     } else {
         console.log("No user is currently logged in.");
@@ -76,8 +64,74 @@ function animateChartSegments() {
 
 
 
-// bill entry html structure
+// function payCurrentBill(billData) {
 
+//     const billInitiater = billData.name;
+//     const billDescription = billData.description;
+//     const billDate = billData.date;
+//     const billCategory = billData.category;
+//     document.getElementById("dashboard-grid").innerHTML = billDescription;
+// }
+
+
+
+function payCurrentBill(bill) {
+    const container = document.getElementById("container");
+
+    // Generate dynamic content for amount status
+    const yourAmount = bill.AmountStatus[currentUser.data.Name][0];
+    
+    const amountStatusHtml = Object.entries(bill.AmountStatus || {}).map(([name, [amount, paid]]) => {
+
+        if (name == currentUser.data.Name) {
+            name = "You";
+        }
+
+        const payStatus = 1 ? "paid-green" : "paid-red";
+        return `
+        <div style="margin-left: 20px;">
+            <p><strong>${name}</strong></p>
+            <p style="font-weight: bold;">Amount: $${amount}</p>
+            <p class = "pay-status ${payStatus}">${paid ? "Paid" : "Unpaid"}</p>
+        </div>
+    `}).join("");
+
+    // Replace #dashboard content
+    container.innerHTML = `
+        <div class="bill-detail-card">
+        <h2>Bill Details</h2>
+        <p><strong>Description:</strong> ${bill.description}</p>
+        <p><strong>Date:</strong> ${bill.date}</p>
+        <p><strong>Category:</strong> ${bill.category}</p>
+        <p><strong>Total Amount:</strong> $${bill.amount}</p>
+        <p><strong>Created by:</strong> ${bill.name}</p>
+
+        
+
+        <div class="detail-section">
+            <h3>Amount Status</h3>
+            ${amountStatusHtml}
+        </div>
+
+
+        <div class="detail-section">
+            
+
+            <div class="paid-amount">$${yourAmount.toFixed(2)}</div>
+            
+        </div>
+
+        <button id="confirm-pay-btn">Confirm Pay</button>
+        <button id="cancel-pay-btn">Cancel</button>
+        </div>
+    `;
+
+    // Set up the Confirm Pay button listener
+    document.getElementById("confirm-pay-btn").addEventListener("click", () => {
+        confirmPayment(bill);
+    });
+}
+// bill entry html structure
 /*
 <div class="bill-entry">
                                 <div class="bill-info">
@@ -91,7 +145,6 @@ function animateChartSegments() {
                                 <div class="bill-amount">$45.00</div>
 </div>
 */
-
 async function loadBills() {
 
     const userName = currentUser.data.Name;
@@ -106,15 +159,18 @@ async function loadBills() {
         billMenu.innerHTML = "";
     }
 
+    let i = 1;
+
     if (!billsSnapshot.empty) {
         
-         billsSnapshot.forEach(async doc => {
+         billsSnapshot.forEach(async doc => { /// loop body
             
             // retrive the Bill id from current Users's "Bills" collection
             const curId = doc.data().billId;
             // fetch the actual bill from the universal "Bills" collection
             const billRef = db.collection("Bills").doc(curId);
             const billSnap = await billRef.get();
+            
 
 
             if (billSnap.exists) { // if can found such snapshot
@@ -126,10 +182,12 @@ async function loadBills() {
                     const billDescription = billData.description;
                     const billDate = billData.date;
                     const billCategory = billData.category;
+
+                    const billAmount = billData.AmountStatus[currentUser.data.Name][0];
                     
 
                     let curEntryHtml =
-                    `<div class="bill-entry">
+                    `<div class="bill-entry" id = "bill-entry-${i}">
                                 <div class="bill-info">
                                     <div class="bill-description">${billDescription}</div>
                                     <div class="bill-meta">
@@ -138,21 +196,31 @@ async function loadBills() {
                                         <span class = "bill-initializer">Created by: ${billInitiater}</span>
                                     </div>
                                 </div>
-                                <div class="bill-amount">$45.00</div>
+                                <div class="bill-amount">$${billAmount.toFixed(2)}</div>
                     </div>`;
 
-                    billMenu.innerHTML += curEntryHtml;
 
-                    console.log("Number of entries:", billMenu.querySelectorAll('.bill-entry').length);
+                    billMenu.insertAdjacentHTML('beforeend', curEntryHtml);
 
+                    const button = document.createElement("button");
+                    button.className = "btn";
+                    button.innerText = "Pay";
+
+                    button.addEventListener("click", ()=> {
+                        
+                        console.log("hello");
+
+                        payCurrentBill(billData);
+                    })
+
+                    const buttonWrapper = document.createElement("div");
+                    buttonWrapper.appendChild(button);
+                    document.getElementById(`bill-entry-${i}`).appendChild(buttonWrapper);
+                    i += 1;
                     console.log(curEntryHtml);
                 } else {
                     console.log("TODO: if the bill is closed");
                 }
-
-
-                console.log("aldksfhaksdfhaslkd");
-                console.log(billData.Participants[0]);
             } else {
                 console.log("Cannot find the bill information");
             }
