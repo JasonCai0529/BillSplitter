@@ -204,6 +204,9 @@ async function addSingleBill(id, i) {
 }
 
 
+
+
+
 async function loadBills() {
 
     const userName = currentUser.data.Name;
@@ -218,24 +221,61 @@ async function loadBills() {
         billMenu.innerHTML = "";
     }
 
-    let i = 1;
+    let i = 0;
+
+    const docsArray = billsSnapshot.docs
 
     if (!billsSnapshot.empty) {
 
 
-        for (const doc of billsSnapshot.docs) {
-            const curId = doc.data().billId;
+        for (let j = 0; j < docsArray.length; j++) {
+            const curId = docsArray[j].data().billId;
             // fetch the actual bill from the universal "Bills" collection
             await addSingleBill(curId, i);
             i += 1;
-            if (i >= 5) { // only add first five
+            if (i % 5 == 0) { // only add first five
                 break;
             }
         }
 
-        let moreButton = `<div class="more-bill-section"><button id = "more-bill-btn">More</button></div>`;
 
-        billMenu.insertAdjacentHTML('beforeend', moreButton);
+        async function loadBillChunk() {
+            document.getElementById("more-bill-btn").remove();
+                for (let j = i; j < docsArray.length; j++) { // load five more
+                    const curId = docsArray[j].data().billId;
+
+                    // fetch the actual bill from the universal "Bills" collection
+                    await addSingleBill(curId, i);
+                    i += 1;
+                    if (i % 5 == 0) { // only add first five
+                        break;
+                    }
+                }
+                console.log("hello");
+
+                if (i < docsArray.length) { // if there are still more bills to load, add the button back
+                    console.log("inside this block", i, docsArray.length);
+                    let moreButton = `<div class="more-bill-section"><button id = "more-bill-btn">More</button></div>`;
+                    billMenu.insertAdjacentHTML("beforeend", moreButton);
+                    document.getElementById("more-bill-btn").addEventListener("click", loadBillChunk);
+
+                    // document.getElementById("more-bill-btn").addEventListener("click", loadBillChunk);
+                } else { // no more bills to load
+                    console.log("the value of i is: ", i);
+                }
+        }
+
+
+        if (docsArray.length > i) { // if there are still more to load
+            let moreButton = `<div class="more-bill-section"><button id = "more-bill-btn">More</button></div>`;
+            billMenu.insertAdjacentHTML("beforeend", moreButton);
+            document.getElementById("more-bill-btn").addEventListener("click", loadBillChunk);
+        }
+
+
+        console.log("after");
+        
+
     }
 
 
