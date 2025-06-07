@@ -306,6 +306,32 @@
             font-family: 'Segoe UI', sans-serif;
         }
 
+
+        .more-bill-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        #more-bill-btn {
+            text-align: center;
+            font-size: 20px;
+            font-weight: 600;
+            color: #2c4c8c;
+            margin-bottom: 3px;
+            padding: 4px;
+            background-color: white;
+            border: none;
+            width: 100%;
+        }
+
+        #more-bill-btn:hover {
+            border: solid rgb(58, 55, 55);
+            background-color: #edf2fb;
+            border-radius: 5px;
+        }
+
         .bill-detail-card h2 {
             margin-bottom: 20px;
             color: #2c4c8c;
@@ -387,7 +413,7 @@
 
         .status-row {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
             gap: 16px;
         }
 

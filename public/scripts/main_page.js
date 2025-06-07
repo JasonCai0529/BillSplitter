@@ -149,6 +149,61 @@ function payCurrentBill(bill) {
                                 <div class="bill-amount">$45.00</div>
 </div>
 */
+
+async function addSingleBill(id, i) {
+
+    const billRef = db.collection("Bills").doc(id);
+    const billSnap = await billRef.get();
+    const billMenu = document.getElementById("bill-scroll-menu");
+            
+
+
+    if (billSnap.exists) { // if can found such snapshot
+        const billData = billSnap.data();
+        
+        if (billData.State == "open") { // only do stuff when the bill is still open
+            console.log("billSnap id: " + billRef.id);
+            const billInitiater = billData.name;
+            const billDescription = billData.description;
+            const billDate = billData.date;
+            const billCategory = billData.category;
+
+            const billAmount = billData.AmountStatus[currentUser.data.Name][0];
+            
+
+            let curEntryHtml =
+            `<div class="bill-entry" id = "bill-entry-${i}">
+                        <div class="bill-info">
+                            <div class="bill-description">${billDescription}</div>
+                            <div class="bill-meta">
+                                <span class="bill-date">${billDate}</span>
+                                <span class="bill-category">${billCategory}</span>
+                                <span class = "bill-initializer">Created by: ${billInitiater}</span>
+                            </div>
+                        </div>
+                        <div class="bill-amount">$${billAmount.toFixed(2)}</div>
+            </div>`;
+
+
+            billMenu.insertAdjacentHTML('beforeend', curEntryHtml);
+
+            const button = document.createElement("button");
+            button.className = "btn";
+            button.innerText = "Pay";
+
+            button.addEventListener("click", ()=> {
+
+                payCurrentBill(billData);
+            })
+
+            const buttonWrapper = document.createElement("div");
+            buttonWrapper.appendChild(button);
+            document.getElementById(`bill-entry-${i}`).appendChild(buttonWrapper);
+        }
+    }
+}
+
+
 async function loadBills() {
 
     const userName = currentUser.data.Name;
@@ -166,70 +221,21 @@ async function loadBills() {
     let i = 1;
 
     if (!billsSnapshot.empty) {
-        
-         billsSnapshot.forEach(async doc => { /// loop body
-            
-            // retrive the Bill id from current Users's "Bills" collection
+
+
+        for (const doc of billsSnapshot.docs) {
             const curId = doc.data().billId;
             // fetch the actual bill from the universal "Bills" collection
-            const billRef = db.collection("Bills").doc(curId);
-            const billSnap = await billRef.get();
-            
-
-
-            if (billSnap.exists) { // if can found such snapshot
-                const billData = billSnap.data();
-                
-                if (billData.State == "open") { // only do stuff when the bill is still open
-                    console.log("billSnap id: " + billRef.id);
-                    const billInitiater = billData.name;
-                    const billDescription = billData.description;
-                    const billDate = billData.date;
-                    const billCategory = billData.category;
-
-                    const billAmount = billData.AmountStatus[currentUser.data.Name][0];
-                    
-
-                    let curEntryHtml =
-                    `<div class="bill-entry" id = "bill-entry-${i}">
-                                <div class="bill-info">
-                                    <div class="bill-description">${billDescription}</div>
-                                    <div class="bill-meta">
-                                        <span class="bill-date">${billDate}</span>
-                                        <span class="bill-category">${billCategory}</span>
-                                        <span class = "bill-initializer">Created by: ${billInitiater}</span>
-                                    </div>
-                                </div>
-                                <div class="bill-amount">$${billAmount.toFixed(2)}</div>
-                    </div>`;
-
-
-                    billMenu.insertAdjacentHTML('beforeend', curEntryHtml);
-
-                    const button = document.createElement("button");
-                    button.className = "btn";
-                    button.innerText = "Pay";
-
-                    button.addEventListener("click", ()=> {
-
-                        payCurrentBill(billData);
-                    })
-
-                    const buttonWrapper = document.createElement("div");
-                    buttonWrapper.appendChild(button);
-                    document.getElementById(`bill-entry-${i}`).appendChild(buttonWrapper);
-                    i += 1;
-                    
-
-                    
-                } else {
-                    console.log("TODO: if the bill is closed");
-                }
-            } else {
-                console.log("Cannot find the bill information");
+            await addSingleBill(curId, i);
+            i += 1;
+            if (i >= 5) { // only add first five
+                break;
             }
+        }
 
-        });
+        let moreButton = `<div class="more-bill-section"><button id = "more-bill-btn">More</button></div>`;
+
+        billMenu.insertAdjacentHTML('beforeend', moreButton);
     }
 
 
