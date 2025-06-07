@@ -89,9 +89,9 @@ function payCurrentBill(bill) {
 
         const payStatus = 1 ? "paid-green" : "paid-red";
         return `
-        <div style="margin-left: 20px;">
-            <p><strong>${name}</strong></p>
-            <p style="font-weight: bold;">Amount: $${amount}</p>
+        <div style="margin-left: 0px;" class = "single-status">
+            <p style="margin-bottom: 5px; color: var(--primary-dark);"><strong>${name}</strong></p>
+            <p style="font-weight: 300;">$${amount}</p>
             <p class = "pay-status ${payStatus}">${paid ? "Paid" : "Unpaid"}</p>
         </div>
     `}).join("");
@@ -109,8 +109,8 @@ function payCurrentBill(bill) {
         
 
         <div class="detail-section">
-            <h3>Amount Status</h3>
-            ${amountStatusHtml}
+            <h2>Payers</h2>
+            <div class = "status-row">${amountStatusHtml} </div>
         </div>
 
 
@@ -122,13 +122,17 @@ function payCurrentBill(bill) {
         </div>
 
         <button id="confirm-pay-btn">Confirm Pay</button>
-        <button id="cancel-pay-btn">Cancel</button>
+        <button id="cancel-pay-btn" >Cancel</button>
         </div>
     `;
 
     // Set up the Confirm Pay button listener
     document.getElementById("confirm-pay-btn").addEventListener("click", () => {
         confirmPayment(bill);
+    });
+
+    document.getElementById("cancel-pay-btn").addEventListener("click", () => {
+        window.location.href = "main_page.html";
     });
 }
 // bill entry html structure
@@ -207,8 +211,6 @@ async function loadBills() {
                     button.innerText = "Pay";
 
                     button.addEventListener("click", ()=> {
-                        
-                        console.log("hello");
 
                         payCurrentBill(billData);
                     })
@@ -217,7 +219,9 @@ async function loadBills() {
                     buttonWrapper.appendChild(button);
                     document.getElementById(`bill-entry-${i}`).appendChild(buttonWrapper);
                     i += 1;
-                    console.log(curEntryHtml);
+                    
+
+                    
                 } else {
                     console.log("TODO: if the bill is closed");
                 }
