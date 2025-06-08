@@ -207,15 +207,17 @@ async function addSingleBill(id, i, type) {
 
 
 
-async function loadBills() {
+async function loadBills(billtype) {
 
     const userName = currentUser.data.Name;
 
     const userSnapshot = await db.collection("billsplitter_users").where("Name", "==", userName).get();
+    const billsSnapshot = await userSnapshot.docs[0].ref.collection(billtype).get();
 
-    const billsSnapshot = await userSnapshot.docs[0].ref.collection("Request").get();
 
-    const billMenu = document.getElementById("bill-scroll-menu");
+    const BillType = billtype.toLowerCase();
+
+    const billMenu = document.getElementById(`${BillType}-scroll-menu`);
     
     if (!billsSnapshot.empty) {
         billMenu.innerHTML = "";
@@ -231,7 +233,7 @@ async function loadBills() {
         for (let j = 0; j < docsArray.length; j++) {
             const curId = docsArray[j].data().billId;
             // fetch the actual bill from the universal "Bills" collection
-            await addSingleBill(curId, i, 'bill');
+            await addSingleBill(curId, i, BillType);
             i += 1;
             if (i % 5 == 0) { // only add first five
                 break;
@@ -245,7 +247,7 @@ async function loadBills() {
                     const curId = docsArray[j].data().billId;
 
                     // fetch the actual bill from the universal "Bills" collection
-                    await addSingleBill(curId, i, 'bill');
+                    await addSingleBill(curId, i, BillType);
                     i += 1;
                     if (i % 5 == 0) { // only add first five
                         break;
@@ -285,5 +287,6 @@ async function loadBills() {
 document.addEventListener('DOMContentLoaded', function() {
     fetchUserName();
     animateChartSegments();
-    loadBills();
+    loadBills("Bills");
+    loadBills("Request");
 });
