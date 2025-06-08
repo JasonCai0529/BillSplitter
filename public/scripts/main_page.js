@@ -20,24 +20,7 @@ async function fetchUserName() {
         const userBalance = currentUser.data.Balance;
         
         document.querySelector(".profile-name").innerText = `${userName}`; 
-        document.querySelector(".user-balance").innerHTML = `${userBalance}`;
-
-
-
-        const userSnapshot = await db.collection("billsplitter_users").where("Name", "==", userName).get();
-
-
-        const billsSnapshot = await userSnapshot.docs[0].ref.collection("Request").get();
-
-        const id = billsSnapshot.docs[0].data().billId;
-
-        const billRef = db.collection("Bills").doc(id);
-        const billSnap = await billRef.get();
-        if (billSnap.exists) {
-            console.log("Found!");
-        } else {
-            console.log("None");
-        }
+        document.querySelector(".user-balance").innerHTML = `${userBalance}`; 
 
     } else {
         console.log("No user is currently logged in.");

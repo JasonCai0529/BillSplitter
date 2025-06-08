@@ -117,12 +117,12 @@
             color: var(--primary);
         }
         
-        .edit-btn {
+        .signout-btn {
             background: none;
             border: none;
-            color: var(--secondary);
+            color: grey;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 500;
         }
         
@@ -221,7 +221,7 @@
 
 
 
-        .bills-scroll-container {
+        .bill-scroll-container {
             height: 125px;
             max-height: 125px;
             overflow-y: auto;        /* enables vertical scroll */
@@ -450,7 +450,7 @@
                     <div class="profile-card">
                         <div class="profile-header">
                             <h3 class="profile-name"> </h3>
-                            <button class="edit-btn">Edit</button>
+                            <button onclick="window.location.href='index.html'" class = "signout-btn">Sign out</button>
                         </div>
 
 
@@ -470,7 +470,7 @@
                     <div class="section-card">
                         <h3>Your bills</h3>
 
-                        <div class = "bills-scroll-container" id = "bill-scroll-menu"> No record yet
+                        <div class = "bill-scroll-container" id = "bills-scroll-menu"> No record yet
 
                             
                             
