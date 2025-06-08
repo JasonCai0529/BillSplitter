@@ -150,11 +150,11 @@ function payCurrentBill(bill) {
 </div>
 */
 
-async function addSingleBill(id, i) {
+async function addSingleBill(id, i, type) {
 
     const billRef = db.collection("Bills").doc(id);
     const billSnap = await billRef.get();
-    const billMenu = document.getElementById("bill-scroll-menu");
+    const billMenu = document.getElementById(`${type}-scroll-menu`);
             
 
 
@@ -231,7 +231,7 @@ async function loadBills() {
         for (let j = 0; j < docsArray.length; j++) {
             const curId = docsArray[j].data().billId;
             // fetch the actual bill from the universal "Bills" collection
-            await addSingleBill(curId, i);
+            await addSingleBill(curId, i, 'bill');
             i += 1;
             if (i % 5 == 0) { // only add first five
                 break;
@@ -245,7 +245,7 @@ async function loadBills() {
                     const curId = docsArray[j].data().billId;
 
                     // fetch the actual bill from the universal "Bills" collection
-                    await addSingleBill(curId, i);
+                    await addSingleBill(curId, i, 'bill');
                     i += 1;
                     if (i % 5 == 0) { // only add first five
                         break;
