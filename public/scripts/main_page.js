@@ -78,19 +78,32 @@ async function confirmPayment(bill, id) {
     // };
 
 
-    const name = currentUser.data.Name;
+    const payerName = currentUser.data.Name;
 
-    const payerSnapshot = await db.collection("billsplitter_users").where("Name", "==", name).get();
-
+    const payerSnapshot = await db.collection("billsplitter_users").where("Name", "==", payerName).get();
+    
+    const ownerName = bill.Name;
     if (!payerSnapshot.empty) {
-        const payerDoc = payerSnapshot.docs[0];
-        
+        // const payerDoc = payerSnapshot.docs[0];
 
-        console.log(payerDoc.data().Name);
+
+        // const payerRef = payerDoc.ref;
+
+        // await payerRef.update({
+        //     Balance: 123.45
+        // });
+
+
+        
+        console.log(payerName);
+    }
+
+    if (ownerName != payerName) {
+        const payerSnapshot = await db.collection("billsplitter_users").where("Name", "==", name).get();
     }
 
 
-    
+
 
 
 
