@@ -1,7 +1,3 @@
-
-console.log("Script loaded and running.");  // Place this line at the top of your script
-
-
 const app = firebase.initializeApp(firebaseConfig);
 const analytics = firebase.analytics();
 const auth = firebase.auth();
@@ -131,7 +127,6 @@ function payCurrentBill(bill) {
                                 <div class="bill-amount">$45.00</div>
 </div>
 */
-
 async function addSingleBill(id, i, type) {
 
     const billRef = db.collection("Bills").doc(id);
