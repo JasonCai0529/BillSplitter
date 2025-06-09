@@ -45,6 +45,11 @@ function animateChartSegments() {
 }
 
 
+async function confirmPayment(bill) {
+    
+}
+
+
 
 function payCurrentBill(bill) {
     const container = document.getElementById("container");
@@ -96,6 +101,7 @@ function payCurrentBill(bill) {
         <button id="cancel-pay-btn" >Cancel</button>
         </div>
     `;
+
 
     // Set up the Confirm Pay button listener
     document.getElementById("confirm-pay-btn").addEventListener("click", () => {
