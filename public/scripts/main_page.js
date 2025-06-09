@@ -46,7 +46,12 @@ function animateChartSegments() {
 
 
 async function confirmPayment(bill) {
-    
+    /**
+     update bill info
+     update cur user's balance
+     update receipent's balance
+     update spending's array -> [1, 2, 3, 4]
+     */
 }
 
 
