@@ -41,19 +41,71 @@ function animateChartSegments() {
 }
 
 
-async function confirmPayment(bill) {
+async function confirmPayment(bill, id) {
     /**
      update bill info
      update cur user's balance
      update receipent's balance
      update spending's array -> [1, 2, 3, 4]
      */
+
+     console.log(id);
+
+
+    //  const ownerSnapshot = await db.collection("billsplitter_users")
+    //         .where("Name", "==", name).get();
+        
+
+    //     if (!ownerSnapshot.empty) {
+    //         const ownerDoc = ownerSnapshot.docs[0];
+    //         const ownerRef = ownerDoc.ref;
+
+    //         if (billId) {
+    //             ownerRef.collection("Request").add({billId});
+    //         }
+    //     }
+
+
+    // const billData = {
+    //     "name":name,
+    //     "description":description,
+    //     "category":category,
+    //     "date":date,
+    //     "amount":amount.toFixed(2),
+    //     "Participants":selectedParticipants,
+    //     "AmountStatus": status,
+    //     "State": 'open'
+    // };
+
+
+    const name = currentUser.data.Name;
+
+    const payerSnapshot = await db.collection("billsplitter_users").where("Name", "==", name).get();
+
+    if (!payerSnapshot.empty) {
+        const payerDoc = payerSnapshot.docs[0];
+        
+
+        console.log(payerDoc.data().Name);
+    }
+
+
+    
+
+
+
+
+    
+    console.log(bill.AmountStatus);
+
+
 }
 
 
 
-function payCurrentBill(bill) {
+function payCurrentBill(bill, id) {
     const container = document.getElementById("container");
+    
 
     // Generate dynamic content for amount status
     const yourAmount = bill.AmountStatus[currentUser.data.Name][0];
@@ -106,7 +158,7 @@ function payCurrentBill(bill) {
 
     // Set up the Confirm Pay button listener
     document.getElementById("confirm-pay-btn").addEventListener("click", () => {
-        confirmPayment(bill);
+        confirmPayment(bill, id);
     });
 
     document.getElementById("cancel-pay-btn").addEventListener("click", () => {
@@ -128,7 +180,6 @@ function payCurrentBill(bill) {
 </div>
 */
 async function addSingleBill(id, i, type) {
-
     const billRef = db.collection("Bills").doc(id);
     const billSnap = await billRef.get();
     const billMenu = document.getElementById(`${type}-scroll-menu`);
@@ -169,8 +220,8 @@ async function addSingleBill(id, i, type) {
             button.innerText = "Pay";
 
             button.addEventListener("click", ()=> {
-
-                payCurrentBill(billData);
+                console.log("the id in addSingleBill is", id);
+                payCurrentBill(billData, id);
             })
 
             const buttonWrapper = document.createElement("div");
