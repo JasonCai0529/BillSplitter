@@ -46,18 +46,6 @@ function animateChartSegments() {
 
 
 
-
-// function payCurrentBill(billData) {
-
-//     const billInitiater = billData.name;
-//     const billDescription = billData.description;
-//     const billDate = billData.date;
-//     const billCategory = billData.category;
-//     document.getElementById("dashboard-grid").innerHTML = billDescription;
-// }
-
-
-
 function payCurrentBill(bill) {
     const container = document.getElementById("container");
 
@@ -236,7 +224,6 @@ async function loadBills(billtype) {
                         break;
                     }
                 }
-                console.log("hello");
 
                 if (i < docsArray.length) { // if there are still more bills to load, add the button back
                     console.log("inside this block", i, docsArray.length);
@@ -244,7 +231,6 @@ async function loadBills(billtype) {
                     billMenu.insertAdjacentHTML("beforeend", moreButton);
                     document.getElementById("more-bill-btn").addEventListener("click", loadBillChunk);
 
-                    // document.getElementById("more-bill-btn").addEventListener("click", loadBillChunk);
                 } else { // no more bills to load
                     console.log("the value of i is: ", i);
                 }
@@ -256,11 +242,6 @@ async function loadBills(billtype) {
             billMenu.insertAdjacentHTML("beforeend", moreButton);
             document.getElementById("more-bill-btn").addEventListener("click", loadBillChunk);
         }
-
-
-        console.log("after");
-        
-
     }
 
 
