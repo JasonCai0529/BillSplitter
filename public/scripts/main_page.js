@@ -4,6 +4,24 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 
 
+/**
+
+
+User balance is not reflecting correctly, change the way the data is store, re-fetch data everytime
+
+Toast:
+after pay, direct back to main page
+if already paid -> show toast
+
+confirmPayment && addSingleBill: if all have paid -> mark bill in grey
+
+
+clear all user's data
+
+
+ */
+
+
 const categoryCode = {
     "restaurant": 0,
     "grocery": 1,
@@ -94,6 +112,12 @@ async function confirmPayment(bill, id) {
     const payerAmount = bill.AmountStatus[payerName][0];
 
     let payerAmountStatus = bill.AmountStatus;
+
+    if (payerAmountStatus[payerName][1]) {
+        alert("You already paid!");
+        return;
+    }
+
     payerAmountStatus[payerName][1] = true;
 
     // updateBill
