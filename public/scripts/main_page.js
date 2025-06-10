@@ -88,28 +88,33 @@ async function confirmPayment(bill, id) {
 
 
     const payerName = currentUser.data.Name;
+    const initiaterName = bill.name;
 
     const payerSnapshot = await db.collection("billsplitter_users").where("Name", "==", payerName).get();
     const payerAmount = bill.AmountStatus[payerName][0];
 
+    let payerAmountStatus = bill.AmountStatus;
+    payerAmountStatus[payerName][1] = true;
 
-
-    const initiaterName = bill.name;
-    const initiaterSnapshot = await db.collection("billsplitter_users").where("Name", "==", initiaterName).get();
+    // updateBill
+    let updateBillAmount = bill.amount - payerAmount;
+    let updateBillState = "close" ? updateBillAmount == 0 : "open";
+    
+    await db.collection("Bills").doc(id).update({
+        State: updateBillState,
+        amount: updateBillAmount,
+        AmountStatus: payerAmountStatus
+    });
 
 
     
-    const ownerName = bill.Name;
     if (!payerSnapshot.empty) {
-
 
         const payerData = payerSnapshot.docs[0].data();
         console.log(payerData.Balance);
 
         let payerBalance = payerData.Balance;
         let payerSpendings = payerData.Spendings;
-        let payerAmountStatus = bill.AmountStatus;
-        payerAmountStatus[payerName][1] = true;
         
 
         if (payerSpendings == undefined) {
@@ -131,7 +136,6 @@ async function confirmPayment(bill, id) {
         await payerRef.update({
             Balance: payerBalance,
             Spendings: payerSpendings,
-            AmountStatus: payerAmountStatus
         });
     }
 
@@ -139,11 +143,8 @@ async function confirmPayment(bill, id) {
         return;
     }
 
-
-
+    const initiaterSnapshot = await db.collection("billsplitter_users").where("Name", "==", initiaterName).get();
     if (!initiaterSnapshot.empty) {
-
-
         const initiaterData = initiaterSnapshot.docs[0].data();
         console.log(initiaterData.name);
 
