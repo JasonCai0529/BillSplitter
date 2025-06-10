@@ -124,9 +124,9 @@ async function confirmPayment(bill, id) {
         payerSpendings[categoryCode[bill.category]] += payerAmount;
 
         payerBalance -= payerAmount;
-        if (payerName == initiaterName) { // if is paying a bill of a person itself
-            payerBalance += payerAmount;
-        }
+        // if (payerName == initiaterName) { // if is paying a bill of a person itself
+        //     payerBalance += payerAmount;
+        // }
         console.log(categoryCode[bill.category]);
         console.log(payerSpendings, payerBalance);
 
@@ -140,6 +140,7 @@ async function confirmPayment(bill, id) {
     }
 
     if (payerName == initiaterName) {
+        console.log("returning from ConfirmPayment....");
         return;
     }
 
@@ -188,7 +189,7 @@ function payCurrentBill(bill, id) {
             name = "You";
         }
 
-        const payStatus = 1 ? "paid-green" : "paid-red";
+        const payStatus = paid ? "paid-green" : "paid-red";
         return `
         <div style="margin-left: 0px;" class = "single-status">
             <p style="margin-bottom: 5px; color: var(--primary-dark);"><strong>${name}</strong></p>
