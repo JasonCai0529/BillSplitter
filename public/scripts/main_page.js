@@ -91,6 +91,13 @@ async function confirmPayment(bill, id) {
 
     const payerSnapshot = await db.collection("billsplitter_users").where("Name", "==", payerName).get();
     const payerAmount = bill.AmountStatus[payerName][0];
+
+
+
+    const initiaterName = bill.name;
+    const initiaterSnapshot = await db.collection("billsplitter_users").where("Name", "==", initiaterName).get();
+
+
     
     const ownerName = bill.Name;
     if (!payerSnapshot.empty) {
@@ -100,7 +107,47 @@ async function confirmPayment(bill, id) {
         console.log(payerData.Balance);
 
         let payerBalance = payerData.Balance;
+        let payerSpendings = payerData.Spendings;
+        let payerAmountStatus = bill.AmountStatus;
+        payerAmountStatus[payerName][1] = true;
+        
 
+        if (payerSpendings == undefined) {
+            payerSpendings = new Array(5).fill(0);
+        }
+
+        payerSpendings[categoryCode[bill.category]] += payerAmount;
+
+        payerBalance -= payerAmount;
+        if (payerName == initiaterName) { // if is paying a bill of a person itself
+            payerBalance += payerAmount;
+        }
+        console.log(categoryCode[bill.category]);
+        console.log(payerSpendings, payerBalance);
+
+        const payerDoc = payerSnapshot.docs[0];
+        const payerRef = payerDoc.ref;
+
+        await payerRef.update({
+            Balance: payerBalance,
+            Spendings: payerSpendings,
+            AmountStatus: payerAmountStatus
+        });
+    }
+
+    if (payerName = initiaterName) {
+        return;
+    }
+
+
+
+    if (!initiaterSnapshot.empty) {
+
+
+        const initiaterData = initiaterSnapshot.docs[0].data();
+        console.log(initiaterData.name);
+
+        let payerBalance = payerData.Balance;
         let payerSpendings = payerData.Spendings;
 
 
@@ -111,25 +158,22 @@ async function confirmPayment(bill, id) {
         payerSpendings[categoryCode[bill.category]] += payerAmount;
 
         payerBalance -= payerAmount;
+        if (payerName == initiaterName) { // if is paying a bill of a person itself
+            payerBalance += payerAmount;
+        }
         console.log(categoryCode[bill.category]);
         console.log(payerSpendings, payerBalance);
-        // const payerDoc = payerSnapshot.docs[0];
 
+        const payerDoc = payerSnapshot.docs[0];
+        const payerRef = payerDoc.ref;
 
-        // const payerRef = payerDoc.ref;
-
-        // await payerRef.update({
-        //     Balance: 123.45
-        // });
-
-
-        
-        console.log(payerName);
+        await payerRef.update({
+            Balance: payerBalance,
+            Spendings: payerSpendings
+        });
     }
 
-    if (ownerName != payerName) {
-        const payerSnapshot = await db.collection("billsplitter_users").where("Name", "==", name).get();
-    }
+
 
 
 
