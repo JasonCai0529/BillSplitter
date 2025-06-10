@@ -148,29 +148,13 @@ async function confirmPayment(bill, id) {
         const initiaterData = initiaterSnapshot.docs[0].data();
         console.log(initiaterData.name);
 
-        let payerBalance = payerData.Balance;
-        let payerSpendings = payerData.Spendings;
+        let initiaterBalance = initiaterData.Balance;
 
+        const initiaterDoc = initiaterSnapshot.docs[0];
+        const initiaterRef = initiaterDoc.ref;
 
-        if (payerSpendings == undefined) {
-            payerSpendings = new Array(5).fill(0);
-        }
-
-        payerSpendings[categoryCode[bill.category]] += payerAmount;
-
-        payerBalance -= payerAmount;
-        if (payerName == initiaterName) { // if is paying a bill of a person itself
-            payerBalance += payerAmount;
-        }
-        console.log(categoryCode[bill.category]);
-        console.log(payerSpendings, payerBalance);
-
-        const payerDoc = payerSnapshot.docs[0];
-        const payerRef = payerDoc.ref;
-
-        await payerRef.update({
-            Balance: payerBalance,
-            Spendings: payerSpendings
+        await initiaterRef.update({
+            Balance: initiaterBalance
         });
     }
 
