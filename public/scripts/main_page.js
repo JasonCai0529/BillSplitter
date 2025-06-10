@@ -4,6 +4,15 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 
 
+const categoryCode = {
+    "restaurant": 0,
+    "grocery": 1,
+    "personal": 2,
+    "gas": 3,
+    "other": 4
+}
+
+
 const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
 
@@ -81,9 +90,29 @@ async function confirmPayment(bill, id) {
     const payerName = currentUser.data.Name;
 
     const payerSnapshot = await db.collection("billsplitter_users").where("Name", "==", payerName).get();
+    const payerAmount = bill.AmountStatus[payerName][0];
     
     const ownerName = bill.Name;
     if (!payerSnapshot.empty) {
+
+
+        const payerData = payerSnapshot.docs[0].data();
+        console.log(payerData.Balance);
+
+        let payerBalance = payerData.Balance;
+
+        let payerSpendings = payerData.Spendings;
+
+
+        if (payerSpendings == undefined) {
+            payerSpendings = new Array(5).fill(0);
+        }
+
+        payerSpendings[categoryCode[bill.category]] += payerAmount;
+
+        payerBalance -= payerAmount;
+        console.log(categoryCode[bill.category]);
+        console.log(payerSpendings, payerBalance);
         // const payerDoc = payerSnapshot.docs[0];
 
 
