@@ -98,7 +98,7 @@ async function confirmPayment(bill, id) {
 
     // updateBill
     let updateBillAmount = bill.amount - payerAmount;
-    let updateBillState = "close" ? updateBillAmount == 0 : "open";
+    const updateBillState = updateBillAmount == 0 ? "close" : "open";
     
     await db.collection("Bills").doc(id).update({
         State: updateBillState,
@@ -139,12 +139,13 @@ async function confirmPayment(bill, id) {
         });
     }
 
-    if (payerName = initiaterName) {
+    if (payerName == initiaterName) {
         return;
     }
 
+
     const initiaterSnapshot = await db.collection("billsplitter_users").where("Name", "==", initiaterName).get();
-    if (!initiaterSnapshot.empty) {
+    if (!initiaterSnapshot.empty) { // add amount to bill owner's balance
         const initiaterData = initiaterSnapshot.docs[0].data();
         console.log(initiaterData.name);
 
