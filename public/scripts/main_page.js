@@ -7,14 +7,9 @@ const db = firebase.firestore();
 /**
 
 
-Toast:
-after pay, direct back to main page
-
-confirmPayment && addSingleBill: if all have paid -> mark bill in grey
-
+if all have paid -> mark bill in grey
 
 clear all user's data
-
 
  */
 
@@ -68,6 +63,20 @@ function animateChartSegments() {
             }, 300);
         }, index * 200);
     });
+}
+
+
+
+function showPaymentSuccess() {
+    const successMessage = '<div class="detail-section success-message">Successfully paid!  Redirecting...</div>'
+    document.getElementById("bill-detail-card").insertAdjacentHTML("beforeend", successMessage);
+
+    // remove the two buttons
+
+
+    setTimeout(() => {
+        window.location.href = "main_page.html";
+    }, 2500);
 }
 
 
@@ -163,6 +172,7 @@ async function confirmPayment(bill, id) {
 
     if (payerName == initiaterName) {
         console.log("returning from ConfirmPayment....");
+        showPaymentSuccess();
         return;
     }
 
