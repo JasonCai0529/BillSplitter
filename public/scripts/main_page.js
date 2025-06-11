@@ -7,11 +7,8 @@ const db = firebase.firestore();
 /**
 
 
-User balance is not reflecting correctly, change the way the data is store, re-fetch data everytime
-
 Toast:
 after pay, direct back to main page
-if already paid -> show toast
 
 confirmPayment && addSingleBill: if all have paid -> mark bill in grey
 
@@ -119,11 +116,6 @@ async function confirmPayment(bill, id) {
 
     let payerAmountStatus = bill.AmountStatus;
 
-    if (payerAmountStatus[payerName][1]) {
-        alert("You already paid!");
-        return;
-    }
-
     payerAmountStatus[payerName][1] = true;
 
     // updateBill
@@ -190,15 +182,6 @@ async function confirmPayment(bill, id) {
         });
     }
 
-
-
-
-
-
-
-
-
-    
     console.log(bill.AmountStatus);
 
 
@@ -208,6 +191,7 @@ async function confirmPayment(bill, id) {
 
 function payCurrentBill(bill, id) {
     const container = document.getElementById("container");
+    
     
 
     // Generate dynamic content for amount status
@@ -230,7 +214,7 @@ function payCurrentBill(bill, id) {
 
     // Replace #dashboard content
     container.innerHTML = `
-        <div class="bill-detail-card">
+        <div class="bill-detail-card" id="bill-detail-card">
         <h2>Bill Details</h2>
         <p><strong>Description:</strong> ${bill.description}</p>
         <p><strong>Date:</strong> ${bill.date}</p>
@@ -259,6 +243,10 @@ function payCurrentBill(bill, id) {
     `;
 
 
+    let payerAmountStatus = bill.AmountStatus;
+
+    
+
     // Set up the Confirm Pay button listener
     document.getElementById("confirm-pay-btn").addEventListener("click", () => {
         confirmPayment(bill, id);
@@ -267,6 +255,27 @@ function payCurrentBill(bill, id) {
     document.getElementById("cancel-pay-btn").addEventListener("click", () => {
         window.location.href = "main_page.html";
     });
+
+
+//     const container = document.getElementById("container-id");
+// const newElement = document.createElement("div");
+// newElement.textContent = "I'm new here";
+
+// // Insert before the last child
+// container.insertBefore(newElement, container.lastElementChild);
+
+
+
+    if (payerAmountStatus[currentUser.data.Name][1]) {
+        
+        // document.getElementById("confirm-pay-btn").remove();
+        document.getElementById("confirm-pay-btn").remove();
+        const detailCard = document.getElementById("bill-detail-card");
+        const wrapper = document.createElement('div');
+
+        wrapper.innerHTML = '<div class="detail-section paid-message">You already paid</div>';
+        detailCard.insertBefore(wrapper.firstElementChild, detailCard.lastElementChild);
+    }
 }
 // bill entry html structure
 /*
