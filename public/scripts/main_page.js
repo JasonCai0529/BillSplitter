@@ -40,7 +40,13 @@ async function fetchUserName() {
     if (currentUser) {
         // Display the user name from the stored data
         const userName = currentUser.data.Name;
-        const userBalance = currentUser.data.Balance;
+        const userSnapshot = await db.collection("billsplitter_users").where("Name", "==", userName).get();
+        if (userSnapshot.empty) {
+            console.alert("cannot find such user in fetchUserName");
+        }
+
+        const userData = userSnapshot.docs[0].data();
+        const userBalance = userData.Balance;
         
         document.querySelector(".profile-name").innerText = `${userName}`; 
         document.querySelector(".user-balance").innerHTML = `${userBalance}`; 
