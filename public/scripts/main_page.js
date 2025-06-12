@@ -79,30 +79,6 @@ function showPaymentSuccess() {
 
 
 async function confirmPayment(bill, id) {
-    /**
-     update bill info
-     update cur user's balance
-     update receipent's balance
-     update spending's array -> [1, 2, 3, 4]
-     */
-
-     console.log(id);
-
-
-    //  const ownerSnapshot = await db.collection("billsplitter_users")
-    //         .where("Name", "==", name).get();
-        
-
-    //     if (!ownerSnapshot.empty) {
-    //         const ownerDoc = ownerSnapshot.docs[0];
-    //         const ownerRef = ownerDoc.ref;
-
-    //         if (billId) {
-    //             ownerRef.collection("Request").add({billId});
-    //         }
-    //     }
-
-
     // const billData = {
     //     "name":name,
     //     "description":description,
@@ -113,8 +89,6 @@ async function confirmPayment(bill, id) {
     //     "AmountStatus": status,
     //     "State": 'open'
     // };
-
-
     const payerName = currentUser.data.Name;
     const initiaterName = bill.name;
 
@@ -153,9 +127,6 @@ async function confirmPayment(bill, id) {
         payerSpendings[categoryCode[bill.category]] += payerAmount;
 
         payerBalance -= payerAmount;
-        // if (payerName == initiaterName) { // if is paying a bill of a person itself
-        //     payerBalance += payerAmount;
-        // }
         console.log(categoryCode[bill.category]);
         console.log(payerSpendings, payerBalance);
 
@@ -200,8 +171,6 @@ async function confirmPayment(bill, id) {
 function payCurrentBill(bill, id) {
     const container = document.getElementById("container");
     
-    
-
     // Generate dynamic content for amount status
     const yourAmount = bill.AmountStatus[currentUser.data.Name][0];
     
@@ -263,16 +232,6 @@ function payCurrentBill(bill, id) {
     document.getElementById("cancel-pay-btn").addEventListener("click", () => {
         window.location.href = "main_page.html";
     });
-
-
-//     const container = document.getElementById("container-id");
-// const newElement = document.createElement("div");
-// newElement.textContent = "I'm new here";
-
-// // Insert before the last child
-// container.insertBefore(newElement, container.lastElementChild);
-
-
 
     if (payerAmountStatus[currentUser.data.Name][1]) {
         
