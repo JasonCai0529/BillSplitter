@@ -322,7 +322,7 @@ async function addSingleBill(id, i, type) {
             
 
             let curEntryHtml =
-            `<div class="bill-entry" id = "bill-entry-${i}">
+            `<div class="bill-entry close" id = "bill-entry-${i}">
                         <div class="bill-info">
                             <div class="bill-description">${billDescription}</div>
                             <div class="bill-meta">
@@ -349,6 +349,14 @@ async function addSingleBill(id, i, type) {
             const buttonWrapper = document.createElement("div");
             buttonWrapper.appendChild(button);
             document.getElementById(`bill-entry-${i}`).appendChild(buttonWrapper);
+        } else {
+            // bill-description-close
+            // bill-category-close
+            // close
+
+            // add a button & call payCurrentBill
+            
+
         }
     }
 }
