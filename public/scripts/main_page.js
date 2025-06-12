@@ -190,7 +190,7 @@ async function confirmPayment(bill, id) {
         });
     }
 
-    console.log(bill.AmountStatus);
+    showPaymentSuccess();
 
 
 }
