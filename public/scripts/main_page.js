@@ -7,8 +7,6 @@ const db = firebase.firestore();
 /**
 
 
-if all have paid -> mark bill in grey
-
 clear all user's data
 
  */
@@ -282,8 +280,12 @@ function payCurrentBill(bill, id) {
         document.getElementById("confirm-pay-btn").remove();
         const detailCard = document.getElementById("bill-detail-card");
         const wrapper = document.createElement('div');
-
-        wrapper.innerHTML = '<div class="detail-section paid-message">You already paid</div>';
+        document.getElementById('cancel-pay-btn').innerHTML = "Return";
+        if (bill.State == 'close') {
+            wrapper.innerHTML = '<div class="detail-section paid-message">All members has paid</div>'
+        } else {
+            wrapper.innerHTML = '<div class="detail-section paid-message">You already paid</div>';
+        }
         detailCard.insertBefore(wrapper.firstElementChild, detailCard.lastElementChild);
     }
 }
@@ -307,18 +309,19 @@ async function addSingleBill(id, i, type) {
     const billMenu = document.getElementById(`${type}-scroll-menu`);
             
 
+    
 
     if (billSnap.exists) { // if can found such snapshot
         const billData = billSnap.data();
+        const billInitiater = billData.name;
+        const billDescription = billData.description;
+        const billDate = billData.date;
+        const billCategory = billData.category;
+        const billAmount = billData.AmountStatus[currentUser.data.Name][0];
         
         if (billData.State == "open") { // only do stuff when the bill is still open
             console.log("billSnap id: " + billRef.id);
-            const billInitiater = billData.name;
-            const billDescription = billData.description;
-            const billDate = billData.date;
-            const billCategory = billData.category;
-
-            const billAmount = billData.AmountStatus[currentUser.data.Name][0];
+            
             
 
             let curEntryHtml =
@@ -350,10 +353,6 @@ async function addSingleBill(id, i, type) {
             buttonWrapper.appendChild(button);
             document.getElementById(`bill-entry-${i}`).appendChild(buttonWrapper);
         } else {
-            // bill-description-close
-            // bill-category-close
-            // close
-
             let closeHtml = `<div class="bill-entry close" id = "bill-entry-${i}">
                         <div class="bill-info">
                             <div class="bill-description bill-description-close">${billDescription}</div>
@@ -366,9 +365,6 @@ async function addSingleBill(id, i, type) {
                         <div class="bill-amount">$${billAmount.toFixed(2)}</div>
             </div>`;
             billMenu.insertAdjacentHTML('beforeend', closeHtml);
-
-
-
             // add a button & call payCurrentBill
 
             const button = document.createElement("button");
