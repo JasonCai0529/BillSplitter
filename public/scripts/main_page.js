@@ -322,7 +322,7 @@ async function addSingleBill(id, i, type) {
             
 
             let curEntryHtml =
-            `<div class="bill-entry close" id = "bill-entry-${i}">
+            `<div class="bill-entry" id = "bill-entry-${i}">
                         <div class="bill-info">
                             <div class="bill-description">${billDescription}</div>
                             <div class="bill-meta">
@@ -354,9 +354,36 @@ async function addSingleBill(id, i, type) {
             // bill-category-close
             // close
 
+            let closeHtml = `<div class="bill-entry close" id = "bill-entry-${i}">
+                        <div class="bill-info">
+                            <div class="bill-description bill-description-close">${billDescription}</div>
+                            <div class="bill-meta">
+                                <span class="bill-date">${billDate}</span>
+                                <span class="bill-category bill-category-close">${billCategory}</span>
+                                <span class = "bill-initializer">Created by: ${billInitiater}</span>
+                            </div>
+                        </div>
+                        <div class="bill-amount">$${billAmount.toFixed(2)}</div>
+            </div>`;
+            billMenu.insertAdjacentHTML('beforeend', closeHtml);
+
+
+
             // add a button & call payCurrentBill
+
+            const button = document.createElement("button");
+            button.className = "btn-detail";
+            button.innerText = "Details";
             
 
+            button.addEventListener("click", ()=> {
+                console.log("the id in addSingleBill is", id);
+                payCurrentBill(billData, id);
+            })
+
+            const buttonWrapper = document.createElement("div");
+            buttonWrapper.appendChild(button);
+            document.getElementById(`bill-entry-${i}`).appendChild(buttonWrapper);
         }
     }
 }
