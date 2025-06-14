@@ -324,7 +324,7 @@ async function addSingleBill(id, i, type) {
                         <div class="bill-amount">$${billAmount.toFixed(2)}</div>
             </div>`;
             billMenu.insertAdjacentHTML('beforeend', closeHtml);
-            // add a button & call payCurrentBill
+            
 
             const button = document.createElement("button");
             button.className = "btn-detail";
