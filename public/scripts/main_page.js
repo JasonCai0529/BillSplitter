@@ -169,7 +169,7 @@ async function confirmPayment(bill, id) {
 
 
 function payCurrentBill(bill, id) {
-    const container = document.getElementById("container");
+    const container = document.getElementById("dashboard-container");
     
     // Generate dynamic content for amount status
     const yourAmount = bill.AmountStatus[currentUser.data.Name][0];
