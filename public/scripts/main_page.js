@@ -5,13 +5,8 @@ const db = firebase.firestore();
 
 
 /**
-
-
-clear all user's data
-
- */
-
-
+TODO: clear all user's data
+**/
 const categoryCode = {
     "restaurant": 0,
     "grocery": 1,
