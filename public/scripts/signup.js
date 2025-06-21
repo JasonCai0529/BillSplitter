@@ -5,7 +5,6 @@ const db = firebase.firestore();
 
 
 
-
 function showToast(message) {
   const toast = document.getElementById("toast");
   toast.textContent = message;
@@ -124,7 +123,7 @@ async function signup(event) {
         }
 
         // Retrieve user details from Firestore
-        await addUser({"Balance": balance, "Name": username, "Password": password, "Owed" : 0, "Owed you":0})
+        await addUser({"Balance": balance, "Name": username, "Password": password, "Owed" : 0, "Own":0});
         // alert("Sign-up Successful! You can login now");
         
         // showToast

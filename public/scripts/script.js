@@ -281,17 +281,20 @@ async function addBill() {
                 const userDoc = userSnapshot.docs[0];
                 const userRef = userDoc.ref;
 
+                const updatedOwedAmount = userDoc.data().Owed + status[participantName][0];
                 // add the bill id to the users bills
-                userRef.collection("Bills").add({billId}); // create new doc
 
-                
+                userRef.collection("Bills").add({billId}); // create new doc
+                userRef.update({ // update "Owed field for each participant in the bill"
+                    "Owed": updatedOwedAmount
+                });
                 console.log(`Request sent to ${participantName}`);
             } else {
                 console.warn(`User ${participantName} not found.`);
             }
         }
 
-        // 3. Add full amount to bill owner's balance immediately
+        // Add full amount to bill owner's "Own" or "Owd you" field immediately
         const ownerSnapshot = await db.collection("billsplitter_users")
             .where("Name", "==", name).get();
         
@@ -302,6 +305,13 @@ async function addBill() {
 
             if (billId) {
                 ownerRef.collection("Request").add({billId});
+            }
+
+            const ownAmount = ownerDoc.data().Own;
+            if (ownAmount) {
+                ownerRef.update({
+                    Own: ownAmount + amount  // own amount at this point + bill amount
+                });
             }
         }
 
