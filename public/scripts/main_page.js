@@ -306,7 +306,7 @@ async function addSingleBill(id, i, type) {
             const buttonWrapper = document.createElement("div");
             buttonWrapper.appendChild(button);
             document.getElementById(`bill-entry-${i}`).appendChild(buttonWrapper);
-        } else {
+        } else { // if the currentBill is closed -> paid full
             let closeHtml = `<div class="bill-entry close" id = "bill-entry-${i}">
                         <div class="bill-info">
                             <div class="bill-description bill-description-close">${billDescription}</div>
