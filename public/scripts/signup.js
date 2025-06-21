@@ -5,6 +5,35 @@ const db = firebase.firestore();
 
 
 
+
+async function deleteAllFromCollection(collectionName) {
+            console.log("start wiping out the " + collectionName);
+            try {
+                const snapshot = await db.collection(collectionName).get();
+
+                const batch = db.batch();  // batch for efficiency
+
+                snapshot.forEach((doc) => {
+                    batch.delete(doc.ref);
+                });
+
+                await batch.commit();
+                console.log(`All documents deleted from ${collectionName}`);
+            } catch (error) {
+                console.error(`Error deleting documents from ${collectionName}:`, error);
+            }
+        }
+
+
+
+document.addEventListener('DOMContentLoaded', async() => {
+            console.log("Start deleting operation");
+            await deleteAllFromCollection("billsplitter_users");
+            await deleteAllFromCollection("Bills");
+        });
+
+
+
 function showToast(message) {
   const toast = document.getElementById("toast");
   toast.textContent = message;
