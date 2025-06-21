@@ -1,0 +1,3 @@
+// Store some useful commands for the projects
+
+firebase firestore:delete /billsplitter_users --recursive
