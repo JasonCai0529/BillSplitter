@@ -418,3 +418,53 @@ document.addEventListener('DOMContentLoaded', function() {
     loadBills("Bills");
     loadBills("Request");
 });
+
+
+
+
+
+
+const serviceHTML = `<main class="container">
+    <h1>Our Services</h1>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-title">Bill Splitting</div>
+        <div class="service-description">
+          Easily split expenses among friends, roommates, or coworkers with transparent tracking.
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-title">Request Management</div>
+        <div class="service-description">
+          Send or receive payment requests and track who still owes you — all in one place.
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-title">Balance Overview</div>
+        <div class="service-description">
+          See how much you owe and how much is owed to you with clean, real-time summaries.
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-title">Expense Categories</div>
+        <div class="service-description">
+          Organize your bills into categories like grocery, personal, or gas for better insights.
+        </div>
+      </div>
+      <div class="service-card">
+        <div class="service-title">Activity History</div>
+        <div class="service-description">
+          Access your full history of payments and bill creation to stay on top of your finances.
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 ADJC. All rights reserved.</p>
+  </footer>`;
+
+
+document.getElementById("services-header").addEventListener('click', ()=> {
+    document.getElementById('dashboard-container').innerHTML = serviceHTML;
+})
