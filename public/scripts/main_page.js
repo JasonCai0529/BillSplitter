@@ -20,7 +20,7 @@ const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
 
 async function fetchUserName() {
-    console.log("in fetchUserName");  
+    console.log("in fetchUserName"); 
 
     if (currentUser) {
         // Display the user name from the stored data
@@ -32,10 +32,14 @@ async function fetchUserName() {
 
         const userData = userSnapshot.docs[0].data();
         const userBalance = userData.Balance;
+        const userOwedAmount = userData.Owed;
+        const userOwnAmont = userData.Own;
         
         document.querySelector(".profile-name").innerText = `${userName}`; 
-        document.querySelector(".user-balance").innerHTML = `${userBalance}`; 
-
+        document.querySelector(".user-balance").innerHTML = `${userBalance}`;
+        document.getElementById("owed-amt").innerHTML=`${userOwedAmount}`;
+        document.getElementById("own-amt").innerHTML=`${userOwnAmont}`;
+        
     } else {
         console.log("No user is currently logged in.");
         alert("Please log in first.");
@@ -364,8 +368,8 @@ async function loadBills(billtype) {
 
     if (!billsSnapshot.empty) {
 
-
-        for (let j = 0; j < docsArray.length; j++) {
+        // only load the first five bills
+        for (let j = 0; j < docsArray.length; j++) { 
             const curId = docsArray[j].data().billId;
             // fetch the actual bill from the universal "Bills" collection
             await addSingleBill(curId, i, BillType);
@@ -401,7 +405,7 @@ async function loadBills(billtype) {
         }
 
 
-        if (docsArray.length > i) { // if there are still more to load
+        if (docsArray.length > (i + 1)) { // if there are still more to load
             let moreButton = `<div class="more-bill-section"><button id = "more-bill-btn">More</button></div>`;
             billMenu.insertAdjacentHTML("beforeend", moreButton);
             document.getElementById("more-bill-btn").addEventListener("click", loadBillChunk);

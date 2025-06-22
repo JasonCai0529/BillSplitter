@@ -83,9 +83,6 @@ document.getElementById("participant-input").addEventListener('input', async fun
 
 
 // Login function
-
-
-
 function showToast(message, toastT) {
   const toast = document.getElementById(toastT);
   toast.textContent = message;
@@ -285,7 +282,8 @@ async function addBill() {
                 // add the bill id to the users bills
 
                 userRef.collection("Bills").add({billId}); // create new doc
-                userRef.update({ // update "Owed field for each participant in the bill"
+                console.log("updating " + participantName + "'s amount");
+                await userRef.update({ // update "Owed field for each participant in the bill"
                     "Owed": updatedOwedAmount
                 });
                 console.log(`Request sent to ${participantName}`);
@@ -298,7 +296,6 @@ async function addBill() {
         const ownerSnapshot = await db.collection("billsplitter_users")
             .where("Name", "==", name).get();
         
-    
         if (!ownerSnapshot.empty) {
             const ownerDoc = ownerSnapshot.docs[0];
             const ownerRef = ownerDoc.ref;
@@ -306,13 +303,12 @@ async function addBill() {
             if (billId) {
                 ownerRef.collection("Request").add({billId});
             }
-
+            
             const ownAmount = ownerDoc.data().Own;
-            if (ownAmount) {
-                ownerRef.update({
-                    Own: ownAmount + amount  // own amount at this point + bill amount
-                });
-            }
+            await ownerRef.update({
+                Owed: ownerDoc.data().Owed + status[name][0],
+                Own: ownAmount + amount
+            });
         }
 
         window.location.href = "main_page.html";
