@@ -13,14 +13,16 @@ const db = firebase.firestore();
 
 let currentUser;
 // add a single user with ({"Balance": 1, "Name": "Jason", Password: "2006", Spendings: [1, 2, 3, 4]});
-
-
-
-
 // dropdown list of avaliable users to choose
 
 
-
+document.addEventListener("DOMContentLoaded", () => {
+    const today = new Date().toISOString().split("T")[0];
+    console.log(today + " " + new Date().toISOString());
+    if (document.getElementById("date")) {
+        document.getElementById("date").setAttribute("max", today);
+    }
+});
 
 
 async function getAllUsers() {
@@ -37,7 +39,6 @@ async function getAllUsers() {
         console.error("Error retrieving users:", error);
     }
 }
-
 
 
 
@@ -282,7 +283,7 @@ async function addBill() {
                 // add the bill id to the users bills
 
                 userRef.collection("Bills").add({billId}); // create new doc
-                console.log("updating " + participantName + "'s amount");
+                console.log("updating " + participantName + "'s Owed amount");
                 await userRef.update({ // update "Owed field for each participant in the bill"
                     "Owed": updatedOwedAmount
                 });

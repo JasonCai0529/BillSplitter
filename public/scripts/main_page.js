@@ -406,6 +406,7 @@ async function loadBills(billtype) {
 
 
         if (docsArray.length > (i + 1)) { // if there are still more to load
+            console.log(docsArray.length + " " + (i + 1));
             let moreButton = `<div class="more-bill-section"><button id = "more-bill-btn">More</button></div>`;
             billMenu.insertAdjacentHTML("beforeend", moreButton);
             document.getElementById("more-bill-btn").addEventListener("click", loadBillChunk);
