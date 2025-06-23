@@ -281,7 +281,6 @@ async function addBill() {
 
                 const updatedOwedAmount = userDoc.data().Owed + status[participantName][0];
                 // add the bill id to the users bills
-
                 userRef.collection("Bills").add({billId}); // create new doc
                 console.log("updating " + participantName + "'s Owed amount");
                 await userRef.update({ // update "Owed field for each participant in the bill"
