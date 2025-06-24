@@ -109,9 +109,7 @@ async function login(event) {
         const querySnapshot = await db.collection("billsplitter_users").where("Name", "==", username).get();
 
         if (querySnapshot.empty) {
-            showToast(`Cannot find your Username : ${username}, please Sign-up first! Redirecting... `, "alert-toast");
-            
-
+            showToast(`Cannot find your Username : ${username}, please Sign-up! Redirecting... `, "alert-toast");
             setTimeout(() => {
                 window.location.href = "signup.html";
             }, 2500);
@@ -132,9 +130,7 @@ async function login(event) {
             }, 2500);
         } else {
             showToast(`Password is incorrect. Please try again! `, "alert-toast");
-
         }
-
     } catch(error) {
         console.log("Error signing up");
     }
