@@ -202,6 +202,9 @@ function removeParticipant(name, button) {
     console.log("Selected participants:", selectedParticipants);
 }
 
+document.querySelector('select').addEventListener('change', ()=> {
+    console.log(document.querySelector('select').value);
+});
 
 
 

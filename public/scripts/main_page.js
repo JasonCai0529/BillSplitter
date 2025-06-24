@@ -4,15 +4,15 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 
 
-/**
-TODO: clear all user's data
-**/
+
 const categoryCode = {
-    "restaurant": 0,
-    "grocery": 1,
-    "personal": 2,
-    "gas": 3,
-    "other": 4
+    "Food": 0,
+    "Personal": 1,
+    "Entertainment": 2,
+    "Transportation": 3,
+    "Housing": 4,
+    "Supplies": 5,
+    "Miscellaneous": 6
 }
 
 
@@ -120,7 +120,8 @@ async function confirmPayment(bill, id) {
         
 
         if (payerSpendings == undefined) {
-            payerSpendings = new Array(5).fill(0);
+            payerSpendings = new Array(7).fill(0);
+            // ["Food": 0, "Personal": 1,"Entertainment": 2,"Transportation": 3,"Housing": 4, "Supplies": 5,"Miscellaneous": 6]
         }
 
         payerSpendings[categoryCode[bill.category]] += payerAmount;
