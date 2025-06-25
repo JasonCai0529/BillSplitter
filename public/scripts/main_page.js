@@ -663,29 +663,34 @@ function renderSpendingsChart(spendings) {
     path.setAttribute("fill", colors[index]);
 
 
-
+    categorytip.style.left = '100px';
+    categorytip.style.top = '40px';
 
     
     path.addEventListener('mouseover', ()=> {
-      
-      // path.style.transform = "scale(1.05)"
-      // path.style.transformOrigin = "center"
       path.setAttribute("transform", "scale(1.1)");
+
+      const bbox = path.getBoundingClientRect(); // bounding box of the path
+      const containerBox = document.querySelector(".chart-container").getBoundingClientRect();
+
+      categorytip.style.backgroundColor = colors[index];
+
+      // Calculate position relative to the chart container
+      const offsetX = bbox.right - containerBox.left + 10;
+      const offsetY = bbox.top - containerBox.top + bbox.height / 2 - 10;
+      categorytip.style.left = `${offsetX}px`;
+      categorytip.style.top = `${offsetY}px`;
+
+      // sets up the tooltip's data
+      categorytip.innerHTML = tooltip.innerHTML = `
+        <strong>${categories[index]}</strong><br>
+        $${amt} (${(amt/sum * 100).toFixed(2)}%)`;
+      
       categorytip.style.display = "block";
-      categorytip.textContent = categories[index];
       categorytip.style.backgroundColor = colors[index];
     });
 
-    path.addEventListener("mousemove", (e) => {
-      console.log("inside");
-
-      const bbox = path.getBoundingClientRect();
-      console.log(bbox.right);
-      console.log(bbox.left);
-
-      // categorytip.style.left = `${Math.min(bbox.right + 8, window.innerWidth - 150)}px`;
-      // categorytip.style.top = `${Math.max(bbox.top, 0)}px`;
-    });
+    // try get rid of the mousemove, just put everything inside mouseover
 
 
     path.addEventListener("mouseleave", () => {
@@ -696,7 +701,6 @@ function renderSpendingsChart(spendings) {
     segmentGroup.insertBefore(path, segmentGroup.firstChild);
     startAngle = endAngle;
   })
-
 
 }
 

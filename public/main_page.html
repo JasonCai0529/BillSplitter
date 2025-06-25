@@ -792,6 +792,11 @@
     .chart-container {
       overflow: visible;
     }
+
+
+    #tooltip {
+      transition: opacity 0.2s ease;
+    }
     </style>
 </head>
 <body>
@@ -883,7 +888,7 @@
                                 font-size: 14px;
                                 pointer-events: none;
                                 box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-                                /* display: none; */
+                                display: none;
                                 z-index: 1000;
                                 border:#4482ff solid 2px;
                                 
