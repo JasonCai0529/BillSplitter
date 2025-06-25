@@ -16,6 +16,8 @@ const categoryCode = {
 }
 
 
+
+
 const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
 
@@ -423,15 +425,7 @@ document.addEventListener('DOMContentLoaded', function() {
     animateChartSegments();
     loadBills("Bills");
     loadBills("Request");
-    renderDonutChart({
-      "Food": 10,
-    "Personal": 10,
-    "Entertainment": 10,
-    "Transportation": 10,
-    "Housing": 10,
-    "Supplies": 10,
-    "Miscellaneous": 10
-    })
+    renderSpendingsChart([10, 10, 10, 10, 10, 10, 10])
 });
 
 
@@ -645,11 +639,13 @@ function describeArcPath(x, y, radius, startAngle, endAngle) {
 
 function renderSpendingsChart(spendings) {
   const colors = ["#2c4c8c", "#4b6cb7", "#6e9de8", "#e5eeff", "#ffb347", "#87d68d", "#ff8da1"];
+  const categories = ["Food","Personal","Entertainment","Transportation","Housing","Supplies","Miscellaneous"];
 
   const sum = spendings.reduce((a, b)=> a + b, 0); // total of all spendings
 
   const segmentGroup = document.getElementById("donut-segments");
   segmentGroup.innerHTML = '<circle cx="0" cy="0" r="60" fill="white" />'; // put the center white circle in
+  const categorytip = document.getElementById("tooltip");
 
   let startAngle = 0;
   spendings.forEach((amt, index) => {
@@ -661,8 +657,36 @@ function renderSpendingsChart(spendings) {
 
     const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
 
+
+
     path.setAttribute("d", arcAttributes);
     path.setAttribute("fill", colors[index]);
+
+    // path.style.transition = "transform 0.2s ease-out";
+
+
+
+    
+    path.addEventListener('mouseover', ()=> {
+      
+      // path.style.transform = "scale(1.05)"
+      // path.style.transformOrigin = "center"
+      path.setAttribute("transform", "scale(1.1)");
+      categorytip.style.display = "block";
+      categorytip.textContent = categories[index];
+      categorytip.style.backgroundColor = colors[index];
+    });
+
+    // path.addEventListener("mousemove", (e) => {
+    //   categorytip.style.left = e.pageX + 10 + "px";
+    //   categorytip.style.top = e.pageY + 10 + "px";
+    // });
+
+
+    path.addEventListener("mouseleave", () => {
+      path.setAttribute("transform", "scale(1)");
+      categorytip.style.display = "none";
+    });
 
     segmentGroup.insertBefore(path, segmentGroup.firstChild);
 
