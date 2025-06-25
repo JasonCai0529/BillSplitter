@@ -614,6 +614,29 @@ document.getElementById("contact-header").addEventListener('click', ()=> {
 // }
 
 
+
+{/* <tr>
+<td><span class="spending-table-color-rec"></span> Restaurant</td>
+<td>None</td>
+<td>None</td>
+</tr> */}
+
+function insertTableRow(category, color, amount, percentage) {
+  const tableBody = document.getElementById("spending-table-body");
+  const temp = document.createElement("tbody");
+  temp.innerHTML = `
+    <tr>
+      <td><span id="${category}-color-rec" class="spending-table-color-rec"></span> ${category}</td>
+      <td>${percentage.toFixed(2)}</td>
+      <td>${amount}</td>
+    </tr>
+  `;
+  const row = temp.firstElementChild;
+  tableBody.appendChild(row);
+  document.getElementById(`${category}-color-rec`).style.backgroundColor = color;
+}
+
+
 function polarToCartesian(cx, cy, r, angleDeg) {
   const angleRad = (angleDeg - 90) * Math.PI/180;
   const x_coord = cx + r * Math.cos(angleRad);
@@ -654,6 +677,9 @@ function renderSpendingsChart(spendings) {
     const endAngle = startAngle + sliceInDegree;
 
     const arcAttributes = describeArcPath(0, 0, 150, startAngle, endAngle);
+
+    // clean all of these values up
+    insertTableRow(categories[index], colors[index], amt, amt/sum * 100);
 
     const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
     path.setAttribute("d", arcAttributes);
