@@ -662,7 +662,6 @@ function renderSpendingsChart(spendings) {
     path.setAttribute("d", arcAttributes);
     path.setAttribute("fill", colors[index]);
 
-    // path.style.transition = "transform 0.2s ease-out";
 
 
 
@@ -695,8 +694,6 @@ function renderSpendingsChart(spendings) {
     });
 
     segmentGroup.insertBefore(path, segmentGroup.firstChild);
-
-
     startAngle = endAngle;
   })
 
