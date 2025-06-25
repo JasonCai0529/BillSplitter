@@ -656,15 +656,8 @@ function renderSpendingsChart(spendings) {
     const arcAttributes = describeArcPath(0, 0, 150, startAngle, endAngle);
 
     const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-
-
-
     path.setAttribute("d", arcAttributes);
     path.setAttribute("fill", colors[index]);
-
-
-    categorytip.style.left = '100px';
-    categorytip.style.top = '40px';
 
     
     path.addEventListener('mouseover', ()=> {
@@ -689,9 +682,6 @@ function renderSpendingsChart(spendings) {
       categorytip.style.display = "block";
       categorytip.style.backgroundColor = colors[index];
     });
-
-    // try get rid of the mousemove, just put everything inside mouseover
-
 
     path.addEventListener("mouseleave", () => {
       path.setAttribute("transform", "scale(1)");
