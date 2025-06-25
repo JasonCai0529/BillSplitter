@@ -679,7 +679,6 @@ function renderSpendingsChart(spendings) {
 
     path.addEventListener("mousemove", (e) => {
       console.log("inside");
-      // const svg = document.getElementById("spending-chart");
 
       const bbox = path.getBoundingClientRect();
       console.log(bbox.right);
