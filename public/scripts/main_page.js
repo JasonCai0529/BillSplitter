@@ -677,10 +677,17 @@ function renderSpendingsChart(spendings) {
       categorytip.style.backgroundColor = colors[index];
     });
 
-    // path.addEventListener("mousemove", (e) => {
-    //   categorytip.style.left = e.pageX + 10 + "px";
-    //   categorytip.style.top = e.pageY + 10 + "px";
-    // });
+    path.addEventListener("mousemove", (e) => {
+      console.log("inside");
+      // const svg = document.getElementById("spending-chart");
+
+      const bbox = path.getBoundingClientRect();
+      console.log(bbox.right);
+      console.log(bbox.left);
+
+      // categorytip.style.left = `${Math.min(bbox.right + 8, window.innerWidth - 150)}px`;
+      // categorytip.style.top = `${Math.max(bbox.top, 0)}px`;
+    });
 
 
     path.addEventListener("mouseleave", () => {

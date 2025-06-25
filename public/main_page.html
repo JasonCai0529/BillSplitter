@@ -156,7 +156,9 @@
         
         .chart-container {
             position: relative;
+            /* z-index: 100; */
             height: 300px;
+            overflow: visible;
         }
         
         .spending-table {
@@ -785,6 +787,11 @@
         padding: 30px;
       }
     }
+
+
+    .chart-container {
+      overflow: visible;
+    }
     </style>
 </head>
 <body>
@@ -852,14 +859,20 @@
                     <div class="section-card">
                         <h3>Your spending</h3>
                         <div class="spending-grid">
-                            <div class="chart-container">
-                                <svg width="100%" height="100%" viewBox="0 0 400 400">
+                            <div class="chart-container" style="overflow: visible;">
+                                <svg width="100%" height="100%" viewBox="0 0 400 400" id="spending-chart" style="position:relative;">
                                     <g transform="translate(200, 200)">
                                        <g id="donut-segments">
+
                                          <!-- insert circle path over here -->
+
+                                         
                                        </g>
                                     </g>
+
+                                     
                                 </svg>
+
 
                                 <div id="tooltip" style="
                                 position: absolute;
@@ -870,9 +883,13 @@
                                 font-size: 14px;
                                 pointer-events: none;
                                 box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-                                display: none;
+                                /* display: none; */
                                 z-index: 1000;
+                                border:#4482ff solid 2px;
+                                
                               "></div>
+
+                               
 
                             </div>
                         </div>
