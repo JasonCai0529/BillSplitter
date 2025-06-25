@@ -478,15 +478,6 @@
         /***********************/
         /***********************/
         /* service css session */
-        :root {
-      --primary: #2c4c8c;
-      --primary-light: #4b6cb7;
-      --gray: #f5f7fa;
-      --white: #ffffff;
-      --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      --border-radius: 12px;
-    }
-
     * {
       margin: 0;
       padding: 0;
@@ -796,6 +787,17 @@
 
     #tooltip {
       transition: opacity 0.2s ease;
+      position: absolute;
+      color: var(--primary-dark);
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      pointer-events: none;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      display: none;
+      z-index: 1000;
+      border:#ffffff dashed 1px;
     }
     </style>
 </head>
@@ -879,23 +881,9 @@
                                 </svg>
 
 
-                                <div id="tooltip" style="
-                                position: absolute;
-                                background: white;
-                                color: black;
-                                padding: 6px 12px;
-                                border-radius: 6px;
-                                font-size: 14px;
-                                pointer-events: none;
-                                box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-                                display: none;
-                                z-index: 1000;
-                                border:#4482ff solid 2px;
-                                
-                              "></div>
-
-                               
-
+                                <div id="tooltip">
+                                  <!-- slice info card -->
+                                </div>
                             </div>
                         </div>
 
@@ -915,21 +903,8 @@
                                             <td>None</td>
                                             <td>None</td>
                                         </tr>
-                                        <tr>
-                                            <td><span style="display: inline-block; width: 12px; height: 12px; background-color: #4b6cb7; margin-right: 8px; border-radius: 2px;"></span> Grocery</td>
-                                            <td>None</td>
-                                            <td>None</td>
-                                        </tr>
-                                        <tr>
-                                            <td><span style="display: inline-block; width: 12px; height: 12px; background-color: #6e9de8; margin-right: 8px; border-radius: 2px;"></span> Personal</td>
-                                            <td>None</td>
-                                            <td>None</td>
-                                        </tr>
-                                        <tr>
-                                            <td><span style="display: inline-block; width: 12px; height: 12px; background-color: #e5eeff; margin-right: 8px; border-radius: 2px;"></span> Gas</td>
-                                            <td>None</td>
-                                            <td>None</td>
-                                        </tr>
+                                        
+                                        
                                     </tbody>
                                 </table>
                             </div>

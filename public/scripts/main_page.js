@@ -638,7 +638,7 @@ function describeArcPath(x, y, radius, startAngle, endAngle) {
 }
 
 function renderSpendingsChart(spendings) {
-  const colors = ["#2c4c8c", "#4b6cb7", "#6e9de8", "#e5eeff", "#ffb347", "#87d68d", "#ff8da1"];
+  const colors = ["#a0b4db", "#4b6cb7", "#6e9de8", "#e5eeff", "#ffb347", "#87d68d", "#ff8da1"];
   const categories = ["Food","Personal","Entertainment","Transportation","Housing","Supplies","Miscellaneous"];
 
   const sum = spendings.reduce((a, b)=> a + b, 0); // total of all spendings
@@ -665,11 +665,9 @@ function renderSpendingsChart(spendings) {
 
       const bbox = path.getBoundingClientRect(); // bounding box of the path
       const containerBox = document.querySelector(".chart-container").getBoundingClientRect();
-
-      categorytip.style.backgroundColor = colors[index];
-
       // Calculate position relative to the chart container
-      const offsetX = bbox.right - containerBox.left + 10;
+      // const offsetX = bbox.left - containerBox.left - 80;
+      const offsetX = bbox.right - containerBox.left - 10;  // // if want to place on the left side
       const offsetY = bbox.top - containerBox.top + bbox.height / 2 - 10;
       categorytip.style.left = `${offsetX}px`;
       categorytip.style.top = `${offsetY}px`;
@@ -679,8 +677,8 @@ function renderSpendingsChart(spendings) {
         <strong>${categories[index]}</strong><br>
         $${amt} (${(amt/sum * 100).toFixed(2)}%)`;
       
-      categorytip.style.display = "block";
       categorytip.style.backgroundColor = colors[index];
+      categorytip.style.display = "block";
     });
 
     path.addEventListener("mouseleave", () => {
