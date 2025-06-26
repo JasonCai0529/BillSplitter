@@ -226,7 +226,9 @@ async function addBill() {
     }
 
     if (selectedParticipants.length === 0) {
-        alert("Please add at least one participant.");
+        showToast("Add at least one participant besides yourself", "addParticipant-toast");
+
+        // alert("Please add at least one participant.");
         return;
     }
 

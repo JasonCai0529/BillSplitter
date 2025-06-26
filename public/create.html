@@ -273,6 +273,24 @@
         .autocomplete-items div:hover {
             background-color: #f1f1f1;
         }
+
+
+        .toast {
+            font-weight: 550;
+        }
+
+
+        .alert {
+            color: rgb(250, 44, 44);
+        }
+
+        .show {
+            opacity: 1;
+        }
+
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -342,16 +360,16 @@
                                         <button class="remove-btn" disabled></button>
                                     <span class="participant-check">✓</span>
                                 </div>
+                                <div class="toast alert hidden" id="addParticipant-toast"></div>
                                 <div class="add-participant">
                                     <!-- <input type="text" id="participant-input" class="form-control" placeholder="Add participant by username"> -->
 
                                     <div class="autocomplete-wrapper">
-                                    <input type="text" id="participant-input" class="form-control" placeholder="Add participant by username">
-                                    <div id="autocomplete-list" class="autocomplete-items"></div>
+                                        <input type="text" id="participant-input" class="form-control" placeholder="Add participant by username">
+                                        <div id="autocomplete-list" class="autocomplete-items"></div>
                                     </div>
 
                                     <button class="btn" onclick="addParticipant()">Add</button>
-
                                 </div>
                                  
                             </div>
