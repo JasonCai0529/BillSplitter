@@ -625,7 +625,7 @@ function insertTableRow(category, color, amount, percentage) {
   const tableBody = document.getElementById("spending-table-body");
   const temp = document.createElement("tbody");
   temp.innerHTML = `
-    <tr>
+    <tr id="${category}-row" class="category-rows">
       <td><span id="${category}-color-rec" class="spending-table-color-rec"></span> ${category}</td>
       <td>${percentage.toFixed(2)}</td>
       <td>${amount}</td>
@@ -641,7 +641,7 @@ function polarToCartesian(cx, cy, r, angleDeg) {
   const angleRad = (angleDeg - 90) * Math.PI/180;
   const x_coord = cx + r * Math.cos(angleRad);
   const y_coord = cy + r * Math.sin(angleRad);
-  return {x: x_coord, y:y_coord};
+  return {x: x_coord, y: y_coord};
 }
 
 
@@ -667,23 +667,24 @@ function renderSpendingsChart(spendings) {
   const sum = spendings.reduce((a, b)=> a + b, 0); // total of all spendings
 
   const segmentGroup = document.getElementById("donut-segments");
-  segmentGroup.innerHTML = '<circle cx="0" cy="0" r="60" fill="white" />'; // put the center white circle in
+  segmentGroup.innerHTML = '<circle cx="0" cy="0" r="60" fill="white"/>'; // put the center white circle in
   const categorytip = document.getElementById("tooltip");
 
   let startAngle = 0;
   spendings.forEach((amt, index) => {
+    const curCategory = categories[index];
+    const curColor = colors[index];
+
     const sliceInDegree = (amt/sum) * 360; // percentage * 360
-
     const endAngle = startAngle + sliceInDegree;
-
     const arcAttributes = describeArcPath(0, 0, 150, startAngle, endAngle);
 
     // clean all of these values up
-    insertTableRow(categories[index], colors[index], amt, amt/sum * 100);
+    insertTableRow(curCategory, curColor, amt, amt/sum * 100);
 
     const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
     path.setAttribute("d", arcAttributes);
-    path.setAttribute("fill", colors[index]);
+    path.setAttribute("fill", curColor);
 
     
     path.addEventListener('mouseover', ()=> {
@@ -692,24 +693,26 @@ function renderSpendingsChart(spendings) {
       const bbox = path.getBoundingClientRect(); // bounding box of the path
       const containerBox = document.querySelector(".chart-container").getBoundingClientRect();
       // Calculate position relative to the chart container
-      // const offsetX = bbox.left - containerBox.left - 80;
+      // const offsetX = bbox.left - containerBox.left - 80; // // if want to place on the right
       const offsetX = bbox.right - containerBox.left - 10;  // // if want to place on the left side
       const offsetY = bbox.top - containerBox.top + bbox.height / 2 - 10;
       categorytip.style.left = `${offsetX}px`;
       categorytip.style.top = `${offsetY}px`;
 
       // sets up the tooltip's data
-      categorytip.innerHTML = tooltip.innerHTML = `
-        <strong>${categories[index]}</strong><br>
+      categorytip.innerHTML = `
+        <strong>${curCategory}</strong><br>
         $${amt} (${(amt/sum * 100).toFixed(2)}%)`;
-      
-      categorytip.style.backgroundColor = colors[index];
+      document.getElementById(`${curCategory}-row`).style.backgroundColor = curColor;
+
+      categorytip.style.backgroundColor = curColor;
       categorytip.style.display = "block";
     });
 
     path.addEventListener("mouseleave", () => {
       path.setAttribute("transform", "scale(1)");
       categorytip.style.display = "none";
+      document.getElementById(`${curCategory}-row`).style.backgroundColor = 'white';
     });
 
     segmentGroup.insertBefore(path, segmentGroup.firstChild);
