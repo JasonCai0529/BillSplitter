@@ -221,7 +221,8 @@ async function addBill() {
     const userInfo = JSON.parse(localStorage.getItem("currentUser"));
     const name = userInfo?.data?.Name || "Unknown"; 
     if (!description || !amount || !category || !date) {
-        alert("Please fill out all bill details.");
+        // alert("Please fill out all bill details.");
+        showToast("Please fill out all bill details", "more-detail-toast");
         return;
     }
 
