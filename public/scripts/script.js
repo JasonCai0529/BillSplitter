@@ -13,7 +13,6 @@ const db = firebase.firestore();
 
 let currentUser;
 // add a single user with ({"Balance": 1, "Name": "Jason", Password: "2006", Spendings: [1, 2, 3, 4]});
-// dropdown list of avaliable users to choose
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -221,15 +220,12 @@ async function addBill() {
     const userInfo = JSON.parse(localStorage.getItem("currentUser"));
     const name = userInfo?.data?.Name || "Unknown"; 
     if (!description || !amount || !category || !date) {
-        // alert("Please fill out all bill details.");
         showToast("Please fill out all bill details", "more-detail-toast");
         return;
     }
 
     if (selectedParticipants.length === 0) {
         showToast("Add at least one participant besides yourself", "addParticipant-toast");
-
-        // alert("Please add at least one participant.");
         return;
     }
 
