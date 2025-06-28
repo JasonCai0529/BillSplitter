@@ -561,65 +561,6 @@ document.getElementById("contact-header").addEventListener('click', ()=> {
 //////////////////////////////////////
 /////////////SVG Rendering///////////
 ////////////////////////////////////
-// function polarToCartesian(cx, cy, r, angleInDegrees) {
-//     const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
-//     return {
-//         x: cx + r * Math.cos(angleInRadians),
-//         y: cy + r * Math.sin(angleInRadians)
-//     };
-// }
-
-// function describeArc(x, y, radius, startAngle, endAngle) {
-//     const start = polarToCartesian(x, y, radius, startAngle);
-//     const end = polarToCartesian(x, y, radius, endAngle);
-//     const largeArcFlag = endAngle - startAngle > 180 ? "1" : "0";
-
-//     return [
-//         "M", start.x.toFixed(2), start.y.toFixed(2),
-//         "A", radius, radius, 0, largeArcFlag, 1, end.x.toFixed(2), end.y.toFixed(2),
-//         "L", x, y,
-//         "Z"
-//     ].join(" ");
-// }
-
-
-// function renderDonutChart(spendingsByCategory) {
-//     const colors = [
-//         "#2c4c8c", "#4b6cb7", "#6e9de8", "#e5eeff",
-//         "#ffb347", "#87d68d", "#ff8da1"
-//     ];
-
-//     const segmentGroup = document.getElementById("donut-segments");
-//     segmentGroup.innerHTML = '<circle cx="0" cy="0" r="60" fill="white" />';
-
-//     const total = Object.values(spendingsByCategory).reduce((sum, val) => sum + val, 0);
-//     if (total === 0) return;
-
-//     let startAngle = 0;
-//     Object.entries(spendingsByCategory).forEach(([category, amount], index) => {
-//         const value = parseFloat(amount);
-//         if (value <= 0) return;
-
-//         const sliceAngle = (value / total) * 360;
-//         const endAngle = startAngle + sliceAngle;
-
-//         const pathData = describeArc(0, 0, 150, startAngle, endAngle);
-//         const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-//         path.setAttribute("d", pathData);
-//         path.setAttribute("fill", colors[index % colors.length]);
-//         segmentGroup.insertBefore(path, segmentGroup.firstChild); // keep center circle last
-
-//         startAngle = endAngle;
-//     });
-// }
-
-
-
-{/* <tr>
-<td><span class="spending-table-color-rec"></span> Restaurant</td>
-<td>None</td>
-<td>None</td>
-</tr> */}
 
 function insertTableRow(category, color, amount, percentage) {
   const tableBody = document.getElementById("spending-table-body");
