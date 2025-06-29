@@ -19,8 +19,6 @@ function showToast(message) {
 
 
 
-
-
 const usernameRef = document.getElementById("newUsername");
 const passwordRef = document.getElementById("newPassword");
 const balanceRef = document.getElementById("newBalance");
