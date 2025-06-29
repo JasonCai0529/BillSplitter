@@ -4,8 +4,8 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 
 
-function showToast(message) {
-  const toast = document.getElementById("toast");
+function showToast(message, toastT) {
+  const toast = document.getElementById(toastT);
   toast.textContent = message;
   toast.classList.remove("hidden");
   toast.classList.add("show");
@@ -49,7 +49,7 @@ function passwordValidation() {
         passwordValid = true;
         return "";
     } else {
-        return "Must contains at least one: upper case letter, smaller case letter, special character";
+        return "Should contain: upper case letter, smaller case letter, special character";
     }
 }
 
@@ -63,17 +63,24 @@ function balanceValidation() {
     }
 }
 
-usernameRef.addEventListener("input", ()=> {
-    usernameErrorRef.textContent = usernameValidation();
-})
+document.addEventListener("DOMContentLoaded", () => {
+    if (usernameRef && passwordRef && balanceRef) { // signUp page
+        usernameRef.addEventListener("input", ()=> {
+            usernameErrorRef.textContent = usernameValidation();
+        });
 
-passwordRef.addEventListener("input", ()=> {
-    passwordErrorRef.textContent = passwordValidation();
-})
+        passwordRef.addEventListener("input", ()=> {
+            passwordErrorRef.textContent = passwordValidation();
+        });
 
-balanceRef.addEventListener("input", ()=> {
-    balanceErrorRef.textContent = balanceValidation();
-})
+        balanceRef.addEventListener("input", ()=> {
+            balanceErrorRef.textContent = balanceValidation();
+        });
+    }
+});
+
+
+
 
 
 
@@ -92,9 +99,8 @@ async function addUser(userData) {
 async function signup(event) {
     event.preventDefault();
 
-
     if (!(usernameValid && passwordValid && balanceValid)) {
-        showToast("Please follow the correct format to enter your information");
+        showToast("Please follow the correct format to enter your information", "signup-success-toast");
         return;
     }
 
@@ -127,4 +133,43 @@ async function signup(event) {
       } catch (error) {
         console.error("Sign up Failed:", error.message);
       }
+}
+
+
+
+
+async function login(event) {
+    event.preventDefault();
+    const username = document.getElementById("newUsername").value;
+    const password = document.getElementById("newPassword").value;
+
+    try {
+        const querySnapshot = await db.collection("billsplitter_users").where("Name", "==", username).get();
+
+        if (querySnapshot.empty) {
+            showToast(`Cannot find your Username : ${username}, please Sign-up! Redirecting... `, "alert-toast");
+            setTimeout(() => {
+                window.location.href = "signup.html";
+            }, 2500);
+            return;
+        }
+
+        let userData;
+        querySnapshot.forEach((doc) => {
+            userData = doc.data();
+            localStorage.setItem("currentUser", JSON.stringify({ id: doc.id, data: userData }));
+        });
+
+        // validate user with their password
+        if (userData.Password == password) {
+            showToast("Log in successful! Welcome back!", "top-toast");
+            setTimeout(() => {
+                window.location.href = "main_page.html";
+            }, 2500);
+        } else {
+            showToast(`Password is incorrect. Please try again! `, "alert-toast");
+        }
+    } catch(error) {
+        console.log("Error signing up");
+    }
 }

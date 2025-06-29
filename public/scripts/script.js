@@ -98,45 +98,6 @@ function showToast(message, toastT) {
 
 
 
-
-async function login(event) {
-    event.preventDefault();
-    const username = document.getElementById("newUsername").value;
-    const password = document.getElementById("newPassword").value;
-
-    try {
-        const querySnapshot = await db.collection("billsplitter_users").where("Name", "==", username).get();
-
-        if (querySnapshot.empty) {
-            showToast(`Cannot find your Username : ${username}, please Sign-up! Redirecting... `, "alert-toast");
-            setTimeout(() => {
-                window.location.href = "signup.html";
-            }, 2500);
-            return;
-        }
-
-        let userData;
-        querySnapshot.forEach((doc) => {
-            userData = doc.data();
-            localStorage.setItem("currentUser", JSON.stringify({ id: doc.id, data: userData }));
-        });
-
-        // validate user with their password
-        if (userData.Password == password) {
-            showToast("Log in successful! Welcome back!", "top-toast");
-            setTimeout(() => {
-                window.location.href = "main_page.html";
-            }, 2500);
-        } else {
-            showToast(`Password is incorrect. Please try again! `, "alert-toast");
-        }
-    } catch(error) {
-        console.log("Error signing up");
-    }
-}
-
-
-
 // Add participant function 
 const selectedParticipants = [];
 
