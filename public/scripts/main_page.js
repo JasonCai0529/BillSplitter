@@ -499,7 +499,7 @@ const contactHTML = `<div class="page-title">
               </svg>
               Email
             </h3>
-            <p><a href="mailto:Aimeezhang1122@outlook.com">Aimeezhang1122@outlook.com</a></p>
+            <p><a href="mailto:caiyl0529@gmail.com">caiyl0529@gmail.com</a></p>
           </div>
           
           <div class="contact-item">
@@ -509,7 +509,7 @@ const contactHTML = `<div class="page-title">
               </svg>
               Phone
             </h3>
-            <p><a href="tel:+1 4479022337">+ 1 447902 2337</a></p>
+            <p><a href="tel:+1 2244214083">+ 1 224 421 4083</a></p>
           </div>
           
           <div class="contact-item">
