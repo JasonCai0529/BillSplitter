@@ -104,9 +104,6 @@ async function signup(event) {
     const password = document.getElementById("newPassword").value;
     const balance = document.getElementById("newBalance").value;
 
-
-    // console.log("Signing up with:", username, password);
-
     try {
         // Check if user already exist
 
@@ -125,9 +122,7 @@ async function signup(event) {
 
         // Retrieve user details from Firestore
         await addUser({"Balance": balance, "Name": username, "Password": password, "Owed" : 0, "Own":0, Spendings: spending_arr});
-        // alert("Sign-up Successful! You can login now");
-        
-        // showToast
+        // upon sucess
         showToast("Sign-up Successful! You can login now");
 
         setTimeout(()=> {window.location.href = "login.html"}, 2500);
