@@ -121,8 +121,10 @@ async function signup(event) {
             return;
         }
 
+        const spending_arr = new Array(7).fill(0);
+
         // Retrieve user details from Firestore
-        await addUser({"Balance": balance, "Name": username, "Password": password, "Owed" : 0, "Own":0});
+        await addUser({"Balance": balance, "Name": username, "Password": password, "Owed" : 0, "Own":0, Spendings: spending_arr});
         // alert("Sign-up Successful! You can login now");
         
         // showToast
