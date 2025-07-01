@@ -22,7 +22,6 @@ const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
 
 async function fetchUserName() {
-    console.log("in fetchUserName"); 
 
     if (currentUser) {
         // Display the user name from the stored data
@@ -119,7 +118,6 @@ async function confirmPayment(bill, id) {
     if (!payerSnapshot.empty) {
 
         const payerData = payerSnapshot.docs[0].data();
-        console.log(payerData.Balance);
 
         let payerBalance = payerData.Balance;
         let payerSpendings = payerData.Spendings;
@@ -133,8 +131,7 @@ async function confirmPayment(bill, id) {
         payerSpendings[categoryCode[bill.category]] += payerAmount;
 
         payerBalance -= payerAmount;
-        console.log(categoryCode[bill.category]);
-        console.log(payerSpendings, payerBalance);
+        
 
         const payerDoc = payerSnapshot.docs[0];
         const payerRef = payerDoc.ref;
@@ -151,11 +148,9 @@ async function confirmPayment(bill, id) {
         return;
     }
 
-
     const initiaterSnapshot = await db.collection("billsplitter_users").where("Name", "==", initiaterName).get();
     if (!initiaterSnapshot.empty) { // add amount to bill owner's balance
         const initiaterData = initiaterSnapshot.docs[0].data();
-        console.log(initiaterData.name);
 
         let initiaterBalance = initiaterData.Balance;
 
@@ -223,10 +218,7 @@ function payCurrentBill(bill, id) {
         </div>
     `;
 
-
     let payerAmountStatus = bill.AmountStatus;
-
-    
 
     // Set up the Confirm Pay button listener
     document.getElementById("confirm-pay-btn").addEventListener("click", () => {
@@ -271,9 +263,6 @@ async function addSingleBill(id, i, type) {
     const billSnap = await billRef.get();
     const billMenu = document.getElementById(`${type}-scroll-menu`);
             
-
-    
-
     if (billSnap.exists) { // if can found such snapshot
         const billData = billSnap.data();
         const billInitiater = billData.name;
@@ -283,10 +272,7 @@ async function addSingleBill(id, i, type) {
         const billAmount = billData.AmountStatus[currentUser.data.Name][0];
         
         if (billData.State == "open") { // only do stuff when the bill is still open
-            console.log("billSnap id: " + billRef.id);
             
-            
-
             let curEntryHtml =
             `<div class="bill-entry" id = "bill-entry-${i}">
                         <div class="bill-info">
@@ -308,10 +294,8 @@ async function addSingleBill(id, i, type) {
             button.innerText = "Pay";
 
             button.addEventListener("click", ()=> {
-                console.log("the id in addSingleBill is", id);
                 payCurrentBill(billData, id);
             })
-            console.log(billMenu);
 
             const buttonWrapper = document.createElement("div");
             buttonWrapper.appendChild(button);
@@ -398,7 +382,6 @@ async function loadBills(billtype) {
                 }
 
                 if (i < docsArray.length) { // if there are still more bills to load, add the button back
-                    console.log("inside this block", i, docsArray.length);
                     let moreButton = `<div class="more-bill-section"><button id = "more-bill-btn">More</button></div>`;
                     billMenu.insertAdjacentHTML("beforeend", moreButton);
                     document.getElementById("more-bill-btn").addEventListener("click", loadBillChunk);
@@ -410,7 +393,6 @@ async function loadBills(billtype) {
 
 
         if (docsArray.length > (i + 1)) { // if there are still more to load
-            console.log(docsArray.length + " " + (i + 1));
             let moreButton = `<div class="more-bill-section"><button id = "more-bill-btn">More</button></div>`;
             billMenu.insertAdjacentHTML("beforeend", moreButton);
             document.getElementById("more-bill-btn").addEventListener("click", loadBillChunk);
@@ -420,10 +402,10 @@ async function loadBills(billtype) {
 
 document.addEventListener('DOMContentLoaded', function() {
     fetchUserName();
-    animateChartSegments();
     loadBills("Bills");
     loadBills("Request");
     renderSpendingsChart();
+    animateChartSegments();
 });
 
 
@@ -610,7 +592,6 @@ async function renderSpendingsChart() {
   const categories = ["Food","Personal","Entertainment","Transportation","Housing","Supplies","Miscellaneous"];
 
   let sum = spendings.reduce((a, b)=> a + b, 0); // total of all spendings
-  console.log(spendings);
   const segmentGroup = document.getElementById("donut-segments");
   segmentGroup.innerHTML = '<circle cx="0" cy="0" r="60" fill="white"/>'; // put the center white circle in
   const categorytip = document.getElementById("tooltip");
@@ -635,11 +616,8 @@ async function renderSpendingsChart() {
     const curColor = colors[index];
 
     const sliceInDegree = (curAmt/sum) * 360; // percentage * 360
-    console.log(sliceInDegree);
     const endAngle = startAngle + sliceInDegree;
     const arcAttributes = describeArcPath(0, 0, 150, startAngle, endAngle);
-    console.log(arcAttributes);
-
     // clean all of these values up
     insertTableRow(curCategory, curColor, amt, amt/sum * 100);
 
