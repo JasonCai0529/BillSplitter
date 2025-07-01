@@ -49,7 +49,7 @@ function passwordValidation() {
         passwordValid = true;
         return "";
     } else {
-        return "Should contain: upper case letter, smaller case letter, special character";
+        return "Should contain: Upper Case letter, Smaller Case letter, Special character";
     }
 }
 
@@ -85,15 +85,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 async function addUser(userData) {
-    console.log("in addUser");
     try {
         await db.collection("billsplitter_users").add(userData);
         console.log("User with userData added successfully!", userData);
     } catch (error) {
-        console.error("Error deleting user:", error);
+        console.error("Error adding user:", error);
     }
 }
-
 
 
 async function signup(event) {
@@ -127,7 +125,7 @@ async function signup(event) {
         // Retrieve user details from Firestore
         await addUser({"Balance": balance, "Name": username, "Password": password, "Owed" : 0, "Own":0, Spendings: spending_arr});
         // upon sucess
-        showToast("Sign-up Successful! You can login now");
+        showToast("Sign-up Successful! You can login now", "signup-success-toast");
 
         setTimeout(()=> {window.location.href = "login.html"}, 2500);
       } catch (error) {
