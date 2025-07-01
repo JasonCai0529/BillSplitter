@@ -32,10 +32,14 @@ async function fetchUserName() {
             console.alert("cannot find such user in fetchUserName");
         }
 
+
         const userData = userSnapshot.docs[0].data();
         const userBalance = userData.Balance;
         const userOwedAmount = userData.Owed;
         const userOwnAmont = userData.Own;
+        // userSpendings = userData.Spendings;
+        // console.log(userSpendings);
+
         
         document.querySelector(".profile-name").innerText = `${userName}`; 
         document.querySelector(".user-balance").innerHTML = `${userBalance}`;
@@ -164,8 +168,6 @@ async function confirmPayment(bill, id) {
     }
 
     showPaymentSuccess();
-
-
 }
 
 
@@ -356,10 +358,10 @@ async function loadBills(billtype) {
     const userSnapshot = await db.collection("billsplitter_users").where("Name", "==", userName).get();
     const billsSnapshot = await userSnapshot.docs[0].ref.collection(billtype).get();
 
+    billtype.toLowerCase();
 
-    const BillType = billtype.toLowerCase();
 
-    const billMenu = document.getElementById(`${BillType}-scroll-menu`);
+    const billMenu = document.getElementById(`${billtype.toLowerCase()}-scroll-menu`);
     
     if (!billsSnapshot.empty) {
         billMenu.innerHTML = "";
@@ -375,7 +377,7 @@ async function loadBills(billtype) {
         for (let j = 0; j < docsArray.length; j++) { 
             const curId = docsArray[j].data().billId;
             // fetch the actual bill from the universal "Bills" collection
-            await addSingleBill(curId, i, BillType);
+            await addSingleBill(curId, i, billtype.toLowerCase());
             i += 1;
             if (i % 5 == 0) { // only add first five
                 break;
@@ -415,9 +417,6 @@ async function loadBills(billtype) {
             document.getElementById("more-bill-btn").addEventListener("click", loadBillChunk);
         }
     }
-
-
-
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -425,7 +424,7 @@ document.addEventListener('DOMContentLoaded', function() {
     animateChartSegments();
     loadBills("Bills");
     loadBills("Request");
-    renderSpendingsChart([10, 10, 10, 10, 10, 10, 10])
+    renderSpendingsChart();
 });
 
 
@@ -601,24 +600,46 @@ function describeArcPath(x, y, radius, startAngle, endAngle) {
   return pathAttributes.join(" ");
 }
 
-function renderSpendingsChart(spendings) {
+
+async function renderSpendingsChart() {
+
+  const userSnapshot = await db.collection("billsplitter_users").where("Name", "==", currentUser.data.Name).get();
+  const userData = userSnapshot.docs[0].data();
+  const spendings = userData.Spendings;
+
   const colors = ["#a0b4db", "#4b6cb7", "#6e9de8", "#e5eeff", "#ffb347", "#87d68d", "#ff8da1"];
   const categories = ["Food","Personal","Entertainment","Transportation","Housing","Supplies","Miscellaneous"];
 
-  const sum = spendings.reduce((a, b)=> a + b, 0); // total of all spendings
-
+  let sum = spendings.reduce((a, b)=> a + b, 0); // total of all spendings
+  console.log(spendings);
   const segmentGroup = document.getElementById("donut-segments");
   segmentGroup.innerHTML = '<circle cx="0" cy="0" r="60" fill="white"/>'; // put the center white circle in
   const categorytip = document.getElementById("tooltip");
 
   let startAngle = 0;
+
+  let defaultSpendings = false;
+  if (sum == 0) { // Spendings is empty array
+    sum = 7;
+    defaultSpendings = true;
+  }
+
+  
   spendings.forEach((amt, index) => {
+    
+    let curAmt = amt;
+    
+    if (defaultSpendings) {
+      curAmt = 1;
+    }
     const curCategory = categories[index];
     const curColor = colors[index];
 
-    const sliceInDegree = (amt/sum) * 360; // percentage * 360
+    const sliceInDegree = (curAmt/sum) * 360; // percentage * 360
+    console.log(sliceInDegree);
     const endAngle = startAngle + sliceInDegree;
     const arcAttributes = describeArcPath(0, 0, 150, startAngle, endAngle);
+    console.log(arcAttributes);
 
     // clean all of these values up
     insertTableRow(curCategory, curColor, amt, amt/sum * 100);
