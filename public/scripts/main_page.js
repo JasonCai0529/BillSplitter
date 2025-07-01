@@ -56,6 +56,7 @@ async function fetchUserName() {
 function animateChartSegments() {
     const paths = document.querySelectorAll('.chart-container path');
     paths.forEach((path, index) => {
+      console.log("inside");
         setTimeout(() => {
             path.style.transition = 'all 0.5s ease-out';
             path.style.transform = 'scale(1.05)';
@@ -400,12 +401,24 @@ async function loadBills(billtype) {
     }
 }
 
+
+async function initChartRendering() {
+    await renderSpendingsChart();   // wait for it to finish
+    animateChartSegments();         // then run this
+}
+
+
+
 document.addEventListener('DOMContentLoaded', function() {
     fetchUserName();
     loadBills("Bills");
     loadBills("Request");
-    renderSpendingsChart();
-    animateChartSegments();
+
+    
+    // renderSpendingsChart();
+    // animateChartSegments();
+
+    initChartRendering();
 });
 
 
