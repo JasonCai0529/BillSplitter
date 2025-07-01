@@ -311,10 +311,12 @@ async function addSingleBill(id, i, type) {
                 console.log("the id in addSingleBill is", id);
                 payCurrentBill(billData, id);
             })
+            console.log(billMenu);
 
             const buttonWrapper = document.createElement("div");
             buttonWrapper.appendChild(button);
-            document.getElementById(`bill-entry-${i}`).appendChild(buttonWrapper);
+
+            billMenu.querySelector(`#bill-entry-${i}`).appendChild(buttonWrapper);
         } else { // if the currentBill is closed -> paid full
             let closeHtml = `<div class="bill-entry close" id = "bill-entry-${i}">
                         <div class="bill-info">
@@ -336,13 +338,12 @@ async function addSingleBill(id, i, type) {
             
 
             button.addEventListener("click", ()=> {
-                console.log("the id in addSingleBill is", id);
                 payCurrentBill(billData, id);
             })
 
             const buttonWrapper = document.createElement("div");
             buttonWrapper.appendChild(button);
-            document.getElementById(`bill-entry-${i}`).appendChild(buttonWrapper);
+            billMenu.querySelector(`#bill-entry-${i}`).appendChild(buttonWrapper);
         }
     }
 }
@@ -358,9 +359,7 @@ async function loadBills(billtype) {
     const userSnapshot = await db.collection("billsplitter_users").where("Name", "==", userName).get();
     const billsSnapshot = await userSnapshot.docs[0].ref.collection(billtype).get();
 
-    billtype.toLowerCase();
-
-
+    console.log(billtype);
     const billMenu = document.getElementById(`${billtype.toLowerCase()}-scroll-menu`);
     
     if (!billsSnapshot.empty) {
@@ -391,7 +390,7 @@ async function loadBills(billtype) {
                     const curId = docsArray[j].data().billId;
 
                     // fetch the actual bill from the universal "Bills" collection
-                    await addSingleBill(curId, i, BillType);
+                    await addSingleBill(curId, i, billtype.toLowerCase());
                     i += 1;
                     if (i % 5 == 0) { // only add first five
                         break;
@@ -680,7 +679,6 @@ async function renderSpendingsChart() {
     segmentGroup.insertBefore(path, segmentGroup.firstChild);
     startAngle = endAngle;
   })
-
 }
 
 
