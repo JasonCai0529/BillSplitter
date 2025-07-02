@@ -593,6 +593,38 @@ function describeArcPath(x, y, radius, startAngle, endAngle) {
 }
 
 
+
+function setTipListener(element, tip, data) {
+  element.addEventListener('mouseover', ()=> {
+      element.setAttribute("transform", "scale(1.1)");
+
+      const bbox = element.getBoundingClientRect(); // bounding box of the path
+      const containerBox = document.querySelector(".chart-container").getBoundingClientRect();
+      // Calculate position relative to the chart container
+      // const offsetX = bbox.left - containerBox.left - 80; // // if want to place on the right
+      const offsetX = bbox.right - containerBox.left - 10;  // // if want to place on the left side
+      const offsetY = bbox.top - containerBox.top + bbox.height / 2 - 10;
+      tip.style.left = `${offsetX}px`;
+      tip.style.top = `${offsetY}px`;
+
+      // sets up the tooltip's data
+      tip.innerHTML = `
+        <strong>${data.curCategory}</strong><br>
+        $${data.amt} (${(data.amt/data.sum * 100).toFixed(2)}%)`;
+      document.getElementById(`${data.curCategory}-row`).style.backgroundColor = data.curColor;
+
+      tip.style.backgroundColor = data.curColor;
+      tip.style.display = "block";
+    });
+
+
+    element.addEventListener("mouseleave", () => {
+      element.setAttribute("transform", "scale(1)");
+      tip.style.display = "none";
+      document.getElementById(`${data.curCategory}-row`).style.backgroundColor = 'white';
+    });
+}
+
 async function renderSpendingsChart() {
 
   const userSnapshot = await db.collection("billsplitter_users").where("Name", "==", currentUser.data.Name).get();
@@ -626,46 +658,40 @@ async function renderSpendingsChart() {
     const curCategory = categories[index];
     const curColor = colors[index];
 
-    const sliceInDegree = (curAmt/sum) * 360; // percentage * 360
-    const endAngle = startAngle + sliceInDegree;
-    const arcAttributes = describeArcPath(0, 0, 150, startAngle, endAngle);
-    // clean all of these values up
+
     insertTableRow(curCategory, curColor, amt, amt/sum * 100);
 
-    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    path.setAttribute("d", arcAttributes);
-    path.setAttribute("fill", curColor);
 
+    const sliceInDegree = (curAmt/sum) * 360; // percentage * 360
+    const endAngle = startAngle + sliceInDegree;
+
+
+    let element = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    if (sliceInDegree >= 359.99) { // if the slice is a full circle
+      const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      circle.setAttribute("cx", "0");
+      circle.setAttribute("cy", "0");
+      circle.setAttribute("r", "150");
+      circle.setAttribute("fill", curColor);
+      element = circle;
+    } else { // if there is more than two category with a non-zero value
+      const arcAttributes = describeArcPath(0, 0, 150, startAngle, endAngle);
+      element.setAttribute("d", arcAttributes);
+      element.setAttribute("fill", curColor);
+    }
     
-    path.addEventListener('mouseover', ()=> {
-      path.setAttribute("transform", "scale(1.1)");
 
-      const bbox = path.getBoundingClientRect(); // bounding box of the path
-      const containerBox = document.querySelector(".chart-container").getBoundingClientRect();
-      // Calculate position relative to the chart container
-      // const offsetX = bbox.left - containerBox.left - 80; // // if want to place on the right
-      const offsetX = bbox.right - containerBox.left - 10;  // // if want to place on the left side
-      const offsetY = bbox.top - containerBox.top + bbox.height / 2 - 10;
-      categorytip.style.left = `${offsetX}px`;
-      categorytip.style.top = `${offsetY}px`;
+    const data = {
+      curCategory: curCategory,
+      curColor: curColor,
+      amt: amt,
+      sum: sum
+    };
 
-      // sets up the tooltip's data
-      categorytip.innerHTML = `
-        <strong>${curCategory}</strong><br>
-        $${amt} (${(amt/sum * 100).toFixed(2)}%)`;
-      document.getElementById(`${curCategory}-row`).style.backgroundColor = curColor;
 
-      categorytip.style.backgroundColor = curColor;
-      categorytip.style.display = "block";
-    });
+    setTipListener(element, categorytip, data);
 
-    path.addEventListener("mouseleave", () => {
-      path.setAttribute("transform", "scale(1)");
-      categorytip.style.display = "none";
-      document.getElementById(`${curCategory}-row`).style.backgroundColor = 'white';
-    });
-
-    segmentGroup.insertBefore(path, segmentGroup.firstChild);
+    segmentGroup.insertBefore(element, segmentGroup.firstChild);
     startAngle = endAngle;
   })
 }
