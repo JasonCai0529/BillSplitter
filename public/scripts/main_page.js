@@ -75,6 +75,8 @@ function showPaymentSuccess() {
     document.getElementById("bill-detail-card").insertAdjacentHTML("beforeend", successMessage);
 
     // remove the two buttons
+    document.getElementById("confirm-pay-btn").remove();
+    document.getElementById("cancel-pay-btn").remove(); 
 
 
     setTimeout(() => {
@@ -413,10 +415,6 @@ document.addEventListener('DOMContentLoaded', function() {
     fetchUserName();
     loadBills("Bills");
     loadBills("Request");
-
-    
-    // renderSpendingsChart();
-    // animateChartSegments();
 
     initChartRendering();
 });
