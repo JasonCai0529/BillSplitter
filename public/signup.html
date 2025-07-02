@@ -35,7 +35,7 @@
             text-align: center;
             margin: 0;
         }
-        .signup-container {
+        .container {
             background: rgb(4, 83, 187);
             padding: 50px;
             border-radius: 10px;
@@ -116,7 +116,8 @@
     </style>
 </head>
 <body>
-    <div class="signup-container">
+    <div class="container">
+
         <button class="back-button" onclick="goToDashboard()">&lt;</button>
         <h2>Sign Up</h2>
 
@@ -135,13 +136,9 @@
 
 
         <p>Already have an account? <a href="login.html">Login here</a></p>
+
     </div>
     <script defer src="scripts/signup.js"></script>
-    <!-- <script type="module" src="script.js"></script> -->
-    <script>
-        function goToDashboard() {
-            window.location.href = "index.html";
-        }
-    </script>
+    
 </body>
 </html>

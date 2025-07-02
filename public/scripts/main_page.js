@@ -314,7 +314,7 @@ async function addSingleBill(id, i, type) {
                                 <span class = "bill-initializer">Created by: ${billInitiater}</span>
                             </div>
                         </div>
-                        <div class="bill-amount">$${billAmount.toFixed(2)}</div>
+                        <div class="bill-amount bill-amount-close">$${billAmount.toFixed(2)}</div>
             </div>`;
             billMenu.insertAdjacentHTML('beforeend', closeHtml);
             
@@ -559,8 +559,8 @@ function insertTableRow(category, color, amount, percentage) {
   temp.innerHTML = `
     <tr id="${category}-row" class="category-rows">
       <td><span id="${category}-color-rec" class="spending-table-color-rec"></span> ${category}</td>
-      <td>${percentage.toFixed(2)}</td>
-      <td>${amount}</td>
+      <td>${percentage.toFixed(1)}%</td>
+      <td>$${amount.toFixed(2)}</td>
     </tr>
   `;
   const row = temp.firstElementChild;

@@ -18,6 +18,15 @@ function showToast(message, toastT) {
 }
 
 
+function goToDashboard() {
+    document.getElementById("index-container").innerHTML = `<h2>Welcome to ADJC Bank!</h2>
+        <p>Already have an account?</p>
+        <button onclick="toLoginHTML()">Login</button>
+        <p>Or, join us by </p>
+        <button onclick="toSignUpHTML()">Sign Up</button>`;
+}
+
+
 
 const usernameRef = document.getElementById("newUsername");
 const passwordRef = document.getElementById("newPassword");
@@ -170,4 +179,44 @@ async function login(event) {
     } catch(error) {
         console.log("Error signing up");
     }
+}
+
+
+
+function toLoginHTML() {
+    const loginHTML = `<button class="back-button" onclick="goToDashboard()">&lt;</button>
+        <h2>Login</h2>
+        
+        <form onsubmit="return login(event)">
+            <div id="top-toast" class="hidden toast"></div>
+            <input type="text" id="newUsername" placeholder="Enter Username" autocomplete="off" required>
+            <input type="password" id="newPassword" placeholder="Enter Password" autocomplete="off" required>
+            <div id="alert-toast" class="hidden toast"></div>
+            <button class="auth-button" type="submit">Login</button>
+            <p id="message"></p>
+        </form>`;
+    document.getElementById("index-container").innerHTML = loginHTML;
+}
+
+
+function toSignUpHTML() {
+    const signupHTML = `<button class="back-button" onclick="goToDashboard()">&lt;</button>
+        <h2>Sign Up</h2>
+
+        <p id="signup-success-toast" class="hidden">Sign-up successful! You can log in now.</p>
+        <form onsubmit="return signup(event)">
+            <input type="text" id="newUsername" placeholder="Enter Username" autocomplete="off" required>
+            <p id="username-error" class="error-message"></p>
+            <input type="password" id="newPassword" placeholder="Enter Password" autocomplete="off" required>
+            <p id="password-error" class="error-message"></p>
+            <input type="number" id="newBalance" placeholder="Enter Your Starting Balance" autocomplete="off" required>
+            <p id="balance-error" class="error-message"></p>
+
+            <button class="auth-button" type="submit">Sign Up</button>
+            <p id="message"></p>
+        </form>
+
+
+        <p>Already have an account? <a onclick="toLoginHTML()">Login</a> here</p>`;
+    document.getElementById("index-container").innerHTML = signupHTML;
 }

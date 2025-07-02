@@ -285,6 +285,8 @@ header {
     font-size: 12px;
 }
 
+
+
 .bill-category-close {
     background-color: #ccc;
 }
@@ -300,6 +302,11 @@ header {
     font-size: 16px;
     width: 100px;
     text-align: center;
+}
+
+
+.bill-amount-close {
+    color: rgb(238, 238, 238);
 }
 
 .btn-detail {
