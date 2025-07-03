@@ -136,7 +136,7 @@ async function signup(event) {
         // upon sucess
         showToast("Sign-up Successful! You can login now", "signup-success-toast");
 
-        setTimeout(()=> {window.location.href = "login.html"}, 2500);
+        setTimeout(toLoginHTML, 2500);
       } catch (error) {
         console.error("Sign up Failed:", error.message);
       }
@@ -156,7 +156,7 @@ async function login(event) {
         if (querySnapshot.empty) {
             showToast(`Cannot find your Username : ${username}, please Sign-up! Redirecting... `, "alert-toast");
             setTimeout(() => {
-                window.location.href = "signup.html";
+                toSignUpHTML;
             }, 2500);
             return;
         }
