@@ -3,196 +3,189 @@ const analytics = firebase.analytics();
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-
-
 const categoryCode = {
-    "Food": 0,
-    "Personal": 1,
-    "Entertainment": 2,
-    "Transportation": 3,
-    "Housing": 4,
-    "Supplies": 5,
-    "Miscellaneous": 6
-}
-
-
-
+  Food: 0,
+  Personal: 1,
+  Entertainment: 2,
+  Transportation: 3,
+  Housing: 4,
+  Supplies: 5,
+  Miscellaneous: 6,
+};
 
 const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
-
 async function fetchUserName() {
-
-    if (currentUser) {
-        // Display the user name from the stored data
-        const userName = currentUser.data.Name;
-        const userSnapshot = await db.collection("billsplitter_users").where("Name", "==", userName).get();
-        if (userSnapshot.empty) {
-            console.alert("cannot find such user in fetchUserName");
-        }
-
-
-        const userData = userSnapshot.docs[0].data();
-        const userBalance = userData.Balance;
-        const userOwedAmount = userData.Owed;
-        const userOwnAmont = userData.Own;
-        // userSpendings = userData.Spendings;
-        // console.log(userSpendings);
-
-        
-        document.querySelector(".profile-name").innerText = `${userName}`; 
-        document.querySelector(".user-balance").innerHTML = `${userBalance}`;
-        document.getElementById("owed-amt").innerHTML=`${userOwedAmount}`;
-        document.getElementById("own-amt").innerHTML=`${userOwnAmont}`;
-        
-    } else {
-        console.log("No user is currently logged in.");
-        alert("Please log in first.");
-        window.location.href = "index.html"; // Redirect to login page if no user is found
+  if (currentUser) {
+    // Display the user name from the stored data
+    const userName = currentUser.data.Name;
+    const userSnapshot = await db
+      .collection("billsplitter_users")
+      .where("Name", "==", userName)
+      .get();
+    if (userSnapshot.empty) {
+      console.alert("cannot find such user in fetchUserName");
     }
-}
 
+    const userData = userSnapshot.docs[0].data();
+    const userBalance = userData.Balance;
+    const userOwedAmount = userData.Owed;
+    const userOwnAmont = userData.Own;
+    // userSpendings = userData.Spendings;
+    // console.log(userSpendings);
+
+    document.querySelector(".profile-name").innerText = `${userName}`;
+    document.querySelector(".user-balance").innerHTML = `${userBalance}`;
+    document.getElementById("owed-amt").innerHTML = `${userOwedAmount}`;
+    document.getElementById("own-amt").innerHTML = `${userOwnAmont}`;
+  } else {
+    console.log("No user is currently logged in.");
+    alert("Please log in first.");
+    window.location.href = "index.html"; // Redirect to login page if no user is found
+  }
+}
 
 function animateChartSegments() {
-    const paths = document.querySelectorAll('.chart-container path');
-    paths.forEach((path, index) => {
-      console.log("inside");
-        setTimeout(() => {
-            path.style.transition = 'all 0.5s ease-out';
-            path.style.transform = 'scale(1.05)';
-            
-            setTimeout(() => {
-                path.style.transform = 'scale(1)';
-            }, 300);
-        }, index * 200);
-    });
+  const paths = document.querySelectorAll(".chart-container path");
+  paths.forEach((path, index) => {
+    console.log("inside");
+    setTimeout(() => {
+      path.style.transition = "all 0.5s ease-out";
+      path.style.transform = "scale(1.05)";
+
+      setTimeout(() => {
+        path.style.transform = "scale(1)";
+      }, 300);
+    }, index * 200);
+  });
 }
-
-
 
 function showPaymentSuccess() {
-    const successMessage = '<div class="detail-section success-message">Successfully paid!  Redirecting...</div>'
-    document.getElementById("bill-detail-card").insertAdjacentHTML("beforeend", successMessage);
+  const successMessage =
+    '<div class="detail-section success-message">Successfully paid!  Redirecting...</div>';
+  document
+    .getElementById("bill-detail-card")
+    .insertAdjacentHTML("beforeend", successMessage);
 
-    // remove the two buttons
-    document.getElementById("confirm-pay-btn").remove();
-    document.getElementById("cancel-pay-btn").remove(); 
+  // remove the two buttons
+  document.getElementById("confirm-pay-btn").remove();
+  document.getElementById("cancel-pay-btn").remove();
 
-
-    setTimeout(() => {
-        window.location.href = "main_page.html";
-    }, 2500);
+  setTimeout(() => {
+    window.location.href = "main_page.html";
+  }, 2500);
 }
-
 
 async function confirmPayment(bill, id) {
-    // const billData = {
-    //     "name":name,
-    //     "description":description,
-    //     "category":category,
-    //     "date":date,
-    //     "amount":amount.toFixed(2),
-    //     "Participants":selectedParticipants,
-    //     "AmountStatus": status,
-    //     "State": 'open'
-    // };
-    const payerName = currentUser.data.Name;
-    const initiaterName = bill.name;
+  // const billData = {
+  //     "name":name,
+  //     "description":description,
+  //     "category":category,
+  //     "date":date,
+  //     "amount":amount.toFixed(2),
+  //     "Participants":selectedParticipants,
+  //     "AmountStatus": status,
+  //     "State": 'open'
+  // };
+  const payerName = currentUser.data.Name;
+  const initiaterName = bill.name;
 
-    const payerSnapshot = await db.collection("billsplitter_users").where("Name", "==", payerName).get();
-    const payerAmount = bill.AmountStatus[payerName][0];
+  const payerSnapshot = await db
+    .collection("billsplitter_users")
+    .where("Name", "==", payerName)
+    .get();
+  const payerAmount = bill.AmountStatus[payerName][0];
 
-    let payerAmountStatus = bill.AmountStatus;
+  let payerAmountStatus = bill.AmountStatus;
 
-    payerAmountStatus[payerName][1] = true;
+  payerAmountStatus[payerName][1] = true;
 
-    // updateBill
-    let updateBillAmount = bill.amount - payerAmount;
-    const updateBillState = updateBillAmount == 0 ? "close" : "open";
-    
-    await db.collection("Bills").doc(id).update({
-        State: updateBillState,
-        amount: updateBillAmount,
-        AmountStatus: payerAmountStatus
+  // updateBill
+  let updateBillAmount = bill.amount - payerAmount;
+  const updateBillState = updateBillAmount == 0 ? "close" : "open";
+
+  await db.collection("Bills").doc(id).update({
+    State: updateBillState,
+    amount: updateBillAmount,
+    AmountStatus: payerAmountStatus,
+  });
+
+  if (!payerSnapshot.empty) {
+    const payerData = payerSnapshot.docs[0].data();
+
+    let payerBalance = payerData.Balance;
+    let payerSpendings = payerData.Spendings;
+
+    if (payerSpendings == undefined) {
+      payerSpendings = new Array(7).fill(0);
+      // ["Food": 0, "Personal": 1,"Entertainment": 2,"Transportation": 3,"Housing": 4, "Supplies": 5,"Miscellaneous": 6]
+    }
+
+    payerSpendings[categoryCode[bill.category]] += payerAmount;
+
+    payerBalance -= payerAmount;
+
+    const payerDoc = payerSnapshot.docs[0];
+    const payerRef = payerDoc.ref;
+
+    await payerRef.update({
+      Balance: payerBalance,
+      Spendings: payerSpendings,
     });
+  }
 
-
-    
-    if (!payerSnapshot.empty) {
-
-        const payerData = payerSnapshot.docs[0].data();
-
-        let payerBalance = payerData.Balance;
-        let payerSpendings = payerData.Spendings;
-        
-
-        if (payerSpendings == undefined) {
-            payerSpendings = new Array(7).fill(0);
-            // ["Food": 0, "Personal": 1,"Entertainment": 2,"Transportation": 3,"Housing": 4, "Supplies": 5,"Miscellaneous": 6]
-        }
-
-        payerSpendings[categoryCode[bill.category]] += payerAmount;
-
-        payerBalance -= payerAmount;
-        
-
-        const payerDoc = payerSnapshot.docs[0];
-        const payerRef = payerDoc.ref;
-
-        await payerRef.update({
-            Balance: payerBalance,
-            Spendings: payerSpendings,
-        });
-    }
-
-    if (payerName == initiaterName) {
-        console.log("returning from ConfirmPayment....");
-        showPaymentSuccess();
-        return;
-    }
-
-    const initiaterSnapshot = await db.collection("billsplitter_users").where("Name", "==", initiaterName).get();
-    if (!initiaterSnapshot.empty) { // add amount to bill owner's balance
-        const initiaterData = initiaterSnapshot.docs[0].data();
-
-        let initiaterBalance = initiaterData.Balance;
-
-        const initiaterDoc = initiaterSnapshot.docs[0];
-        const initiaterRef = initiaterDoc.ref;
-
-        await initiaterRef.update({
-            Balance: initiaterBalance
-        });
-    }
-
+  if (payerName == initiaterName) {
+    console.log("returning from ConfirmPayment....");
     showPaymentSuccess();
+    return;
+  }
+
+  const initiaterSnapshot = await db
+    .collection("billsplitter_users")
+    .where("Name", "==", initiaterName)
+    .get();
+  if (!initiaterSnapshot.empty) {
+    // add amount to bill owner's balance
+    const initiaterData = initiaterSnapshot.docs[0].data();
+
+    let initiaterBalance = initiaterData.Balance;
+
+    const initiaterDoc = initiaterSnapshot.docs[0];
+    const initiaterRef = initiaterDoc.ref;
+
+    await initiaterRef.update({
+      Balance: initiaterBalance,
+    });
+  }
+
+  showPaymentSuccess();
 }
 
-
-
 function payCurrentBill(bill, id) {
-    const container = document.getElementById("dashboard-container");
-    
-    // Generate dynamic content for amount status
-    const yourAmount = bill.AmountStatus[currentUser.data.Name][0];
-    
-    const amountStatusHtml = Object.entries(bill.AmountStatus || {}).map(([name, [amount, paid]]) => {
+  const container = document.getElementById("dashboard-container");
 
-        if (name == currentUser.data.Name) {
-            name = "You";
-        }
+  // Generate dynamic content for amount status
+  const yourAmount = bill.AmountStatus[currentUser.data.Name][0];
 
-        const payStatus = paid ? "paid-green" : "paid-red";
-        return `
+  const amountStatusHtml = Object.entries(bill.AmountStatus || {})
+    .map(([name, [amount, paid]]) => {
+      if (name == currentUser.data.Name) {
+        name = "You";
+      }
+
+      const payStatus = paid ? "paid-green" : "paid-red";
+      return `
         <div style="margin-left: 0px;" class = "single-status">
             <p style="margin-bottom: 5px; color: var(--primary-dark);"><strong>${name}</strong></p>
             <p style="font-weight: 300;">$${amount}</p>
             <p class = "pay-status ${payStatus}">${paid ? "Paid" : "Unpaid"}</p>
         </div>
-    `}).join("");
+    `;
+    })
+    .join("");
 
-    // Replace #dashboard content
-    container.innerHTML = `
+  // Replace #dashboard content
+  container.innerHTML = `
         <div class="bill-detail-card" id="bill-detail-card">
         <h2>Bill Details</h2>
         <p><strong>Description:</strong> ${bill.description}</p>
@@ -221,31 +214,35 @@ function payCurrentBill(bill, id) {
         </div>
     `;
 
-    let payerAmountStatus = bill.AmountStatus;
+  let payerAmountStatus = bill.AmountStatus;
 
-    // Set up the Confirm Pay button listener
-    document.getElementById("confirm-pay-btn").addEventListener("click", () => {
-        confirmPayment(bill, id);
-    });
+  // Set up the Confirm Pay button listener
+  document.getElementById("confirm-pay-btn").addEventListener("click", () => {
+    confirmPayment(bill, id);
+  });
 
-    document.getElementById("cancel-pay-btn").addEventListener("click", () => {
-        window.location.href = "main_page.html";
-    });
+  document.getElementById("cancel-pay-btn").addEventListener("click", () => {
+    window.location.href = "main_page.html";
+  });
 
-    if (payerAmountStatus[currentUser.data.Name][1]) {
-        
-        // document.getElementById("confirm-pay-btn").remove();
-        document.getElementById("confirm-pay-btn").remove();
-        const detailCard = document.getElementById("bill-detail-card");
-        const wrapper = document.createElement('div');
-        document.getElementById('cancel-pay-btn').innerHTML = "Return";
-        if (bill.State == 'close') {
-            wrapper.innerHTML = '<div class="detail-section paid-message">All members has paid</div>'
-        } else {
-            wrapper.innerHTML = '<div class="detail-section paid-message">You already paid</div>';
-        }
-        detailCard.insertBefore(wrapper.firstElementChild, detailCard.lastElementChild);
+  if (payerAmountStatus[currentUser.data.Name][1]) {
+    // document.getElementById("confirm-pay-btn").remove();
+    document.getElementById("confirm-pay-btn").remove();
+    const detailCard = document.getElementById("bill-detail-card");
+    const wrapper = document.createElement("div");
+    document.getElementById("cancel-pay-btn").innerHTML = "Return";
+    if (bill.State == "close") {
+      wrapper.innerHTML =
+        '<div class="detail-section paid-message">All members has paid</div>';
+    } else {
+      wrapper.innerHTML =
+        '<div class="detail-section paid-message">You already paid</div>';
     }
+    detailCard.insertBefore(
+      wrapper.firstElementChild,
+      detailCard.lastElementChild
+    );
+  }
 }
 // bill entry html structure
 /*
@@ -262,22 +259,23 @@ function payCurrentBill(bill, id) {
 </div>
 */
 async function addSingleBill(id, i, type) {
-    const billRef = db.collection("Bills").doc(id);
-    const billSnap = await billRef.get();
-    const billMenu = document.getElementById(`${type}-scroll-menu`);
-            
-    if (billSnap.exists) { // if can found such snapshot
-        const billData = billSnap.data();
-        const billInitiater = billData.name;
-        const billDescription = billData.description;
-        const billDate = billData.date;
-        const billCategory = billData.category;
-        const billAmount = billData.AmountStatus[currentUser.data.Name][0];
-        
-        if (billData.State == "open") { // only do stuff when the bill is still open
-            
-            let curEntryHtml =
-            `<div class="bill-entry" id = "bill-entry-${i}">
+  const billRef = db.collection("Bills").doc(id);
+  const billSnap = await billRef.get();
+  const billMenu = document.getElementById(`${type}-scroll-menu`);
+
+  if (billSnap.exists) {
+    // if can found such snapshot
+    const billData = billSnap.data();
+    const billInitiater = billData.name;
+    const billDescription = billData.description;
+    const billDate = billData.date;
+    const billCategory = billData.category;
+    const billAmount = billData.AmountStatus[currentUser.data.Name][0];
+
+    if (billData.State == "open") {
+      // only do stuff when the bill is still open
+
+      let curEntryHtml = `<div class="bill-entry" id = "bill-entry-${i}">
                         <div class="bill-info">
                             <div class="bill-description">${billDescription}</div>
                             <div class="bill-meta">
@@ -289,23 +287,23 @@ async function addSingleBill(id, i, type) {
                         <div class="bill-amount">$${billAmount.toFixed(2)}</div>
             </div>`;
 
+      billMenu.insertAdjacentHTML("beforeend", curEntryHtml);
 
-            billMenu.insertAdjacentHTML('beforeend', curEntryHtml);
+      const button = document.createElement("button");
+      button.className = "btn";
+      button.innerText = "Pay";
 
-            const button = document.createElement("button");
-            button.className = "btn";
-            button.innerText = "Pay";
+      button.addEventListener("click", () => {
+        payCurrentBill(billData, id);
+      });
 
-            button.addEventListener("click", ()=> {
-                payCurrentBill(billData, id);
-            })
+      const buttonWrapper = document.createElement("div");
+      buttonWrapper.appendChild(button);
 
-            const buttonWrapper = document.createElement("div");
-            buttonWrapper.appendChild(button);
-
-            billMenu.querySelector(`#bill-entry-${i}`).appendChild(buttonWrapper);
-        } else { // if the currentBill is closed -> paid full
-            let closeHtml = `<div class="bill-entry close" id = "bill-entry-${i}">
+      billMenu.querySelector(`#bill-entry-${i}`).appendChild(buttonWrapper);
+    } else {
+      // if the currentBill is closed -> paid full
+      let closeHtml = `<div class="bill-entry close" id = "bill-entry-${i}">
                         <div class="bill-info">
                             <div class="bill-description bill-description-close">${billDescription}</div>
                             <div class="bill-meta">
@@ -314,115 +312,115 @@ async function addSingleBill(id, i, type) {
                                 <span class = "bill-initializer">Created by: ${billInitiater}</span>
                             </div>
                         </div>
-                        <div class="bill-amount bill-amount-close">$${billAmount.toFixed(2)}</div>
+                        <div class="bill-amount bill-amount-close">$${billAmount.toFixed(
+                          2
+                        )}</div>
             </div>`;
-            billMenu.insertAdjacentHTML('beforeend', closeHtml);
-            
+      billMenu.insertAdjacentHTML("beforeend", closeHtml);
 
-            const button = document.createElement("button");
-            button.className = "btn-detail";
-            button.innerText = "Details";
-            
+      const button = document.createElement("button");
+      button.className = "btn-detail";
+      button.innerText = "Details";
 
-            button.addEventListener("click", ()=> {
-                payCurrentBill(billData, id);
-            })
+      button.addEventListener("click", () => {
+        payCurrentBill(billData, id);
+      });
 
-            const buttonWrapper = document.createElement("div");
-            buttonWrapper.appendChild(button);
-            billMenu.querySelector(`#bill-entry-${i}`).appendChild(buttonWrapper);
-        }
+      const buttonWrapper = document.createElement("div");
+      buttonWrapper.appendChild(button);
+      billMenu.querySelector(`#bill-entry-${i}`).appendChild(buttonWrapper);
     }
+  }
 }
-
-
-
-
 
 async function loadBills(billtype) {
+  const userName = currentUser.data.Name;
 
-    const userName = currentUser.data.Name;
+  const userSnapshot = await db
+    .collection("billsplitter_users")
+    .where("Name", "==", userName)
+    .get();
+  const billsSnapshot = await userSnapshot.docs[0].ref
+    .collection(billtype)
+    .get();
 
-    const userSnapshot = await db.collection("billsplitter_users").where("Name", "==", userName).get();
-    const billsSnapshot = await userSnapshot.docs[0].ref.collection(billtype).get();
+  console.log(billtype);
+  const billMenu = document.getElementById(
+    `${billtype.toLowerCase()}-scroll-menu`
+  );
 
-    console.log(billtype);
-    const billMenu = document.getElementById(`${billtype.toLowerCase()}-scroll-menu`);
-    
-    if (!billsSnapshot.empty) {
-        billMenu.innerHTML = "";
+  if (!billsSnapshot.empty) {
+    billMenu.innerHTML = "";
+  }
+
+  let i = 0;
+
+  const docsArray = billsSnapshot.docs;
+
+  if (!billsSnapshot.empty) {
+    // only load the first five bills
+    for (let j = 0; j < docsArray.length; j++) {
+      const curId = docsArray[j].data().billId;
+      // fetch the actual bill from the universal "Bills" collection
+      await addSingleBill(curId, i, billtype.toLowerCase());
+      i += 1;
+      if (i % 5 == 0) {
+        // only add first five
+        break;
+      }
     }
 
-    let i = 0;
+    async function loadBillChunk() {
+      document.getElementById("more-bill-btn").remove();
+      for (let j = i; j < docsArray.length; j++) {
+        // load five more
+        const curId = docsArray[j].data().billId;
 
-    const docsArray = billsSnapshot.docs
-
-    if (!billsSnapshot.empty) {
-
-        // only load the first five bills
-        for (let j = 0; j < docsArray.length; j++) { 
-            const curId = docsArray[j].data().billId;
-            // fetch the actual bill from the universal "Bills" collection
-            await addSingleBill(curId, i, billtype.toLowerCase());
-            i += 1;
-            if (i % 5 == 0) { // only add first five
-                break;
-            }
+        // fetch the actual bill from the universal "Bills" collection
+        await addSingleBill(curId, i, billtype.toLowerCase());
+        i += 1;
+        if (i % 5 == 0) {
+          // only add first five
+          break;
         }
+      }
 
-
-        async function loadBillChunk() {
-            document.getElementById("more-bill-btn").remove();
-                for (let j = i; j < docsArray.length; j++) { // load five more
-                    const curId = docsArray[j].data().billId;
-
-                    // fetch the actual bill from the universal "Bills" collection
-                    await addSingleBill(curId, i, billtype.toLowerCase());
-                    i += 1;
-                    if (i % 5 == 0) { // only add first five
-                        break;
-                    }
-                }
-
-                if (i < docsArray.length) { // if there are still more bills to load, add the button back
-                    let moreButton = `<div class="more-bill-section"><button id = "more-bill-btn">More</button></div>`;
-                    billMenu.insertAdjacentHTML("beforeend", moreButton);
-                    document.getElementById("more-bill-btn").addEventListener("click", loadBillChunk);
-
-                } else { // no more bills to load
-                    console.log("the value of i is: ", i);
-                }
-        }
-
-
-        if (docsArray.length > (i + 1)) { // if there are still more to load
-            let moreButton = `<div class="more-bill-section"><button id = "more-bill-btn">More</button></div>`;
-            billMenu.insertAdjacentHTML("beforeend", moreButton);
-            document.getElementById("more-bill-btn").addEventListener("click", loadBillChunk);
-        }
+      if (i < docsArray.length) {
+        // if there are still more bills to load, add the button back
+        let moreButton = `<div class="more-bill-section"><button id = "more-bill-btn">More</button></div>`;
+        billMenu.insertAdjacentHTML("beforeend", moreButton);
+        document
+          .getElementById("more-bill-btn")
+          .addEventListener("click", loadBillChunk);
+      } else {
+        // no more bills to load
+        console.log("the value of i is: ", i);
+      }
     }
+
+    if (docsArray.length > i + 1) {
+      // if there are still more to load
+      let moreButton = `<div class="more-bill-section"><button id = "more-bill-btn">More</button></div>`;
+      billMenu.insertAdjacentHTML("beforeend", moreButton);
+      document
+        .getElementById("more-bill-btn")
+        .addEventListener("click", loadBillChunk);
+    }
+  }
 }
-
 
 async function initChartRendering() {
-    await renderSpendingsChart();   // wait for it to finish
-    animateChartSegments();         // then run this
+  await renderSpendingsChart(); // wait for it to finish
+  animateChartSegments(); // then run this
 }
 
+document.addEventListener("DOMContentLoaded", function () {
+  fetchUserName();
+  loadBills("Bills");
+  loadBills("Request");
 
-
-document.addEventListener('DOMContentLoaded', function() {
-    fetchUserName();
-    loadBills("Bills");
-    loadBills("Request");
-
-    initChartRendering();
+  initChartRendering();
 });
-
-
-
-
-
 
 const serviceHTML = `<main class="container">
     <h1>Our Services</h1>
@@ -464,15 +462,9 @@ const serviceHTML = `<main class="container">
     <p>&copy; 2025 ADJC. All rights reserved.</p>
   </footer>`;
 
-
-document.getElementById("services-header").addEventListener('click', ()=> {
-    document.getElementById('dashboard-container').innerHTML = serviceHTML;
+document.getElementById("services-header").addEventListener("click", () => {
+  document.getElementById("dashboard-container").innerHTML = serviceHTML;
 });
-
-
-
-
-
 
 const contactHTML = `<div class="page-title">
       <h1 id="contact-h1">Contact Us</h1>
@@ -537,17 +529,9 @@ const contactHTML = `<div class="page-title">
       <p>&copy; 2025 ADJC. All rights reserved.</p>
     </footer>`;
 
-document.getElementById("contact-header").addEventListener('click', ()=> {
-    document.getElementById('dashboard-container').innerHTML = contactHTML;
+document.getElementById("contact-header").addEventListener("click", () => {
+  document.getElementById("dashboard-container").innerHTML = contactHTML;
 });
-
-
-
-
-
-
-
-
 
 //////////////////////////////////////
 /////////////SVG Rendering///////////
@@ -565,18 +549,16 @@ function insertTableRow(category, color, amount, percentage) {
   `;
   const row = temp.firstElementChild;
   tableBody.appendChild(row);
-  document.getElementById(`${category}-color-rec`).style.backgroundColor = color;
+  document.getElementById(`${category}-color-rec`).style.backgroundColor =
+    color;
 }
-
 
 function polarToCartesian(cx, cy, r, angleDeg) {
-  const angleRad = (angleDeg - 90) * Math.PI/180;
+  const angleRad = ((angleDeg - 90) * Math.PI) / 180;
   const x_coord = cx + r * Math.cos(angleRad);
   const y_coord = cy + r * Math.sin(angleRad);
-  return {x: x_coord, y: y_coord};
+  return { x: x_coord, y: y_coord };
 }
-
-
 
 function describeArcPath(x, y, radius, startAngle, endAngle) {
   const startPoint = polarToCartesian(x, y, radius, startAngle);
@@ -584,57 +566,87 @@ function describeArcPath(x, y, radius, startAngle, endAngle) {
   const largeArcFlag = Math.abs(endAngle - startAngle) > 180 ? "1" : "0";
 
   const pathAttributes = [
-    "M", startPoint.x.toFixed(2), startPoint.y.toFixed(2),
-    "A", radius, radius, 0, largeArcFlag, 1, endPoint.x.toFixed(2), endPoint.y.toFixed(2),
-    "L", x, y,
-    "Z"
-  ]
+    "M",
+    startPoint.x.toFixed(2),
+    startPoint.y.toFixed(2),
+    "A",
+    radius,
+    radius,
+    0,
+    largeArcFlag,
+    1,
+    endPoint.x.toFixed(2),
+    endPoint.y.toFixed(2),
+    "L",
+    x,
+    y,
+    "Z",
+  ];
   return pathAttributes.join(" ");
 }
 
-
-
 function setTipListener(element, tip, data) {
-  element.addEventListener('mouseover', ()=> {
-      element.setAttribute("transform", "scale(1.1)");
+  element.addEventListener("mouseover", () => {
+    element.setAttribute("transform", "scale(1.1)");
 
-      const bbox = element.getBoundingClientRect(); // bounding box of the path
-      const containerBox = document.querySelector(".chart-container").getBoundingClientRect();
-      // Calculate position relative to the chart container
-      // const offsetX = bbox.left - containerBox.left - 80; // // if want to place on the right
-      const offsetX = bbox.right - containerBox.left - 10;  // // if want to place on the left side
-      const offsetY = bbox.top - containerBox.top + bbox.height / 2 - 10;
-      tip.style.left = `${offsetX}px`;
-      tip.style.top = `${offsetY}px`;
+    const bbox = element.getBoundingClientRect(); // bounding box of the path
+    const containerBox = document
+      .querySelector(".chart-container")
+      .getBoundingClientRect();
+    // Calculate position relative to the chart container
+    // const offsetX = bbox.left - containerBox.left - 80; // // if want to place on the right
+    const offsetX = bbox.right - containerBox.left - 10; // // if want to place on the left side
+    const offsetY = bbox.top - containerBox.top + bbox.height / 2 - 10;
+    tip.style.left = `${offsetX}px`;
+    tip.style.top = `${offsetY}px`;
 
-      // sets up the tooltip's data
-      tip.innerHTML = `
+    // sets up the tooltip's data
+    tip.innerHTML = `
         <strong>${data.curCategory}</strong><br>
-        $${data.amt} (${(data.amt/data.sum * 100).toFixed(2)}%)`;
-      document.getElementById(`${data.curCategory}-row`).style.backgroundColor = data.curColor;
+        $${data.amt} (${((data.amt / data.sum) * 100).toFixed(2)}%)`;
+    document.getElementById(`${data.curCategory}-row`).style.backgroundColor =
+      data.curColor;
 
-      tip.style.backgroundColor = data.curColor;
-      tip.style.display = "block";
-    });
+    tip.style.backgroundColor = data.curColor;
+    tip.style.display = "block";
+  });
 
-
-    element.addEventListener("mouseleave", () => {
-      element.setAttribute("transform", "scale(1)");
-      tip.style.display = "none";
-      document.getElementById(`${data.curCategory}-row`).style.backgroundColor = 'white';
-    });
+  element.addEventListener("mouseleave", () => {
+    element.setAttribute("transform", "scale(1)");
+    tip.style.display = "none";
+    document.getElementById(`${data.curCategory}-row`).style.backgroundColor =
+      "white";
+  });
 }
 
 async function renderSpendingsChart() {
-
-  const userSnapshot = await db.collection("billsplitter_users").where("Name", "==", currentUser.data.Name).get();
+  const userSnapshot = await db
+    .collection("billsplitter_users")
+    .where("Name", "==", currentUser.data.Name)
+    .get();
   const userData = userSnapshot.docs[0].data();
   const spendings = userData.Spendings;
 
-  const colors = ["#a0b4db", "#4b6cb7", "#6e9de8", "#e5eeff", "#ffb347", "#87d68d", "#ff8da1"];
-  const categories = ["Food","Personal","Entertainment","Transportation","Housing","Supplies","Miscellaneous"];
+  const colors = [
+    "#a0b4db",
+    "#4b6cb7",
+    "#6e9de8",
+    "#e5eeff",
+    "#ffb347",
+    "#87d68d",
+    "#ff8da1",
+  ];
+  const categories = [
+    "Food",
+    "Personal",
+    "Entertainment",
+    "Transportation",
+    "Housing",
+    "Supplies",
+    "Miscellaneous",
+  ];
 
-  let sum = spendings.reduce((a, b)=> a + b, 0); // total of all spendings
+  let sum = spendings.reduce((a, b) => a + b, 0); // total of all spendings
   const segmentGroup = document.getElementById("donut-segments");
   segmentGroup.innerHTML = '<circle cx="0" cy="0" r="60" fill="white"/>'; // put the center white circle in
   const categorytip = document.getElementById("tooltip");
@@ -642,64 +654,58 @@ async function renderSpendingsChart() {
   let startAngle = 0;
 
   let defaultSpendings = false;
-  if (sum == 0) { // Spendings is empty array
+  if (sum == 0) {
+    // Spendings is empty array
     sum = 7;
     defaultSpendings = true;
   }
 
-  
   spendings.forEach((amt, index) => {
-    
     let curAmt = amt;
-    
+
     if (defaultSpendings) {
       curAmt = 1;
     }
     const curCategory = categories[index];
     const curColor = colors[index];
 
+    insertTableRow(curCategory, curColor, amt, (amt / sum) * 100);
 
-    insertTableRow(curCategory, curColor, amt, amt/sum * 100);
-
-
-    const sliceInDegree = (curAmt/sum) * 360; // percentage * 360
+    const sliceInDegree = (curAmt / sum) * 360; // percentage * 360
     const endAngle = startAngle + sliceInDegree;
 
-
-    let element = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    if (sliceInDegree >= 359.99) { // if the slice is a full circle
-      const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    let element = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "path"
+    );
+    if (sliceInDegree >= 359.99) {
+      // if the slice is a full circle
+      const circle = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "circle"
+      );
       circle.setAttribute("cx", "0");
       circle.setAttribute("cy", "0");
       circle.setAttribute("r", "150");
       circle.setAttribute("fill", curColor);
       element = circle;
-    } else { // if there is more than two category with a non-zero value
+    } else {
+      // if there is more than two category with a non-zero value
       const arcAttributes = describeArcPath(0, 0, 150, startAngle, endAngle);
       element.setAttribute("d", arcAttributes);
       element.setAttribute("fill", curColor);
     }
-    
 
     const data = {
       curCategory: curCategory,
       curColor: curColor,
       amt: amt,
-      sum: sum
+      sum: sum,
     };
-
 
     setTipListener(element, categorytip, data);
 
     segmentGroup.insertBefore(element, segmentGroup.firstChild);
     startAngle = endAngle;
-  })
+  });
 }
-
-
-
-
-
-
-
-

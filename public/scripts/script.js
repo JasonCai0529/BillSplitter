@@ -14,20 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-async function getAllUsers() {
-  console.log("Inside");
-  try {
-    const usersRef = db.collection("billsplitter_users"); // Reference the "users" collection
-    const snapshot = await usersRef.get(); // Fetch all documents
-
-    snapshot.forEach((doc) => {
-      console.log("User ID:", doc.id, "Data:", doc.data());
-    });
-  } catch (error) {
-    console.error("Error retrieving users:", error);
-  }
-}
-
 document
   .getElementById("participant-input")
   .addEventListener("input", async function () {
