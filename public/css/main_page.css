@@ -351,6 +351,7 @@ header {
   font-size: 20px;
   font-weight: 600;
   color: #2c4c8c;
+  margin-top: 1px;
   margin-bottom: 3px;
   padding: 4px;
   background-color: white;
@@ -359,7 +360,7 @@ header {
 }
 
 #more-bill-btn:hover {
-  border: solid rgb(58, 55, 55);
+  border: solid var(--secondary);
   background-color: #edf2fb;
   border-radius: 5px;
 }
