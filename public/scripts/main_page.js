@@ -31,8 +31,6 @@ async function fetchUserName() {
     const userBalance = userData.Balance;
     const userOwedAmount = userData.Owed;
     const userOwnAmont = userData.Own;
-    // userSpendings = userData.Spendings;
-    // console.log(userSpendings);
 
     document.querySelector(".profile-name").innerText = `${userName}`;
     document.querySelector(".user-balance").innerHTML = `${userBalance}`;
@@ -67,7 +65,7 @@ function showPaymentSuccess() {
     .getElementById("bill-detail-card")
     .insertAdjacentHTML("beforeend", successMessage);
 
-  // remove the two buttons
+  // remove the two buttons once payment succeed
   document.getElementById("confirm-pay-btn").remove();
   document.getElementById("cancel-pay-btn").remove();
 
@@ -226,7 +224,6 @@ function payCurrentBill(bill, id) {
   });
 
   if (payerAmountStatus[currentUser.data.Name][1]) {
-    // document.getElementById("confirm-pay-btn").remove();
     document.getElementById("confirm-pay-btn").remove();
     const detailCard = document.getElementById("bill-detail-card");
     const wrapper = document.createElement("div");
