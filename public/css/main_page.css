@@ -791,3 +791,30 @@ footer {
   z-index: 1000;
   border: #ffffff solid 1px;
 }
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px; /* optional, to space below */
+}
+
+.section-header h3 {
+  margin: 0; /* remove default margin */
+  color: var(--primary); /* or whatever your theme uses */
+}
+
+.viewmore-btn {
+  color: var(--primary);
+  border: none;
+  background-color: white;
+  font-size: 14px;
+  padding: 3px 5px;
+  border-radius: 9px;
+  font-weight: 550;
+  cursor: pointer;
+}
+
+.header-btn:hover {
+  background-color: var(--primary-dark);
+}
