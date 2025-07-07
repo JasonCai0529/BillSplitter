@@ -706,3 +706,7 @@ async function renderSpendingsChart() {
     startAngle = endAngle;
   });
 }
+
+const test = () => {
+  window.location.href = "billdetail.html";
+};
