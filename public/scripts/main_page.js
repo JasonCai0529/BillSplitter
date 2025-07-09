@@ -46,7 +46,6 @@ async function fetchUserName() {
 function animateChartSegments() {
   const paths = document.querySelectorAll(".chart-container path");
   paths.forEach((path, index) => {
-    console.log("inside");
     setTimeout(() => {
       path.style.transition = "all 0.5s ease-out";
       path.style.transform = "scale(1.05)";
@@ -341,7 +340,6 @@ async function loadBills(billtype) {
     .collection(billtype)
     .get();
 
-  console.log(billtype);
   const billMenu = document.getElementById(
     `${billtype.toLowerCase()}-scroll-menu`
   );
@@ -391,7 +389,7 @@ async function loadBills(billtype) {
           .addEventListener("click", loadBillChunk);
       } else {
         // no more bills to load
-        console.log("the value of i is: ", i);
+        console.log("No more bills to load");
       }
     }
 
