@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .dashboard-griddd {
+        display: flex;
+        flex-direction: column;
+        height: 80vh; /* full viewport height */
+      }
+
+      .dashboard-griddd .section-card {
+        flex: 1;
+        overflow: auto; /* prevents overflow issues */
+        margin-top: 10px; /* optional spacing between them */
+        margin-bottom: 0px;
+      }
+    </style>
+    <link rel="stylesheet" href="css/main_page.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <div class="navbar">
+          <a href="main_page.html" class="logo">ADJC</a>
+          <div class="nav-links">
+            <p id="services-header">Services</p>
+            <a href="about.html">About</a>
+            <p id="contact-header">Contact</p>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- html contents -->
+    <div class="dashboard-griddd">
+      <div class="section-card">
+        <div class="section-header">
+          <h3>Bills</h3>
+          <button class="viewmore-btn">View More</button>
+        </div>
+
+        <div class="bill-scroll-container" id="bills-scroll-menu">
+          No record yet
+          <!-- small bill data -->
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-header">
+          <h3>Request</h3>
+          <button class="viewmore-btn" onclick="test()">View More</button>
+        </div>
+        <div class="request-scroll-container" id="request-scroll-menu">
+          No record yet
+          <!-- small bill data -->
+        </div>
+      </div>
+    </div>
+    <!-- html contents -->
+  </body>
+</html>
