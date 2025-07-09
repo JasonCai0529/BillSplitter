@@ -128,12 +128,7 @@ function removeParticipant(name, button) {
     selectedParticipants.splice(index, 1);
   }
   button.parentElement.remove();
-  console.log("Selected participants:", selectedParticipants);
 }
-
-document.querySelector("select").addEventListener("change", () => {
-  console.log(document.querySelector("select").value);
-});
 
 // bill = "name, description, category, time, amount, participants"
 async function addBill() {
