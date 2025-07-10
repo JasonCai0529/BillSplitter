@@ -8,13 +8,13 @@
       .bill-detail-dashboard-grid {
         display: flex;
         flex-direction: column;
-        height: 80vh; /* full viewport height */
+        height: 88vh; /* full viewport height */
       }
 
       .bill-detail-section-card {
         flex: 1;
         overflow: auto; /* prevents overflow issues */
-        margin-top: 10px; /* optional spacing between them */
+        /* margin-top: 10px; optional spacing between them */
         margin-bottom: 0px;
         /* display: flex; */
       }
@@ -23,68 +23,62 @@
         display: flex;
       }
 
-      .bill-detail-card {
-        width: 100px;
-        height: 100px;
-        background-color: blue;
-        margin-left: 5px;
-      }
-
-      .bill-detail-card {
-        min-width: 280px;
-        max-width: 300px;
+      .bill-detail-box {
+        height: 200px;
+        width: 220px;
         background-color: var(--white);
         border-radius: var(--border-radius);
         box-shadow: var(--shadow);
-        padding: 20px;
-        flex-shrink: 0;
-        border-left: 6px solid var(--primary);
+        padding: 3px 5px;
+        /* flex-shrink: 0; */
+        font-size: 13px;
+        overflow: scroll;
+        margin-left: 0px;
+        border-left: 4px solid var(--primary);
       }
 
-      .bill-detail-card h4 {
+      .bill-header {
+        display: flex;
+        justify-content: space-between;
+        font-weight: 600;
         color: var(--primary-dark);
-        margin-bottom: 10px;
-        font-size: 18px;
+        margin-bottom: 6px;
       }
 
-      .bill-detail-card p {
-        font-size: 14px;
-        color: #555;
-        margin-bottom: 5px;
+      .bill-info {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        margin-bottom: 8px;
       }
 
       .payer-section {
-        margin-top: 10px;
+        border-top: 1px solid #eee;
+        padding-top: 6px;
       }
 
       .payer {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-size: 14px;
-        padding: 6px 0;
-        border-top: 1px solid #eee;
-      }
-
-      .payer:first-of-type {
-        border-top: none;
-      }
-
-      .paid-status {
-        font-weight: 600;
-        padding: 2px 6px;
-        border-radius: 12px;
-        font-size: 12px;
+        margin-bottom: 4px;
       }
 
       .paid {
+        font-size: 12px;
+        font-weight: bold;
+        padding: 2px 6px;
+        border-radius: 8px;
+      }
+
+      .paid.paid {
         color: green;
         background-color: #e0f7e6;
       }
 
-      .unpaid {
+      .paid.unpaid {
         color: red;
-        background-color: #ffdddd;
+        background-color: #ffe6e6;
       }
     </style>
     <link rel="stylesheet" href="css/main_page.css" />
@@ -114,27 +108,31 @@
           <!-- No record yet -->
           <!-- small bill data -->
 
-          <div class="bill-detail-card">
-            <h4>BBQ</h4>
-            <p><strong>Date:</strong> 2025-06-18</p>
-            <p><strong>Category:</strong> Food</p>
-            <p><strong>Total Amount:</strong> $78.50</p>
-            <p><strong>Created by:</strong> Jason</p>
-            <div class="payer-section">
-              <p><strong>Payers:</strong></p>
-              <div class="payer">
-                <span>You</span>
-                <span>$78.50</span>
-                <span class="paid-status paid">Paid</span>
+          <div class="scroll-container">
+            <div class="bill-detail-box">
+              <div class="bill-header">
+                <span class="bill-title">BBQ</span>
+                <span class="bill-date">2025-06-18</span>
               </div>
-              <div class="payer">
-                <span>Aimee</span>
-                <span>$78.50</span>
-                <span class="paid-status unpaid">Unpaid</span>
+              <div class="bill-info">
+                <span><strong>Cat:</strong> Food</span>
+                <span><strong>Total:</strong> $78.50</span>
+                <span><strong>By:</strong> Jason</span>
+              </div>
+              <div class="payer-section">
+                <div class="payer">
+                  <span>You</span><span>$78.50</span
+                  ><span class="paid paid">✓</span>
+                </div>
+                <div class="payer">
+                  <span>Aimee</span><span>$78.50</span
+                  ><span class="paid unpaid">✗</span>
+                </div>
               </div>
             </div>
           </div>
-          <div class="bill-detail-card">something</div>
+
+          <div class="bill-detail-box">something</div>
         </div>
       </div>
 
