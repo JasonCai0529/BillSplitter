@@ -24,7 +24,7 @@
       }
 
       .bill-detail-box {
-        height: 200px;
+        height: 220px;
         width: 220px;
         background-color: var(--white);
         border-radius: var(--border-radius);
@@ -33,7 +33,7 @@
         /* flex-shrink: 0; */
         font-size: 13px;
         overflow: scroll;
-        margin-left: 0px;
+        margin-left: 10px;
         border-left: 4px solid var(--primary);
       }
 
@@ -42,7 +42,7 @@
         justify-content: space-between;
         font-weight: 600;
         color: var(--primary-dark);
-        margin-bottom: 6px;
+        margin-bottom: 4px;
       }
 
       .bill-info {
@@ -52,16 +52,28 @@
         margin-bottom: 8px;
       }
 
+      .bill-amount {
+        display: block;
+        width: 100%;
+        text-align: right;
+        /* width: 1200px; */
+      }
+
       .payer-section {
         border-top: 1px solid #eee;
         padding-top: 6px;
+        display: flex;
+
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
       }
 
       .payer {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
+
+        /* align-items: center; */
         margin-bottom: 4px;
+        margin-left: 4px;
       }
 
       .paid {
@@ -112,18 +124,43 @@
             <div class="bill-detail-box">
               <div class="bill-header">
                 <span class="bill-title">BBQ</span>
-                <span class="bill-date">2025-06-18</span>
+                <span class="bill-amount">$78.5</span>
               </div>
               <div class="bill-info">
-                <span><strong>Cat:</strong> Food</span>
-                <span><strong>Total:</strong> $78.50</span>
-                <span><strong>By:</strong> Jason</span>
+                <span>Category: Food</span>
+                <span>By: Jason</span>
+                <span>Date: 2024-10-12</span>
               </div>
               <div class="payer-section">
                 <div class="payer">
                   <span>You</span><span>$78.50</span
                   ><span class="paid paid">✓</span>
                 </div>
+                <div class="payer">
+                  <span>Aimee</span><span>$78.50</span
+                  ><span class="paid unpaid">✗</span>
+                </div>
+
+                <div class="payer">
+                  <span>Aimee</span><span>$78.50</span
+                  ><span class="paid unpaid">✗</span>
+                </div>
+
+                <div class="payer">
+                  <span>Aimee</span><span>$78.50</span
+                  ><span class="paid unpaid">✗</span>
+                </div>
+
+                <div class="payer">
+                  <span>Aimee</span><span>$78.50</span
+                  ><span class="paid unpaid">✗</span>
+                </div>
+
+                <div class="payer">
+                  <span>Aimee</span><span>$78.50</span
+                  ><span class="paid unpaid">✗</span>
+                </div>
+
                 <div class="payer">
                   <span>Aimee</span><span>$78.50</span
                   ><span class="paid unpaid">✗</span>
