@@ -15,6 +15,9 @@ const categoryCode = {
 
 const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
+const billsArr = [];
+const requestArr = [];
+
 async function fetchUserName() {
   if (currentUser) {
     // Display the user name from the stored data
@@ -71,6 +74,51 @@ function showPaymentSuccess() {
   setTimeout(() => {
     window.location.href = "main_page.html";
   }, 2500);
+}
+
+async function getAllBills() {
+  const userSnapshot = await db
+    .collection("billsplitter_users")
+    .where("Name", "==", userName)
+    .get();
+  const billsSnapshot = await userSnapshot.docs[0].ref
+    .collection("Bills")
+    .get();
+
+  const requestSnapshot = await userSnapshot.docs[0].ref
+    .collection("Request")
+    .get();
+
+  const billsDocsArray = billsSnapshot.docs;
+  const requestDocsArray = requestSnapshot.docs;
+
+  if (!billsSnapshot.empty) {
+    for (let j = 0; j < billsDocsArray.length; j++) {
+      const curId = billsDocsArray[j].data().billId;
+
+      const billRef = db.collection("Bills").doc(curId);
+      const billSnap = await billRef.get();
+
+      if (billSnap.exists) {
+        const billData = billSnap.data();
+        billsArr.push(billData);
+      }
+    }
+  }
+
+  if (!requestSnapshot.empty) {
+    for (let j = 0; j < requestDocsArray.length; j++) {
+      const curId = requestDocsArray[j].data().billId;
+
+      const billRef = db.collection("Bills").doc(curId);
+      const billSnap = await billRef.get();
+
+      if (billSnap.exists) {
+        const billData = billSnap.data();
+        requestArr.push(billData);
+      }
+    }
+  }
 }
 
 async function confirmPayment(bill, id) {
