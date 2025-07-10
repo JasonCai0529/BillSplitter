@@ -76,10 +76,16 @@ function showPaymentSuccess() {
   }, 2500);
 }
 
+function testPrint() {
+  billsArr.forEach((billData, i) => {
+    console.log(billData.AmountStatus);
+  });
+}
+
 async function getAllBills() {
   const userSnapshot = await db
     .collection("billsplitter_users")
-    .where("Name", "==", userName)
+    .where("Name", "==", currentUser.data.Name)
     .get();
   const billsSnapshot = await userSnapshot.docs[0].ref
     .collection("Bills")
@@ -119,6 +125,8 @@ async function getAllBills() {
       }
     }
   }
+
+  testPrint();
 }
 
 async function confirmPayment(bill, id) {
@@ -457,12 +465,14 @@ async function initChartRendering() {
   animateChartSegments(); // then run this
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
   fetchUserName();
   loadBills("Bills");
   loadBills("Request");
 
   initChartRendering();
+
+  getAllBills();
 });
 
 const serviceHTML = `<main class="container">
