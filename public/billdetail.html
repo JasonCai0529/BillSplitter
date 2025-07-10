@@ -5,17 +5,86 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
-      .dashboard-griddd {
+      .bill-detail-dashboard-grid {
         display: flex;
         flex-direction: column;
         height: 80vh; /* full viewport height */
       }
 
-      .dashboard-griddd .section-card {
+      .bill-detail-section-card {
         flex: 1;
         overflow: auto; /* prevents overflow issues */
         margin-top: 10px; /* optional spacing between them */
         margin-bottom: 0px;
+        /* display: flex; */
+      }
+
+      .detail-card-container {
+        display: flex;
+      }
+
+      .bill-detail-card {
+        width: 100px;
+        height: 100px;
+        background-color: blue;
+        margin-left: 5px;
+      }
+
+      .bill-detail-card {
+        min-width: 280px;
+        max-width: 300px;
+        background-color: var(--white);
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        padding: 20px;
+        flex-shrink: 0;
+        border-left: 6px solid var(--primary);
+      }
+
+      .bill-detail-card h4 {
+        color: var(--primary-dark);
+        margin-bottom: 10px;
+        font-size: 18px;
+      }
+
+      .bill-detail-card p {
+        font-size: 14px;
+        color: #555;
+        margin-bottom: 5px;
+      }
+
+      .payer-section {
+        margin-top: 10px;
+      }
+
+      .payer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 14px;
+        padding: 6px 0;
+        border-top: 1px solid #eee;
+      }
+
+      .payer:first-of-type {
+        border-top: none;
+      }
+
+      .paid-status {
+        font-weight: 600;
+        padding: 2px 6px;
+        border-radius: 12px;
+        font-size: 12px;
+      }
+
+      .paid {
+        color: green;
+        background-color: #e0f7e6;
+      }
+
+      .unpaid {
+        color: red;
+        background-color: #ffdddd;
       }
     </style>
     <link rel="stylesheet" href="css/main_page.css" />
@@ -34,25 +103,47 @@
       </div>
     </header>
     <!-- html contents -->
-    <div class="dashboard-griddd">
-      <div class="section-card">
+    <div class="bill-detail-dashboard-grid">
+      <div class="bill-detail-section-card section-card">
         <div class="section-header">
           <h3>Bills</h3>
           <button class="viewmore-btn">View More</button>
         </div>
 
-        <div class="bill-scroll-container" id="bills-scroll-menu">
-          No record yet
+        <div class="detail-card-container" id="bills-scroll-menu">
+          <!-- No record yet -->
           <!-- small bill data -->
+
+          <div class="bill-detail-card">
+            <h4>BBQ</h4>
+            <p><strong>Date:</strong> 2025-06-18</p>
+            <p><strong>Category:</strong> Food</p>
+            <p><strong>Total Amount:</strong> $78.50</p>
+            <p><strong>Created by:</strong> Jason</p>
+            <div class="payer-section">
+              <p><strong>Payers:</strong></p>
+              <div class="payer">
+                <span>You</span>
+                <span>$78.50</span>
+                <span class="paid-status paid">Paid</span>
+              </div>
+              <div class="payer">
+                <span>Aimee</span>
+                <span>$78.50</span>
+                <span class="paid-status unpaid">Unpaid</span>
+              </div>
+            </div>
+          </div>
+          <div class="bill-detail-card">something</div>
         </div>
       </div>
 
-      <div class="section-card">
+      <div class="bill-detail-section-card section-card">
         <div class="section-header">
           <h3>Request</h3>
           <button class="viewmore-btn" onclick="test()">View More</button>
         </div>
-        <div class="request-scroll-container" id="request-scroll-menu">
+        <div class="detail-card-container" id="request-scroll-menu">
           No record yet
           <!-- small bill data -->
         </div>
