@@ -412,7 +412,8 @@ async function loadBills(billtype) {
     docsArray = requestArr;
   }
 
-  // const docsArray = billsSnapshot.docs;
+  // change all docsArray
+  // change all related functions
 
   if (docsArray.empty) {
     // only load the first five bills
