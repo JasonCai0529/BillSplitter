@@ -406,9 +406,15 @@ async function loadBills(billtype) {
 
   let i = 0;
 
-  const docsArray = billsSnapshot.docs;
+  if (billtype == "Bills") {
+    docsArray = billsArr;
+  } else {
+    docsArray = requestArr;
+  }
 
-  if (!billsSnapshot.empty) {
+  // const docsArray = billsSnapshot.docs;
+
+  if (docsArray.empty) {
     // only load the first five bills
     for (let j = 0; j < docsArray.length; j++) {
       const curId = docsArray[j].data().billId;
