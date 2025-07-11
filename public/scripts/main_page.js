@@ -310,14 +310,12 @@ function payCurrentBill(bill, id) {
   <div class="bill-amount">$45.00</div>
 </div>
 */
-async function addSingleBill(id, i, type) {
-  const billRef = db.collection("Bills").doc(id);
-  const billSnap = await billRef.get();
+async function addSingleBill(billData, i, type) {
   const billMenu = document.getElementById(`${type}-scroll-menu`);
 
-  if (billSnap.exists) {
+  if (billData) {
     // if can found such snapshot
-    const billData = billSnap.data();
+    // const billData = billSnap.data();
     const billInitiater = billData.name;
     const billDescription = billData.description;
     const billDate = billData.date;
@@ -386,23 +384,9 @@ async function addSingleBill(id, i, type) {
 }
 
 async function loadBills(billtype) {
-  const userName = currentUser.data.Name;
-
-  const userSnapshot = await db
-    .collection("billsplitter_users")
-    .where("Name", "==", userName)
-    .get();
-  const billsSnapshot = await userSnapshot.docs[0].ref
-    .collection(billtype)
-    .get();
-
   const billMenu = document.getElementById(
     `${billtype.toLowerCase()}-scroll-menu`
   );
-
-  if (!billsSnapshot.empty) {
-    billMenu.innerHTML = "";
-  }
 
   let i = 0;
 
@@ -415,12 +399,13 @@ async function loadBills(billtype) {
   // change all docsArray
   // change all related functions
 
-  if (docsArray.empty) {
+  if (!docsArray.empty) {
     // only load the first five bills
+    billMenu.innerHTML = ""; // clear out the No Record part
     for (let j = 0; j < docsArray.length; j++) {
-      const curId = docsArray[j].data().billId;
+      const billData = docsArray[j];
       // fetch the actual bill from the universal "Bills" collection
-      await addSingleBill(curId, i, billtype.toLowerCase());
+      await addSingleBill(billData, i, billtype.toLowerCase());
       i += 1;
       if (i % 5 == 0) {
         // only add first five
@@ -432,10 +417,10 @@ async function loadBills(billtype) {
       document.getElementById("more-bill-btn").remove();
       for (let j = i; j < docsArray.length; j++) {
         // load five more
-        const curId = docsArray[j].data().billId;
+        const billData = docsArray[j];
 
         // fetch the actual bill from the universal "Bills" collection
-        await addSingleBill(curId, i, billtype.toLowerCase());
+        await addSingleBill(billData, i, billtype.toLowerCase());
         i += 1;
         if (i % 5 == 0) {
           // only add first five
