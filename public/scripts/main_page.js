@@ -132,7 +132,7 @@ async function getAllBills() {
   testPrint();
 }
 
-async function confirmPayment(bill, id) {
+async function confirmPayment(bill) {
   // const billData = {
   //     "name":name,
   //     "description":description,
@@ -143,6 +143,8 @@ async function confirmPayment(bill, id) {
   //     "AmountStatus": status,
   //     "State": 'open'
   // };
+
+  const id = bill.id;
   const payerName = currentUser.data.Name;
   const initiaterName = bill.name;
 
@@ -217,7 +219,8 @@ async function confirmPayment(bill, id) {
   showPaymentSuccess();
 }
 
-function payCurrentBill(bill, id) {
+function paymentDetailPage(bill) {
+  const id = bill.id;
   const container = document.getElementById("dashboard-container");
 
   // Generate dynamic content for amount status
@@ -274,7 +277,7 @@ function payCurrentBill(bill, id) {
 
   // Set up the Confirm Pay button listener
   document.getElementById("confirm-pay-btn").addEventListener("click", () => {
-    confirmPayment(bill, id);
+    confirmPayment(bill);
   });
 
   document.getElementById("cancel-pay-btn").addEventListener("click", () => {
@@ -347,7 +350,7 @@ async function addSingleBill(billData, i, type) {
       button.innerText = "Pay";
 
       button.addEventListener("click", () => {
-        payCurrentBill(billData, id);
+        paymentDetailPage(billData);
       });
 
       const buttonWrapper = document.createElement("div");
@@ -376,7 +379,7 @@ async function addSingleBill(billData, i, type) {
       button.innerText = "Details";
 
       button.addEventListener("click", () => {
-        payCurrentBill(billData, id);
+        paymentDetailPage(billData);
       });
 
       const buttonWrapper = document.createElement("div");
@@ -398,6 +401,8 @@ async function loadBills(billtype) {
   } else {
     docsArray = requestArr;
   }
+
+  console.log(billsArr.length);
 
   // change all docsArray
   // change all related functions
