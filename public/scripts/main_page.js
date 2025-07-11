@@ -299,15 +299,15 @@ function payCurrentBill(bill, id) {
 // bill entry html structure
 /*
 <div class="bill-entry">
-                                <div class="bill-info">
-                                    <div class="bill-description">Dinner at Italian Restaurant</div>
-                                    <div class="bill-meta">
-                                        <span class="bill-date">2025-06-03</span>
-                                        <span class="bill-category">Restaurant</span>
-                                        <span class = "bill-initializer">Created by: Jason</span>
-                                    </div>
-                                </div>
-                                <div class="bill-amount">$45.00</div>
+  <div class="bill-info">
+      <div class="bill-description">Dinner at Italian Restaurant</div>
+      <div class="bill-meta">
+          <span class="bill-date">2025-06-03</span>
+          <span class="bill-category">Restaurant</span>
+          <span class = "bill-initializer">Created by: Jason</span>
+      </div>
+  </div>
+  <div class="bill-amount">$45.00</div>
 </div>
 */
 async function addSingleBill(id, i, type) {
@@ -465,14 +465,18 @@ async function initChartRendering() {
   animateChartSegments(); // then run this
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  fetchUserName();
+async function loadAndSetAllBills() {
+  await getAllBills();
   loadBills("Bills");
   loadBills("Request");
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  fetchUserName();
 
   initChartRendering();
 
-  getAllBills();
+  loadAndSetAllBills();
 });
 
 const serviceHTML = `<main class="container">
