@@ -79,6 +79,7 @@ function showPaymentSuccess() {
 function testPrint() {
   billsArr.forEach((billData, i) => {
     console.log(billData.AmountStatus);
+    console.log(billData.id);
   });
 }
 
@@ -107,6 +108,7 @@ async function getAllBills() {
 
       if (billSnap.exists) {
         const billData = billSnap.data();
+        billData.id = curId;
         billsArr.push(billData);
       }
     }
@@ -121,6 +123,7 @@ async function getAllBills() {
 
       if (billSnap.exists) {
         const billData = billSnap.data();
+        billData.id = curId;
         requestArr.push(billData);
       }
     }
