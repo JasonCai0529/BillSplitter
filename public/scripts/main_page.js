@@ -811,9 +811,9 @@ document.getElementById("viewmore-btn").addEventListener("click", () => {
   console.log("here ");
 
   document.getElementById("dashboard-container").innerHTML = billDetailPageHTML;
-  billsArr.forEach((billData) => {
-    console.log("inside");
 
+  let i = 0;
+  billsArr.forEach((billData) => {
     const curBillBox = `<div class="bill-detail-box">
             <div class="bill-header">
               <span class="bill-title">${billData.description}</span>
@@ -826,11 +826,8 @@ document.getElementById("viewmore-btn").addEventListener("click", () => {
               <span>Unpaid: $${billData.unpaidAmount}<span>
             </div>
             
-            <div class="payer-section">
-              <div class="payer">
-                <span>You</span><span>$78.50</span
-                ><span class="paid paid">✓</span>
-              </div>
+            <div class="payer-section" id="bill-detail-payer-section-${i}">
+              
             </div>
            
           </div>`;
@@ -838,5 +835,26 @@ document.getElementById("viewmore-btn").addEventListener("click", () => {
     document
       .getElementById("bills-detail-scroll-menu")
       .insertAdjacentHTML("beforeend", curBillBox);
+
+    const payerSection = document.getElementById(
+      `bill-detail-payer-section-${i}`
+    );
+    Object.entries(billData.AmountStatus || {}).map(
+      ([name, [amount, paid]]) => {
+        if (name == currentUser.data.Name) name = "You";
+        const paidSPAN = paid
+          ? `<span class="paid paid">✓</span>`
+          : `<span class="paid unpaid">x</span>`;
+
+        const singlePayerDiv = `<div class="payer">
+                      <span>${name}</span><span>${amount}</span
+                      >${paidSPAN}
+                    </div>`;
+
+        payerSection.insertAdjacentHTML("beforeend", singlePayerDiv);
+      }
+    );
+
+    i += 1;
   });
 });
