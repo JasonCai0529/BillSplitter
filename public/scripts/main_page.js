@@ -785,46 +785,38 @@ const test = () => {
   window.location.href = "billdetail.html";
 };
 
-document.getElementById("viewmore-btn").addEventListener(() => {
-  const billdetailTemplate = `<div class="bill-detail-box">
-            <div class="bill-header">
-              <span class="bill-title">BBQ</span>
-              <span class="bill-amount">$78.5</span>
-            </div>
-            <div class="bill-info">
-              <span>Category: Food</span>
-              <span>By: Jason</span>
-              <span>Date: 2024-10-12</span>
-            </div>
-            //
-            <div class="payer-section">
-              <div class="payer">
-                <span>You</span><span>$78.50</span
-                ><span class="paid paid">✓</span>
-              </div>
-            </div>
-           //
-          </div>`;
-
+document.getElementById("viewmore-btn").addEventListener("click", () => {
+  console.log("here ");
   billsArr.forEach((billData) => {
+    console.log("inside");
+
+    window.location.href = "billdetail.html";
+
+    console.log("inside");
     const curBillBox = `<div class="bill-detail-box">
             <div class="bill-header">
               <span class="bill-title">${billData.description}</span>
               <span class="bill-amount">$${billData.amount}</span>
             </div>
             <div class="bill-info">
-              <span>Category: Food</span>
-              <span>By: Jason</span>
-              <span>Date: 2024-10-12</span>
+              <span>Category: ${billData.category}</span>
+              <span>By: ${billData.name}</span>
+              <span>Date: ${billData.date}</span>
+
+              <span>Unpaid Amount: ${billData.unpaidAmount}<span>
             </div>
-            //
+            
             <div class="payer-section">
               <div class="payer">
                 <span>You</span><span>$78.50</span
                 ><span class="paid paid">✓</span>
               </div>
             </div>
-           //
+           
           </div>`;
+
+    document
+      .getElementById("bills-detail-scroll-menu")
+      .insertAdjacentHTML("beforeend", curBillBox);
   });
 });
