@@ -794,10 +794,6 @@ const billDetailPageHTML = `<div class="bill-detail-dashboard-grid">
         <div class="detail-card-container" id="bills-detail-scroll-menu">
           <!-- No record yet -->
           <!-- small bill data -->
-
-          
-
-          <div class="bill-detail-box">something</div>
         </div>
       </div>
 
@@ -824,10 +820,9 @@ document.getElementById("viewmore-btn").addEventListener("click", () => {
               <span class="bill-detail-amount">$${billData.amount}</span>
             </div>
             <div class="bill-info">
-              <span>Category: ${billData.category}</span>
-              <span>By: ${billData.name}</span>
-              <span>Date: ${billData.date}</span>
-
+              <span>${billData.category}</span>
+              <span> ${billData.name}</span>
+              <span>${billData.date}</span>
               <span>Unpaid: $${billData.unpaidAmount}<span>
             </div>
             
