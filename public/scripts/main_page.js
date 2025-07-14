@@ -50,7 +50,7 @@ function animateChartSegments() {
   const paths = document.querySelectorAll(".chart-container path");
   paths.forEach((path, index) => {
     setTimeout(() => {
-      path.style.transition = "all 0.5s ease-out";
+      path.style.transition = "all 0.7s ease-out";
       path.style.transform = "scale(1.05)";
 
       setTimeout(() => {
@@ -404,25 +404,12 @@ async function loadBills(billtype) {
     docsArray = requestArr;
   }
 
-  // console.log(billsArr == docsArray);
-  // console.log(billsArr.length, " ", docsArray.length);
-
-  // console.log(billsArr.length);
-
-  // change all docsArray
-  // change all related functions
-
   if (!docsArray.empty) {
     // only load the first five bills
     billMenu.innerHTML = ""; // clear out the No Record part
     for (let j = 0; j < docsArray.length; j++) {
-      if (billsArr == docsArray) {
-        console.log("inside the loop ", j);
-      }
-
       const billData = docsArray[j];
-      console.log("hi");
-      // if (b)
+
       // fetch the actual bill from the universal "Bills" collection
       await addSingleBill(billData, i, billtype.toLowerCase());
       console.log("after");
@@ -430,10 +417,6 @@ async function loadBills(billtype) {
       if (i % 5 == 0) {
         // only add first five
         break;
-      }
-
-      if (billsArr == docsArray) {
-        console.log("next term");
       }
     }
 
@@ -447,7 +430,6 @@ async function loadBills(billtype) {
         await addSingleBill(billData, i, billtype.toLowerCase());
         i += 1;
         if (i % 5 == 0) {
-          // only add first five
           break;
         }
       }
@@ -481,7 +463,7 @@ async function initChartRendering() {
   animateChartSegments(); // then run this
 }
 
-async function loadAndSetAllBills() {
+async function loadAndSetAllBillSnap() {
   await getAllBills();
   await loadBills("Bills");
   await loadBills("Request");
@@ -489,10 +471,8 @@ async function loadAndSetAllBills() {
 
 document.addEventListener("DOMContentLoaded", () => {
   fetchUserName();
-
   initChartRendering();
-
-  loadAndSetAllBills();
+  loadAndSetAllBillSnap();
 });
 
 const serviceHTML = `<main class="container">
