@@ -818,3 +818,93 @@ footer {
 .header-btn:hover {
   background-color: var(--primary-dark);
 }
+
+.bill-detail-dashboard-grid {
+  display: flex;
+  flex-direction: column;
+  height: 88vh; /* full viewport height */
+}
+
+.bill-detail-section-card {
+  flex: 1;
+  overflow: auto; /* prevents overflow issues */
+  /* margin-top: 10px; optional spacing between them */
+  margin-bottom: 0px;
+  /* display: flex; */
+}
+
+.detail-card-container {
+  display: flex;
+}
+
+#bills-detail-scroll-menu {
+  overflow: scroll;
+}
+
+.bill-detail-box {
+  height: 220px;
+  width: 220px;
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  padding: 3px 5px;
+  /* flex-shrink: 0; */
+  font-size: 13px;
+  overflow: scroll;
+  margin-left: 10px;
+  border-left: 4px solid var(--primary);
+}
+
+.bill-header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  color: var(--primary-dark);
+  margin-bottom: 4px;
+}
+
+.bill-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 8px;
+}
+
+.bill-detail-amount {
+  display: block;
+  width: 100%;
+  text-align: right;
+  /* width: 1200px; */
+}
+
+.payer-section {
+  border-top: 1px solid #eee;
+  padding-top: 6px;
+  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+}
+
+.payer {
+  display: flex;
+  /* align-items: center; */
+  margin-bottom: 4px;
+  margin-left: 4px;
+}
+
+.paid {
+  font-size: 12px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 8px;
+}
+
+.paid.paid {
+  color: green;
+  background-color: #e0f7e6;
+}
+
+.paid.unpaid {
+  color: red;
+  background-color: #ffe6e6;
+}

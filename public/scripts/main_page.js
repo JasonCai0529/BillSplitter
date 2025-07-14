@@ -785,25 +785,50 @@ const test = () => {
   window.location.href = "billdetail.html";
 };
 
+const billDetailPageHTML = `<div class="bill-detail-dashboard-grid">
+      <div class="bill-detail-section-card section-card">
+        <div class="section-header">
+          <h3>Bills</h3>
+        </div>
+
+        <div class="detail-card-container" id="bills-detail-scroll-menu">
+          <!-- No record yet -->
+          <!-- small bill data -->
+
+          
+
+          <div class="bill-detail-box">something</div>
+        </div>
+      </div>
+
+      <div class="bill-detail-section-card section-card">
+        <div class="section-header">
+          <h3>Request</h3>
+        </div>
+        <div class="detail-card-container" id="request-scroll-menu">
+          
+        </div>
+      </div>
+    </div>`;
+
 document.getElementById("viewmore-btn").addEventListener("click", () => {
   console.log("here ");
+
+  document.getElementById("dashboard-container").innerHTML = billDetailPageHTML;
   billsArr.forEach((billData) => {
     console.log("inside");
 
-    window.location.href = "billdetail.html";
-
-    console.log("inside");
     const curBillBox = `<div class="bill-detail-box">
             <div class="bill-header">
               <span class="bill-title">${billData.description}</span>
-              <span class="bill-amount">$${billData.amount}</span>
+              <span class="bill-detail-amount">$${billData.amount}</span>
             </div>
             <div class="bill-info">
               <span>Category: ${billData.category}</span>
               <span>By: ${billData.name}</span>
               <span>Date: ${billData.date}</span>
 
-              <span>Unpaid Amount: ${billData.unpaidAmount}<span>
+              <span>Unpaid: $${billData.unpaidAmount}<span>
             </div>
             
             <div class="payer-section">
