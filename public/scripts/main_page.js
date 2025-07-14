@@ -396,13 +396,18 @@ async function loadBills(billtype) {
 
   let i = 0;
 
+  let docsArray = [];
+
   if (billtype == "Bills") {
     docsArray = billsArr;
   } else {
     docsArray = requestArr;
   }
 
-  console.log(billsArr.length);
+  // console.log(billsArr == docsArray);
+  // console.log(billsArr.length, " ", docsArray.length);
+
+  // console.log(billsArr.length);
 
   // change all docsArray
   // change all related functions
@@ -411,13 +416,24 @@ async function loadBills(billtype) {
     // only load the first five bills
     billMenu.innerHTML = ""; // clear out the No Record part
     for (let j = 0; j < docsArray.length; j++) {
+      if (billsArr == docsArray) {
+        console.log("inside the loop ", j);
+      }
+
       const billData = docsArray[j];
+      console.log("hi");
+      // if (b)
       // fetch the actual bill from the universal "Bills" collection
       await addSingleBill(billData, i, billtype.toLowerCase());
+      console.log("after");
       i += 1;
       if (i % 5 == 0) {
         // only add first five
         break;
+      }
+
+      if (billsArr == docsArray) {
+        console.log("next term");
       }
     }
 
@@ -461,14 +477,14 @@ async function loadBills(billtype) {
 }
 
 async function initChartRendering() {
-  await renderSpendingsChart(); // wait for it to finish
+  await renderSpendingsChart(); // wait for donut chart rendering to finish
   animateChartSegments(); // then run this
 }
 
 async function loadAndSetAllBills() {
   await getAllBills();
-  loadBills("Bills");
-  loadBills("Request");
+  await loadBills("Bills");
+  await loadBills("Request");
 }
 
 document.addEventListener("DOMContentLoaded", () => {
