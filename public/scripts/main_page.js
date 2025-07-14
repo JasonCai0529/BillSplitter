@@ -129,6 +129,18 @@ async function getAllBills() {
     }
   }
 
+  billsArr.sort((a, b) => {
+    if (a.State === "open" && b.State !== "open") return -1; // a comes before b
+    if (a.State !== "open" && b.State === "open") return 1; // b comes before a
+    return 0; // no change in order
+  });
+
+  requestArr.sort((a, b) => {
+    if (a.State === "open" && b.State !== "open") return -1;
+    if (a.State !== "open" && b.State === "open") return 1;
+    return 0;
+  });
+
   testPrint();
 }
 
@@ -220,7 +232,6 @@ async function confirmPayment(bill) {
 }
 
 function paymentDetailPage(bill) {
-  const id = bill.id;
   const container = document.getElementById("dashboard-container");
 
   // Generate dynamic content for amount status
