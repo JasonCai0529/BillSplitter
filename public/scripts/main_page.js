@@ -129,17 +129,14 @@ async function getAllBills() {
     }
   }
 
-  billsArr.sort((a, b) => {
+  let sortState = (a, b) => {
     if (a.State === "open" && b.State !== "open") return -1; // a comes before b
     if (a.State !== "open" && b.State === "open") return 1; // b comes before a
     return 0; // no change in order
-  });
+  };
 
-  requestArr.sort((a, b) => {
-    if (a.State === "open" && b.State !== "open") return -1;
-    if (a.State !== "open" && b.State === "open") return 1;
-    return 0;
-  });
+  billsArr.sort(sortState);
+  requestArr.sort(sortState);
 
   testPrint();
 }
@@ -171,14 +168,22 @@ async function confirmPayment(bill) {
   payerAmountStatus[payerName][1] = true;
 
   // updateBill
-  let updateBillAmount = bill.amount - payerAmount;
+
+  let unpaidAmt = bill.unpaidAmount;
+  if (unpaidAmt == undefined) {
+    unpaidAmt = bill.amount;
+  }
+  let updateBillAmount = unpaidAmt - payerAmount;
   const updateBillState = updateBillAmount == 0 ? "close" : "open";
 
-  await db.collection("Bills").doc(id).update({
-    State: updateBillState,
-    amount: updateBillAmount,
-    AmountStatus: payerAmountStatus,
-  });
+  await db
+    .collection("Bills")
+    .doc(id)
+    .update({
+      State: updateBillState,
+      unpaidAmount: updateBillAmount.toFixed(2),
+      AmountStatus: payerAmountStatus,
+    });
 
   if (!payerSnapshot.empty) {
     const payerData = payerSnapshot.docs[0].data();
@@ -262,6 +267,8 @@ function paymentDetailPage(bill) {
         <p><strong>Date:</strong> ${bill.date}</p>
         <p><strong>Category:</strong> ${bill.category}</p>
         <p><strong>Total Amount:</strong> $${bill.amount}</p>
+        <p><strong>Unpaid Amount:</strong> $${bill.unpaidAmount}</p>
+
         <p><strong>Created by:</strong> ${bill.name}</p>
 
         
@@ -777,3 +784,47 @@ async function renderSpendingsChart() {
 const test = () => {
   window.location.href = "billdetail.html";
 };
+
+document.getElementById("viewmore-btn").addEventListener(() => {
+  const billdetailTemplate = `<div class="bill-detail-box">
+            <div class="bill-header">
+              <span class="bill-title">BBQ</span>
+              <span class="bill-amount">$78.5</span>
+            </div>
+            <div class="bill-info">
+              <span>Category: Food</span>
+              <span>By: Jason</span>
+              <span>Date: 2024-10-12</span>
+            </div>
+            //
+            <div class="payer-section">
+              <div class="payer">
+                <span>You</span><span>$78.50</span
+                ><span class="paid paid">✓</span>
+              </div>
+            </div>
+           //
+          </div>`;
+
+  billsArr.forEach((billData) => {
+    const curBillBox = `<div class="bill-detail-box">
+            <div class="bill-header">
+              <span class="bill-title">${billData.description}</span>
+              <span class="bill-amount">$${billData.amount}</span>
+            </div>
+            <div class="bill-info">
+              <span>Category: Food</span>
+              <span>By: Jason</span>
+              <span>Date: 2024-10-12</span>
+            </div>
+            //
+            <div class="payer-section">
+              <div class="payer">
+                <span>You</span><span>$78.50</span
+                ><span class="paid paid">✓</span>
+              </div>
+            </div>
+           //
+          </div>`;
+  });
+});

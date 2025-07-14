@@ -174,6 +174,7 @@ async function addBill() {
     category: category,
     date: date,
     amount: amount.toFixed(2),
+    unpaidAmount: amount.toFixed(2),
     Participants: selectedParticipants,
     AmountStatus: status,
     State: "open",
