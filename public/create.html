@@ -1,411 +1,446 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Create Bill - ADJC</title>
+
+    <link rel="icon" type="image/png" href="ADJC_icon.png" />
+
     <style>
-        /* Root Variables */
-        :root {
-            --primary: #2c4c8c;
-            --primary-dark: #1a3366;
-            --primary-light: #4b6cb7;
-            --secondary: #6e9de8;
-            --light: #e5eeff;
-            --white: #ffffff;
-            --gray: #f5f7fa;
-            --dark-gray: #555;
-            --border-radius: 8px;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-        
-        /* Base Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: var(--gray);
-            color: #333;
-            line-height: 1.6;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        /* Header Styling */
-        header {
-            background-color: var(--white);
-            box-shadow: var(--shadow);
-            padding: 15px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--primary);
-            text-decoration: none;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 30px;
-        }
-        
-        .nav-links a {
-            color: var(--dark-gray);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        
-        .nav-links a:hover {
-            color: var(--primary);
-        }
-        
-        .nav-links a.active {
-            color: var(--primary);
-            font-weight: 600;
-        }
-        
-        /* Create Bill Section */
-        .create-bill-section {
-            padding: 40px 0;
-        }
-        
-        .bill-form {
-            background-color: var(--white);
-            border-radius: var(--border-radius);
-            padding: 30px;
-            box-shadow: var(--shadow);
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .bill-form h2 {
-            color: var(--primary);
-            margin-bottom: 25px;
-            text-align: center;
-            font-size: 24px;
-        }
-        
+      /* Root Variables */
+      :root {
+        --primary: #2c4c8c;
+        --primary-dark: #1a3366;
+        --primary-light: #4b6cb7;
+        --secondary: #6e9de8;
+        --light: #e5eeff;
+        --white: #ffffff;
+        --gray: #f5f7fa;
+        --dark-gray: #555;
+        --border-radius: 8px;
+        --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Base Styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background-color: var(--gray);
+        color: #333;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* Header Styling */
+      header {
+        background-color: var(--white);
+        box-shadow: var(--shadow);
+        padding: 15px 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--primary);
+        text-decoration: none;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 30px;
+      }
+
+      .nav-links a {
+        color: var(--dark-gray);
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s;
+      }
+
+      .nav-links a:hover {
+        color: var(--primary);
+      }
+
+      .nav-links a.active {
+        color: var(--primary);
+        font-weight: 600;
+      }
+
+      /* Create Bill Section */
+      .create-bill-section {
+        padding: 40px 0;
+      }
+
+      .bill-form {
+        background-color: var(--white);
+        border-radius: var(--border-radius);
+        padding: 30px;
+        box-shadow: var(--shadow);
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .bill-form h2 {
+        color: var(--primary);
+        margin-bottom: 25px;
+        text-align: center;
+        font-size: 24px;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+
+      .form-section {
+        margin-bottom: 30px;
+      }
+
+      .form-section h3 {
+        margin-bottom: 15px;
+        color: var(--primary);
+        font-size: 18px;
+      }
+
+      /* Form Elements */
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #e1e1e1;
+        border-radius: var(--border-radius);
+        font-size: 16px;
+        transition: border-color 0.3s;
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: var(--secondary);
+      }
+
+      /* Participant List */
+      .participant-list {
+        margin-top: 20px;
+      }
+
+      .participant {
+        display: flex;
+        align-items: center;
+        background-color: var(--light);
+        padding: 12px 15px;
+        border-radius: var(--border-radius);
+        margin-bottom: 10px;
+      }
+
+      .participant-name {
+        flex: 1;
+      }
+
+      .remove-btn {
+        background: none;
+        border: none;
+        color: var(--primary-dark);
+        cursor: pointer;
+        font-size: 16px;
+      }
+      .participant-check {
+        color: var(--primary-dark);
+        font-size: 16px;
+      }
+
+      .add-participant {
+        display: flex;
+        align-items: center;
+        margin-top: 15px;
+      }
+
+      .add-participant input {
+        flex: 1;
+        margin-right: 10px;
+      }
+
+      .bill-total {
+        background-color: var(--light);
+        padding: 15px;
+        border-radius: var(--border-radius);
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        font-weight: 500;
+      }
+
+      /* Button Group */
+      .button-group {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+      }
+
+      /* Button Styles */
+      .btn {
+        display: inline-block;
+        padding: 12px 24px;
+        background-color: var(--primary);
+        color: var(--white);
+        border: none;
+        border-radius: var(--border-radius);
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        text-decoration: none;
+      }
+
+      .btn:hover {
+        background-color: var(--primary-dark);
+      }
+
+      .btn-secondary {
+        background-color: var(--white);
+        color: var(--primary);
+        border: 2px solid var(--primary);
+      }
+
+      .btn-secondary:hover {
+        background-color: var(--light);
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
         .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+          grid-template-columns: 1fr;
         }
-        
-        .form-section {
-            margin-bottom: 30px;
-        }
-        
-        .form-section h3 {
-            margin-bottom: 15px;
-            color: var(--primary);
-            font-size: 18px;
-        }
-        
-        /* Form Elements */
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-label {
-            display: block; 
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #e1e1e1;
-            border-radius: var(--border-radius);
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-        
-        .form-control:focus {
-            outline: none;
-            border-color: var(--secondary);
-        }
-        
-        /* Participant List */
-        .participant-list {
-            margin-top: 20px;
-        }
-        
-        .participant {
-            display: flex;
-            align-items: center;
-            background-color: var(--light);
-            padding: 12px 15px;
-            border-radius: var(--border-radius);
-            margin-bottom: 10px;
-        }
-        
-        .participant-name {
-            flex: 1;
-        }
-        
-        .remove-btn {
-            background: none;
-            border: none;
-            color: var(--primary-dark);
-            cursor: pointer;
-            font-size: 16px;
-        }
-        .participant-check {
-            color: var(--primary-dark);
-            font-size: 16px;
-        }
-        
-        .add-participant {
-            display: flex;
-            align-items: center;
-            margin-top: 15px;
-        }
-        
-        .add-participant input {
-            flex: 1;
-            margin-right: 10px;
-        }
-        
-        .bill-total {
-            background-color: var(--light);
-            padding: 15px;
-            border-radius: var(--border-radius);
-            margin-top: 20px;
-            display: flex;
-            justify-content: space-between;
-            font-weight: 500;
-        }
-        
-        /* Button Group */
-        .button-group {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-        }
-        
-        /* Button Styles */
-        .btn {
-            display: inline-block;
-            padding: 12px 24px;
-            background-color: var(--primary);
-            color: var(--white);
-            border: none;
-            border-radius: var(--border-radius);
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            text-decoration: none;
-        }
-        
-        .btn:hover {
-            background-color: var(--primary-dark);
-        }
-        
-        .btn-secondary {
-            background-color: var(--white);
-            color: var(--primary);
-            border: 2px solid var(--primary);
-        }
-        
-        .btn-secondary:hover {
-            background-color: var(--light);
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-        }
+      }
 
+      .autocomplete-wrapper {
+        position: relative;
+      }
 
+      .autocomplete-items {
+        position: absolute;
+        /* top: 100%; */
+        left: 0;
+        right: 0;
+        z-index: 99;
+        background-color: white;
+        border: 1px solid #ddd;
+        border-top: none;
+        max-height: 200px;
+        overflow-y: auto;
+      }
 
+      .autocomplete-items div {
+        padding: 10px;
+        cursor: pointer;
+      }
 
+      .autocomplete-items div:hover {
+        background-color: #f1f1f1;
+      }
 
+      .toast {
+        font-weight: 550;
+      }
 
+      .alert {
+        color: rgb(250, 44, 44);
+      }
 
+      .show {
+        opacity: 1;
+      }
 
-
-       
-        .autocomplete-wrapper {
-            position: relative;
-        }
-
-        .autocomplete-items {
-            position: absolute;
-            /* top: 100%; */
-            left: 0;
-            right: 0;
-            z-index: 99;
-            background-color: white;
-            border: 1px solid #ddd;
-            border-top: none;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        .autocomplete-items div {
-            padding: 10px;
-            cursor: pointer;
-        }
-
-        .autocomplete-items div:hover {
-            background-color: #f1f1f1;
-        }
-
-
-        .toast {
-            font-weight: 550;
-        }
-
-
-        .alert {
-            color: rgb(250, 44, 44);
-        }
-
-        .show {
-            opacity: 1;
-        }
-
-        .hidden {
-            display: none;
-        }
+      .hidden {
+        display: none;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Header -->
     <header>
-        <div class="container">
-            <div class="navbar">
-                <a href="main_page.html" class="logo">ADJC</a>
-                <div class="nav-links">
-                    <a href="main_page.html">Services</a>
-                    <a href="about.html">About</a>
-                    <a href="contact.html">Contact</a>
-                </div>
-            </div>
+      <div class="container">
+        <div class="navbar">
+          <a href="main_page.html" class="logo">ADJC</a>
+          <div class="nav-links">
+            <a href="main_page.html">Services</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+          </div>
         </div>
+      </div>
     </header>
-    
+
     <main class="create-bill-section">
-        <div class="container">
-            <div class="bill-form">
-                <h2>Create New Bill</h2>
-                
-                <div class="form-grid">
-                    <div>
-                        <div class="form-section">
-                            <h3>Bill Details</h3>
-                            
-                            <div class="form-group">
-                                <label class="form-label">Bill Description</label>
-                                <input type="text" class="form-control" id = bill-description placeholder="e.g. Dinner at Italian Restaurant">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">Your Amount</label>
-                                <input type="number" class="form-control" id="your-amount" placeholder="0.00">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">Date</label>
-                                <input type="date" id = date class="form-control">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">Category</label>
-                                <select class="form-control">
-                                    <option value="" selected disabled>Select a category</option>
-                                    <option value="Food">Food</option>
-                                    <option value="Personal">Personal</option>
-                                    <option value="Entertainment">Entertainment</option>
-                                    <option value="Transportation">Transportation</option>
-                                    <option value="Housing">Housing</option>
-                                    <option value="Supplies">Supplies</option>
-                                    <option value="Miscellaneous">Miscellaneous</option>
-                                </select>
-                            </div>
+      <div class="container">
+        <div class="bill-form">
+          <h2>Create New Bill</h2>
 
-                            <div class="toast alert hidden" id="more-detail-toast"></div>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <div class="form-section">
-                            <h3>Bill Participants</h3>
-                            <p style="margin-bottom: 15px; color: var(--dark-gray);">Start with your amount, then add others who will contribute to this bill.</p>
-                            
-                            <div class="participant-list">
-                                <div class="participant">
-                                    <div class="participant-name">You</div> 
-                                        <button class="remove-btn" disabled></button>
-                                    <span class="participant-check">✓</span>
-                                </div>
-                                <div class="toast alert hidden" id="addParticipant-toast"></div>
-                                <div class="add-participant">
-                                    <!-- <input type="text" id="participant-input" class="form-control" placeholder="Add participant by username"> -->
+          <div class="form-grid">
+            <div>
+              <div class="form-section">
+                <h3>Bill Details</h3>
 
-                                    <div class="autocomplete-wrapper">
-                                        <input type="text" id="participant-input" class="form-control" placeholder="Add participant by username">
-                                        <div id="autocomplete-list" class="autocomplete-items"></div>
-                                    </div>
-
-                                    <button class="btn" onclick="addParticipant()">Add</button>
-                                </div>
-                                 
-                            </div>
-                        </div>
-                    </div>
+                <div class="form-group">
+                  <label class="form-label">Bill Description</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="bill-description"
+                    placeholder="e.g. Dinner at Italian Restaurant"
+                  />
                 </div>
-                
-                <div class="button-group">
-                    <a href="main_page.html" class="btn btn-secondary">Cancel</a>
-                    <button class="btn" onclick=addBill()>Create Bill</button>
+
+                <div class="form-group">
+                  <label class="form-label">Your Amount</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="your-amount"
+                    placeholder="0.00"
+                  />
                 </div>
+
+                <div class="form-group">
+                  <label class="form-label">Date</label>
+                  <input type="date" id="date" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Category</label>
+                  <select class="form-control">
+                    <option value="" selected disabled>
+                      Select a category
+                    </option>
+                    <option value="Food">Food</option>
+                    <option value="Personal">Personal</option>
+                    <option value="Entertainment">Entertainment</option>
+                    <option value="Transportation">Transportation</option>
+                    <option value="Housing">Housing</option>
+                    <option value="Supplies">Supplies</option>
+                    <option value="Miscellaneous">Miscellaneous</option>
+                  </select>
+                </div>
+
+                <div class="toast alert hidden" id="more-detail-toast"></div>
+              </div>
             </div>
+
+            <div>
+              <div class="form-section">
+                <h3>Bill Participants</h3>
+                <p style="margin-bottom: 15px; color: var(--dark-gray)">
+                  Start with your amount, then add others who will contribute to
+                  this bill.
+                </p>
+
+                <div class="participant-list">
+                  <div class="participant">
+                    <div class="participant-name">You</div>
+                    <button class="remove-btn" disabled></button>
+                    <span class="participant-check">✓</span>
+                  </div>
+                  <div
+                    class="toast alert hidden"
+                    id="addParticipant-toast"
+                  ></div>
+                  <div class="add-participant">
+                    <!-- <input type="text" id="participant-input" class="form-control" placeholder="Add participant by username"> -->
+
+                    <div class="autocomplete-wrapper">
+                      <input
+                        type="text"
+                        id="participant-input"
+                        class="form-control"
+                        placeholder="Add participant by username"
+                      />
+                      <div
+                        id="autocomplete-list"
+                        class="autocomplete-items"
+                      ></div>
+                    </div>
+
+                    <button class="btn" onclick="addParticipant()">Add</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="button-group">
+            <a href="main_page.html" class="btn btn-secondary">Cancel</a>
+            <button class="btn" onclick="addBill()">Create Bill</button>
+          </div>
         </div>
-    </main> 
-    
-    
+      </div>
+    </main>
+
     <script defer src="/__/firebase/11.4.0/firebase-app-compat.js"></script>
     <!-- include only the Firebase features as you need -->
     <script defer src="/__/firebase/11.4.0/firebase-auth-compat.js"></script>
-    <script defer src="/__/firebase/11.4.0/firebase-database-compat.js"></script>
-    <script defer src="/__/firebase/11.4.0/firebase-firestore-compat.js"></script>
-    <script defer src="/__/firebase/11.4.0/firebase-functions-compat.js"></script>
-    <script defer src="/__/firebase/11.4.0/firebase-messaging-compat.js"></script>
+    <script
+      defer
+      src="/__/firebase/11.4.0/firebase-database-compat.js"
+    ></script>
+    <script
+      defer
+      src="/__/firebase/11.4.0/firebase-firestore-compat.js"
+    ></script>
+    <script
+      defer
+      src="/__/firebase/11.4.0/firebase-functions-compat.js"
+    ></script>
+    <script
+      defer
+      src="/__/firebase/11.4.0/firebase-messaging-compat.js"
+    ></script>
     <script defer src="/__/firebase/11.4.0/firebase-storage-compat.js"></script>
-    <script defer src="/__/firebase/11.4.0/firebase-analytics-compat.js"></script>
-    <script defer src="/__/firebase/11.4.0/firebase-remote-config-compat.js"></script>
-    <script defer src="/__/firebase/11.4.0/firebase-performance-compat.js"></script>
+    <script
+      defer
+      src="/__/firebase/11.4.0/firebase-analytics-compat.js"
+    ></script>
+    <script
+      defer
+      src="/__/firebase/11.4.0/firebase-remote-config-compat.js"
+    ></script>
+    <script
+      defer
+      src="/__/firebase/11.4.0/firebase-performance-compat.js"
+    ></script>
     <!-- 
       initialize the SDK after all desired features are loaded, set useEmulator to false
       to avoid connecting the SDK to running emulators.
     -->
     <script defer src="/__/firebase/init.js?useEmulator=true"></script>
     <script defer src="scripts/script.js"></script>
-    
-    
-</body>
+  </body>
 </html>

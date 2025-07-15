@@ -1,138 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
-<head> 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Team Members</title>
-    <style>  
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color:#13294B;
-            color: white;
-            font-family: Arial, sans-serif; 
-            padding: 20px;
-        } 
- 
-        .container {
-            background: rgba(255, 255, 255, 0.15);
-            background-color: #FF5F05;
-            
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2);
-            width: 95%;
-            max-width: 1300;
-            backdrop-filter: blur(8px); 
-            text-align: center;
-        } 
- 
-        h2 {
-            font-size: 32px;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
- 
-        .team {
-            display: flex;
-            justify-content: space-between;  
-            flex-wrap: nowrap; 
-            gap: 20px;
-            overflow-x: auto;
-            padding: 10px;
-            grid-template-columns: repeat(2, 1fr);
-            justify-content: center;
-        }
- 
-        .member {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 300px;
-            background: #13294B;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
-            text-align: center;
-            transition: transform 0.3s ease-in-out;
-        }
- 
-        .member:hover {
-            transform: translateY(-5px);
-        }
- 
-        .member strong {
-            font-size: 22px;
-            color:  #FF5F05;  
-            margin-bottom: 8px;
-        }
 
-        .member p{
-            color: #C8C6C7;
-            font-size: 20px;
-        }
- 
-        .button-top-left {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background-color: #C84113;
-            color: #FCB316;
-            border: 2px solid #FF5F05;
-            padding: 10px 18px;
-            font-size: 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            text-decoration: none;
-            transition: all 0.3s ease-in-out;
-            box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
-            z-index: 100
-        }
+    <link rel="icon" type="image/png" href="ADJC_icon.png" />
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #13294b;
+        color: white;
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
 
-        .button-top-left:hover {
-            background-color: orange;
-            color: white;
-            border-color: white;
-        }
+      .container {
+        background: rgba(255, 255, 255, 0.15);
+        background-color: #ff5f05;
+
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2);
+        width: 95%;
+        max-width: 1300;
+        backdrop-filter: blur(8px);
+        text-align: center;
+      }
+
+      h2 {
+        font-size: 32px;
+        margin-bottom: 20px;
+        font-weight: bold;
+      }
+
+      .team {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+        gap: 20px;
+        overflow-x: auto;
+        padding: 10px;
+        grid-template-columns: repeat(2, 1fr);
+        justify-content: center;
+      }
+
+      .member {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 300px;
+        background: #13294b;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
+        text-align: center;
+        transition: transform 0.3s ease-in-out;
+      }
+
+      .member:hover {
+        transform: translateY(-5px);
+      }
+
+      .member strong {
+        font-size: 22px;
+        color: #ff5f05;
+        margin-bottom: 8px;
+      }
+
+      .member p {
+        color: #c8c6c7;
+        font-size: 20px;
+      }
+
+      .button-top-left {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background-color: #c84113;
+        color: #fcb316;
+        border: 2px solid #ff5f05;
+        padding: 10px 18px;
+        font-size: 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        text-decoration: none;
+        transition: all 0.3s ease-in-out;
+        box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+        z-index: 100;
+      }
+
+      .button-top-left:hover {
+        background-color: orange;
+        color: white;
+        border-color: white;
+      }
     </style>
-</head> 
+  </head>
 
-<body>
-  
+  <body>
     <a href="main_page.html" class="button-top-left">Back</a>
- 
+
     <div class="container">
-        <h2>Team</h2>
-         
-        <div class="team">
+      <h2>Team</h2>
 
-            <div class="member"> 
-                <strong>Aimee Zhang</strong>
-                <p>Hi, I'm Aimee Zhang, a junior at UIUC studying CS + Economics with a minor in Business. 
-                I'm part of the frontend team. Let's connect and build something great together!</p>
-            </div>
-
-            <div class="member"> 
-                <strong>David Zhao</strong>
-                <p>Hey everyone, I'm Dekai Zhao, a senior majoring in CS at UIUC. 
-                I focus on backend development and system architecture. Hope you find our work interesting!</p>
-            </div>
-
-            <div class="member"> 
-                <strong>Jason Cai</strong>
-                <p>What's up guys, I'm Jason, a junior studying Math & CS at UIUC. 
-                I handle backend and database architecture. Hope you like what we built!</p>
-            </div>
-
-            <div class="member"> 
-                <strong>Chelsea Sun</strong>
-                <p>Hello everyone, I'm Chelsea Sun, studying CS + Economics with a minor in Informatics. 
-                I really appreciate my teammates' effort and time on this project. Enjoy the app!</p>
-            </div>
+      <div class="team">
+        <div class="member">
+          <strong>Aimee Zhang</strong>
+          <p>
+            Hi, I'm Aimee Zhang, a junior at UIUC studying CS + Economics with a
+            minor in Business. I'm part of the frontend team. Let's connect and
+            build something great together!
+          </p>
         </div>
+
+        <div class="member">
+          <strong>David Zhao</strong>
+          <p>
+            Hey everyone, I'm Dekai Zhao, a senior majoring in CS at UIUC. I
+            focus on backend development and system architecture. Hope you find
+            our work interesting!
+          </p>
+        </div>
+
+        <div class="member">
+          <strong>Jason Cai</strong>
+          <p>
+            What's up guys, I'm Jason, a junior studying Math & CS at UIUC. I
+            handle backend and database architecture. Hope you like what we
+            built!
+          </p>
+        </div>
+
+        <div class="member">
+          <strong>Chelsea Sun</strong>
+          <p>
+            Hello everyone, I'm Chelsea Sun, studying CS + Economics with a
+            minor in Informatics. I really appreciate my teammates' effort and
+            time on this project. Enjoy the app!
+          </p>
+        </div>
+      </div>
     </div>
-</body>
+  </body>
 </html>
