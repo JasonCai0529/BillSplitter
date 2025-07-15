@@ -853,7 +853,7 @@ footer {
   border-left: 4px solid var(--primary);
 
   min-height: 220px;
-  min-width: 220px;
+  min-width: 230px;
 }
 
 .bill-header {
