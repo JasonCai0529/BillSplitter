@@ -846,8 +846,8 @@ document.getElementById("viewmore-btn").addEventListener("click", () => {
           ? `<span class="paid paid">✓</span>`
           : `<span class="paid unpaid">x</span>`;
 
-        const singlePayerDiv = `<div class="payer">
-                      <span>${name}</span><span>${amount}</span
+        const singlePayerDiv = `<div class="payer payer-paid-${paid}">
+                      <span>${name}:</span><span>&nbsp;$${amount}</span
                       >${paidSPAN}
                     </div>`;
 

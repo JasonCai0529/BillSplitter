@@ -842,8 +842,6 @@ footer {
 }
 
 .bill-detail-box {
-  height: 220px;
-  width: 220px;
   background-color: var(--white);
   border-radius: var(--border-radius);
   box-shadow: var(--shadow);
@@ -853,6 +851,9 @@ footer {
   overflow: scroll;
   margin-left: 10px;
   border-left: 4px solid var(--primary);
+
+  min-height: 220px;
+  min-width: 220px;
 }
 
 .bill-header {
@@ -861,6 +862,11 @@ footer {
   font-weight: 600;
   color: var(--primary-dark);
   margin-bottom: 4px;
+}
+
+.bill-title {
+  width: fit-content;
+  white-space: nowrap;
 }
 
 .bill-info {
@@ -890,8 +896,20 @@ footer {
   /* align-items: center; */
   margin-bottom: 4px;
   margin-left: 4px;
+  font-weight: 550;
+
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
 }
 
+.payer-paid-true {
+  background-color: #e0f7e6;
+}
+
+.payer-paid-false {
+  background-color: #ffe6e6;
+}
 .paid {
   font-size: 12px;
   font-weight: bold;
