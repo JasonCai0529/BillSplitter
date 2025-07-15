@@ -76,13 +76,6 @@ function showPaymentSuccess() {
   }, 2500);
 }
 
-function testPrint() {
-  billsArr.forEach((billData, i) => {
-    console.log(billData.AmountStatus);
-    console.log(billData.id);
-  });
-}
-
 async function getAllBills() {
   const userSnapshot = await db
     .collection("billsplitter_users")
@@ -137,8 +130,6 @@ async function getAllBills() {
 
   billsArr.sort(sortState);
   requestArr.sort(sortState);
-
-  testPrint();
 }
 
 async function confirmPayment(bill) {
@@ -430,7 +421,6 @@ async function loadBills(billtype) {
 
       // fetch the actual bill from the universal "Bills" collection
       await addSingleBill(billData, i, billtype.toLowerCase());
-      console.log("after");
       i += 1;
       if (i % 5 == 0) {
         // only add first five
@@ -781,10 +771,6 @@ async function renderSpendingsChart() {
   });
 }
 
-const test = () => {
-  window.location.href = "billdetail.html";
-};
-
 const billDetailPageHTML = `<div class="bill-detail-dashboard-grid">
       <div class="bill-detail-section-card section-card">
         <div class="section-header">
@@ -808,8 +794,6 @@ const billDetailPageHTML = `<div class="bill-detail-dashboard-grid">
     </div>`;
 
 document.getElementById("viewmore-btn").addEventListener("click", () => {
-  console.log("here ");
-
   document.getElementById("dashboard-container").innerHTML = billDetailPageHTML;
 
   let i = 0;

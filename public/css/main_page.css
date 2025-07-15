@@ -841,6 +841,10 @@ footer {
   overflow: scroll;
 }
 
+#request-scroll-menu {
+  overflow: scroll;
+}
+
 .bill-detail-box {
   background-color: var(--white);
   border-radius: var(--border-radius);
