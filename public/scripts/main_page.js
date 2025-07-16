@@ -900,3 +900,122 @@ document.getElementById("viewmore-btn").addEventListener("click", () => {
     j += 1;
   });
 });
+
+////////////////
+// Create HTML
+// script.js
+////////////////
+const createBillHTML = `<div class="bill-form">
+          <h2>Create New Bill</h2>
+
+          <div class="form-grid">
+            <div>
+              <div class="form-section">
+                <h3>Bill Details</h3>
+
+                <div class="form-group">
+                  <label class="form-label">Bill Description</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="bill-description"
+                    placeholder="e.g. Dinner at Italian Restaurant"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Your Amount</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="your-amount"
+                    placeholder="0.00"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Date</label>
+                  <input type="date" id="date" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Category</label>
+                  <select class="form-control">
+                    <option value="" selected disabled>
+                      Select a category
+                    </option>
+                    <option value="Food">Food</option>
+                    <option value="Personal">Personal</option>
+                    <option value="Entertainment">Entertainment</option>
+                    <option value="Transportation">Transportation</option>
+                    <option value="Housing">Housing</option>
+                    <option value="Supplies">Supplies</option>
+                    <option value="Miscellaneous">Miscellaneous</option>
+                  </select>
+                </div>
+
+                <div
+                  class="create-bill- alert hidden"
+                  id="more-detail-create-bill-"
+                ></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="form-section">
+                <h3>Bill Participants</h3>
+                <p style="margin-bottom: 15px; color: var(--dark-gray)">
+                  Start with your amount, then add others who will contribute to
+                  this bill.
+                </p>
+
+                <div class="participant-list">
+                  <div class="participant">
+                    <div class="participant-name">You</div>
+                    <button class="remove-create-bill-btn" disabled></button>
+                    <span class="participant-check">✓</span>
+                  </div>
+                  <div
+                    class="create-bill- alert hidden"
+                    id="addParticipant-create-bill-"
+                  ></div>
+                  <div class="add-participant">
+                    <!-- <input type="text" id="participant-input" class="form-control" placeholder="Add participant by username"> -->
+
+                    <div class="autocomplete-wrapper">
+                      <input
+                        type="text"
+                        id="participant-input"
+                        class="form-control"
+                        placeholder="Add participant by username"
+                      />
+                      <div
+                        id="autocomplete-list"
+                        class="autocomplete-items"
+                      ></div>
+                    </div>
+
+                    <button class="create-bill-btn" onclick="addParticipant()">
+                      Add
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="button-group">
+            <a
+              href="main_page.html"
+              class="create-bill-btn create-bill-btn-secondary"
+              >Cancel</a
+            >
+            <button class="create-bill-btn" onclick="addBill()">
+              Create Bill
+            </button>
+          </div>
+        </div>`;
+
+document.getElementById("create-a-bill-btn").addEventListener("click", () => {
+  document.getElementById("dashboard-container").innerHTML = createBillHTML;
+});
