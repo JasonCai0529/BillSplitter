@@ -238,6 +238,7 @@ async function addBill() {
       });
     }
 
+    // localStorage.setItem("billAdded", "true");
     window.location.href = "main_page.html";
   } catch (error) {
     console.error("Error adding bill and sending requests:", error);

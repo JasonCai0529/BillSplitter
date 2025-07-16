@@ -114,6 +114,7 @@ async function login(event) {
 
     // validate user with their password
     if (userData.Password == password) {
+      // localStorage.setItem("billAdded", "true");
       showToast("Log in successful! Welcome back!", "top-toast");
       setTimeout(() => {
         window.location.href = "main_page.html";
@@ -219,6 +220,5 @@ function toSignUpHTML() {
 
         <p>Already have an account? <a onclick="toLoginHTML()">Login</a> here</p>`;
   document.getElementById("index-container").innerHTML = signupHTML;
-
   signUpInfoValidation();
 }

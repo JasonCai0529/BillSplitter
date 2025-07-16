@@ -13,6 +13,7 @@ const categoryCode = {
 };
 
 const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+// const billAdded = localStorage.getItem("billAdded") === "true";
 
 const billsArr = [];
 const requestArr = [];
@@ -76,6 +77,10 @@ function showPaymentSuccess() {
 }
 
 async function getAllBills() {
+  // console.log("billADDEd", billAdded);
+  // if (!billAdded) {
+  //   return;
+  // }
   const userSnapshot = await db
     .collection("billsplitter_users")
     .where("Name", "==", currentUser.data.Name)
@@ -93,6 +98,9 @@ async function getAllBills() {
 
   if (!billsSnapshot.empty) {
     for (let j = 0; j < billsDocsArray.length; j++) {
+      if (billsArr.length == billsDocsArray.length) {
+        break;
+      }
       const curId = billsDocsArray[j].data().billId;
 
       const billRef = db.collection("Bills").doc(curId);
@@ -108,6 +116,9 @@ async function getAllBills() {
 
   if (!requestSnapshot.empty) {
     for (let j = 0; j < requestDocsArray.length; j++) {
+      if (requestArr.length == requestDocsArray.length) {
+        break;
+      }
       const curId = requestDocsArray[j].data().billId;
 
       const billRef = db.collection("Bills").doc(curId);
@@ -129,6 +140,8 @@ async function getAllBills() {
 
   billsArr.sort(sortState);
   requestArr.sort(sortState);
+
+  // localStorage.setItem("billAdded", "false");
 }
 
 async function confirmPayment(bill) {
