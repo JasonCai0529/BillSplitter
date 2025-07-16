@@ -8,84 +8,6 @@
     <link rel="icon" type="image/png" href="ADJC_icon.png" />
 
     <style>
-      /* Root Variables */
-      :root {
-        --primary: #2c4c8c;
-        --primary-dark: #1a3366;
-        --primary-light: #4b6cb7;
-        --secondary: #6e9de8;
-        --light: #e5eeff;
-        --white: #ffffff;
-        --gray: #f5f7fa;
-        --dark-gray: #555;
-        --border-radius: 8px;
-        --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      }
-
-      /* Base Styles */
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      }
-
-      body {
-        background-color: var(--gray);
-        color: #333;
-        line-height: 1.6;
-      }
-
-      .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
-      }
-
-      /* Header Styling */
-      header {
-        background-color: var(--white);
-        box-shadow: var(--shadow);
-        padding: 15px 0;
-        position: sticky;
-        top: 0;
-        z-index: 100;
-      }
-
-      .navbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .logo {
-        font-size: 24px;
-        font-weight: 700;
-        color: var(--primary);
-        text-decoration: none;
-      }
-
-      .nav-links {
-        display: flex;
-        gap: 30px;
-      }
-
-      .nav-links a {
-        color: var(--dark-gray);
-        text-decoration: none;
-        font-weight: 500;
-        transition: color 0.3s;
-      }
-
-      .nav-links a:hover {
-        color: var(--primary);
-      }
-
-      .nav-links a.active {
-        color: var(--primary);
-        font-weight: 600;
-      }
-
       /* Create Bill Section */
       .create-bill-section {
         padding: 40px 0;
@@ -166,7 +88,7 @@
         flex: 1;
       }
 
-      .remove-btn {
+      .remove-create-bill-btn {
         background: none;
         border: none;
         color: var(--primary-dark);
@@ -207,7 +129,7 @@
       }
 
       /* Button Styles */
-      .btn {
+      .create-bill-btn {
         display: inline-block;
         padding: 12px 24px;
         background-color: var(--primary);
@@ -221,17 +143,17 @@
         text-decoration: none;
       }
 
-      .btn:hover {
+      .create-bill-btn:hover {
         background-color: var(--primary-dark);
       }
 
-      .btn-secondary {
+      .create-bill-btn-secondary {
         background-color: var(--white);
         color: var(--primary);
         border: 2px solid var(--primary);
       }
 
-      .btn-secondary:hover {
+      .create-bill-btn-secondary:hover {
         background-color: var(--light);
       }
 
@@ -351,7 +273,10 @@
                   </select>
                 </div>
 
-                <div class="toast alert hidden" id="more-detail-toast"></div>
+                <div
+                  class="create-bill- alert hidden"
+                  id="more-detail-create-bill-"
+                ></div>
               </div>
             </div>
 
@@ -366,12 +291,12 @@
                 <div class="participant-list">
                   <div class="participant">
                     <div class="participant-name">You</div>
-                    <button class="remove-btn" disabled></button>
+                    <button class="remove-create-bill-btn" disabled></button>
                     <span class="participant-check">✓</span>
                   </div>
                   <div
-                    class="toast alert hidden"
-                    id="addParticipant-toast"
+                    class="create-bill- alert hidden"
+                    id="addParticipant-create-bill-"
                   ></div>
                   <div class="add-participant">
                     <!-- <input type="text" id="participant-input" class="form-control" placeholder="Add participant by username"> -->
@@ -389,7 +314,9 @@
                       ></div>
                     </div>
 
-                    <button class="btn" onclick="addParticipant()">Add</button>
+                    <button class="create-bill-btn" onclick="addParticipant()">
+                      Add
+                    </button>
                   </div>
                 </div>
               </div>
@@ -397,8 +324,14 @@
           </div>
 
           <div class="button-group">
-            <a href="main_page.html" class="btn btn-secondary">Cancel</a>
-            <button class="btn" onclick="addBill()">Create Bill</button>
+            <a
+              href="main_page.html"
+              class="create-bill-btn create-bill-btn-secondary"
+              >Cancel</a
+            >
+            <button class="create-bill-btn" onclick="addBill()">
+              Create Bill
+            </button>
           </div>
         </div>
       </div>
