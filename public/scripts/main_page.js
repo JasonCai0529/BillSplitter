@@ -1126,7 +1126,7 @@ async function addParticipant() {
     participant.className = "participant";
     participant.innerHTML = `
             <div class="participant-name">${name}</div>
-            <button class="remove-btn" onclick="removeParticipant('${name}', this)">✕</button>
+            <button class="remove-create-bill-btn" onclick="removeParticipant('${name}', this)">✕</button>
         `;
 
     const addParticipantDiv = document.querySelector(".add-participant");
