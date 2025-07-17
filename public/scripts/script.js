@@ -2,7 +2,7 @@ const analytics = firebase.analytics();
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-let currentUser;
+// let currentUser;
 // add a single user with ({"Balance": 1, "Name": "Jason", Password: "2006", Spendings: [1, 2, 3, 4]});
 
 document.addEventListener("DOMContentLoaded", () => {
