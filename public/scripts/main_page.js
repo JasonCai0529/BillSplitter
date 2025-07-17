@@ -18,6 +18,8 @@ const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 const billsArr = [];
 const requestArr = [];
 
+let billAdded = true;
+
 async function fetchUserName() {
   if (currentUser) {
     // Display the user name from the stored data
@@ -78,9 +80,10 @@ function showPaymentSuccess() {
 
 async function getAllBills() {
   // console.log("billADDEd", billAdded);
-  // if (!billAdded) {
-  //   return;
-  // }
+  if (!billAdded) {
+    console.log("no need to add more");
+    return;
+  }
   const userSnapshot = await db
     .collection("billsplitter_users")
     .where("Name", "==", currentUser.data.Name)
@@ -140,6 +143,8 @@ async function getAllBills() {
 
   billsArr.sort(sortState);
   requestArr.sort(sortState);
+
+  billAdded = false;
 
   // localStorage.setItem("billAdded", "false");
 }
@@ -1260,6 +1265,7 @@ async function addBill() {
     }
 
     // localStorage.setItem("billAdded", "true");
+    billAdded = true;
     window.location.href = "main_page.html";
   } catch (error) {
     console.error("Error adding bill and sending requests:", error);
