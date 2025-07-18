@@ -20,6 +20,12 @@ const requestArr = [];
 
 let billAdded = true;
 
+async function loadHTML(filepath, container = "dashboard-container") {
+  const res = await fetch(filepath);
+  const html = await res.text();
+  document.getElementById(container).innerHTML = html;
+}
+
 async function fetchUserName() {
   if (currentUser) {
     // Display the user name from the stored data
@@ -500,115 +506,12 @@ document.addEventListener("DOMContentLoaded", () => {
   loadAndSetAllBillSnap();
 });
 
-const serviceHTML = `<main class="container">
-    <h1>Our Services</h1>
-    <div class="services-grid">
-      <div class="service-card">
-        <div class="service-title">Bill Splitting</div>
-        <div class="service-description">
-          Easily split expenses among friends, roommates, or coworkers with transparent tracking.
-        </div>
-      </div>
-      <div class="service-card">
-        <div class="service-title">Request Management</div>
-        <div class="service-description">
-          Send or receive payment requests and track who still owes you — all in one place.
-        </div>
-      </div>
-      <div class="service-card">
-        <div class="service-title">Balance Overview</div>
-        <div class="service-description">
-          See how much you owe and how much is owed to you with clean, real-time summaries.
-        </div>
-      </div>
-      <div class="service-card">
-        <div class="service-title">Expense Categories</div>
-        <div class="service-description">
-          Organize your bills into categories like grocery, personal, or gas for better insights.
-        </div>
-      </div>
-      <div class="service-card">
-        <div class="service-title">Activity History</div>
-        <div class="service-description">
-          Access your full history of payments and bill creation to stay on top of your finances.
-        </div>
-      </div>
-    </div>
-  </main>
-
-  <footer>
-    <p>&copy; 2025 ADJC. All rights reserved.</p>
-  </footer>`;
-
 document.getElementById("services-header").addEventListener("click", () => {
-  document.getElementById("dashboard-container").innerHTML = serviceHTML;
+  loadHTML("partials/service.html");
 });
 
-const contactHTML = `<div class="page-title">
-      <h1 id="contact-h1">Contact Us</h1>
-      <p>Get in touch with our team for questions, feedback, or to learn more about our bill-splitting solution.</p>
-    </div>
-    
-    <div class="contact-container">
-      <div class="contact-info">
-        <div>
-          <div class="contact-item">
-            <h3>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#30579b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                <polyline points="22,6 12,13 2,6"></polyline>
-              </svg>
-              Email
-            </h3>
-            <p><a href="mailto:caiyl0529@gmail.com">caiyl0529@gmail.com</a></p>
-          </div>
-          
-          <div class="contact-item">
-            <h3>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#30579b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-              </svg>
-              Phone
-            </h3>
-            <p><a href="tel:+1 2244214083">+ 1 224 421 4083</a></p>
-          </div>
-          
-          <div class="contact-item">
-            <h3>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#30579b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                <circle cx="12" cy="10" r="3"></circle>
-              </svg>
-              Address
-            </h3>
-            <p>University of Illinois Urbana-Champaign<br>
-            1401 W Green St<br>
-            Urbana, IL 61801<br>
-            United States</p>
-          </div>
-        </div>
-      </div>
-      
-      <div class="map-container">
-        <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3064.247793957372!2d-88.22731442357693!3d40.10233617149783!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x880cd7387d688f61%3A0x21a666f0559593a5!2sUniversity%20of%20Illinois%20Urbana-Champaign!5e0!3m2!1sen!2sus!4v1710688241567!5m2!1sen!2sus" allowfullscreen="" loading="lazy"></iframe>
-      </div>
-    </div>
-    
-    <div class="email-signup">
-      <h2>Join Our Email List</h2>
-      <p>We are a student group that's working on helping people split their bills more efficiently and conveniently. If you are interested in our project, you can add yourself to our email list to receive updates, early access, and more information.</p>
-      <div class="email-form">
-        <input type="email" placeholder="Enter your email address">
-        <button type="button">Subscribe</button>
-      </div>
-    </div>
-    
-    <footer>
-      <p>&copy; 2025 ADJC. All rights reserved.</p>
-    </footer>`;
-
 document.getElementById("contact-header").addEventListener("click", () => {
-  document.getElementById("dashboard-container").innerHTML = contactHTML;
+  loadHTML("partials/contact.html");
 });
 
 //////////////////////////////////////
@@ -788,30 +691,19 @@ async function renderSpendingsChart() {
   });
 }
 
-const billDetailPageHTML = `<div class="bill-detail-dashboard-grid">
-      <div class="bill-detail-section-card section-card">
-        <div class="section-header">
-          <h3>Bills</h3>
-        </div>
+const billDetailPageHTML = ``;
 
-        <div class="detail-card-container" id="bills-detail-scroll-menu">
-          <!-- No record yet -->
-          <!-- small bill data -->
-        </div>
-      </div>
-
-      <div class="bill-detail-section-card section-card">
-        <div class="section-header">
-          <h3>Request</h3>
-        </div>
-        <div class="detail-card-container" id="request-scroll-menu">
-          
-        </div>
-      </div>
-    </div>`;
+async function loadHTMLPartialsSyncWrapper(
+  filepath,
+  container = "dashboard-container"
+) {
+  await loadHTML(filepath, container);
+}
 
 document.getElementById("viewmore-btn").addEventListener("click", () => {
-  document.getElementById("dashboard-container").innerHTML = billDetailPageHTML;
+  // document.getElementById("dashboard-container").innerHTML = billDetailPageHTML;
+  loadHTMLPartialsSyncWrapper("partials/billdetail.html");
+  console.log("changes has been made");
 
   let i = 0;
   billsArr.forEach((billData) => {
