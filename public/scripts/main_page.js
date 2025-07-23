@@ -691,8 +691,6 @@ async function renderSpendingsChart() {
   });
 }
 
-const billDetailPageHTML = ``;
-
 async function loadHTMLPartialsSyncWrapper(
   filepath,
   container = "dashboard-container"
@@ -700,14 +698,36 @@ async function loadHTMLPartialsSyncWrapper(
   await loadHTML(filepath, container);
 }
 
-document.getElementById("viewmore-btn").addEventListener("click", () => {
-  // document.getElementById("dashboard-container").innerHTML = billDetailPageHTML;
-  loadHTMLPartialsSyncWrapper("partials/billdetail.html");
-  console.log("changes has been made");
+const billDetailPageHTML = `<div class="bill-detail-dashboard-grid">
+  <div class="bill-detail-section-card section-card">
+    <div class="section-header">
+      <h3>Bills</h3>
+    </div>
 
-  let i = 0;
-  billsArr.forEach((billData) => {
-    const curBillBox = `<div class="bill-detail-box">
+    <div class="detail-card-container" id="bills-detail-scroll-menu">
+      <!-- No record yet -->
+      <!-- small bill data -->
+    </div>
+  </div>
+
+  <div class="bill-detail-section-card section-card">
+    <div class="section-header">
+      <h3>Request</h3>
+    </div>
+    <div class="detail-card-container" id="request-scroll-menu"></div>
+  </div>
+</div>`;
+
+const viewmoreBtns = document.querySelectorAll(".viewmore-btn");
+
+viewmoreBtns.forEach((button) => {
+  button.addEventListener("click", () => {
+    document.getElementById("dashboard-container").innerHTML =
+      billDetailPageHTML;
+
+    let i = 0;
+    billsArr.forEach((billData) => {
+      const curBillBox = `<div class="bill-detail-box">
             <div class="bill-header">
               <span class="bill-title">${billData.description}</span>
               <span class="bill-detail-amount">$${billData.amount}</span>
@@ -725,35 +745,35 @@ document.getElementById("viewmore-btn").addEventListener("click", () => {
            
           </div>`;
 
-    document
-      .getElementById("bills-detail-scroll-menu")
-      .insertAdjacentHTML("beforeend", curBillBox);
+      document
+        .getElementById("bills-detail-scroll-menu")
+        .insertAdjacentHTML("beforeend", curBillBox);
 
-    const payerSection = document.getElementById(
-      `bill-detail-payer-section-${i}`
-    );
-    Object.entries(billData.AmountStatus || {}).map(
-      ([name, [amount, paid]]) => {
-        if (name == currentUser.data.Name) name = "You";
-        const paidSPAN = paid
-          ? `<span class="paid paid">✓</span>`
-          : `<span class="paid unpaid">x</span>`;
+      const payerSection = document.getElementById(
+        `bill-detail-payer-section-${i}`
+      );
+      Object.entries(billData.AmountStatus || {}).map(
+        ([name, [amount, paid]]) => {
+          if (name == currentUser.data.Name) name = "You";
+          const paidSPAN = paid
+            ? `<span class="paid paid">✓</span>`
+            : `<span class="paid unpaid">x</span>`;
 
-        const singlePayerDiv = `<div class="payer payer-paid-${paid}">
+          const singlePayerDiv = `<div class="payer payer-paid-${paid}">
                       <span>${name}:</span><span>&nbsp;$${amount}</span
                       >${paidSPAN}
                     </div>`;
 
-        payerSection.insertAdjacentHTML("beforeend", singlePayerDiv);
-      }
-    );
+          payerSection.insertAdjacentHTML("beforeend", singlePayerDiv);
+        }
+      );
 
-    i += 1;
-  });
+      i += 1;
+    });
 
-  let j = 0;
-  requestArr.forEach((billData) => {
-    const curBillBox = `<div class="bill-detail-box">
+    let j = 0;
+    requestArr.forEach((billData) => {
+      const curBillBox = `<div class="bill-detail-box">
             <div class="bill-header">
               <span class="bill-title">${billData.description}</span>
               <span class="bill-detail-amount">$${billData.amount}</span>
@@ -771,30 +791,31 @@ document.getElementById("viewmore-btn").addEventListener("click", () => {
            
           </div>`;
 
-    document
-      .getElementById("request-scroll-menu")
-      .insertAdjacentHTML("beforeend", curBillBox);
+      document
+        .getElementById("request-scroll-menu")
+        .insertAdjacentHTML("beforeend", curBillBox);
 
-    const payerSection = document.getElementById(
-      `bill-detail-payer-section-request-${j}`
-    );
-    Object.entries(billData.AmountStatus || {}).map(
-      ([name, [amount, paid]]) => {
-        if (name == currentUser.data.Name) name = "You";
-        const paidSPAN = paid
-          ? `<span class="paid paid">✓</span>`
-          : `<span class="paid unpaid">x</span>`;
+      const payerSection = document.getElementById(
+        `bill-detail-payer-section-request-${j}`
+      );
+      Object.entries(billData.AmountStatus || {}).map(
+        ([name, [amount, paid]]) => {
+          if (name == currentUser.data.Name) name = "You";
+          const paidSPAN = paid
+            ? `<span class="paid paid">✓</span>`
+            : `<span class="paid unpaid">x</span>`;
 
-        const singlePayerDiv = `<div class="payer payer-paid-${paid}">
+          const singlePayerDiv = `<div class="payer payer-paid-${paid}">
                       <span>${name}:</span><span>&nbsp;$${amount}</span
                       >${paidSPAN}
                     </div>`;
 
-        payerSection.insertAdjacentHTML("beforeend", singlePayerDiv);
-      }
-    );
+          payerSection.insertAdjacentHTML("beforeend", singlePayerDiv);
+        }
+      );
 
-    j += 1;
+      j += 1;
+    });
   });
 });
 
